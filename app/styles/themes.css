@@ -1,0 +1,115 @@
+/* Theme variables and utilities copied from src/styles/themes.css */
+:root,
+[data-theme="blue"] {
+  --theme-primary:       #2563eb;
+  --theme-primary-dark:  #1d4ed8;
+  --theme-secondary:     #7c3aed;
+  --theme-accent:        #06b6d4;
+  --theme-gradient-from: #2563eb;
+  --theme-gradient-to:   #7c3aed;
+  --theme-hero-bg-from:  #eff6ff;
+  --theme-hero-bg-to:    #f5f3ff;
+  --theme-badge-bg:      #dbeafe;
+  --theme-badge-text:    #1e40af;
+  --theme-glow:          rgba(37, 99, 235, 0.3);
+  --theme-name:          "Blue Shield";
+}
+[data-theme="red"] {
+  --theme-primary:       #dc2626;
+  --theme-primary-dark:  #b91c1c;
+  --theme-secondary:     #9f1239;
+  --theme-accent:        #f97316;
+  --theme-gradient-from: #dc2626;
+  --theme-gradient-to:   #9f1239;
+  --theme-hero-bg-from:  #fff1f2;
+  --theme-hero-bg-to:    #fff7ed;
+  --theme-badge-bg:      #fee2e2;
+  --theme-badge-text:    #991b1b;
+  --theme-glow:          rgba(220, 38, 38, 0.3);
+  --theme-name:          "Cyber Red";
+}
+[data-theme="green"] {
+  --theme-primary:       #16a34a;
+  --theme-primary-dark:  #15803d;
+  --theme-secondary:     #065f46;
+  --theme-accent:        #84cc16;
+  --theme-gradient-from: #16a34a;
+  --theme-gradient-to:   #065f46;
+  --theme-hero-bg-from:  #f0fdf4;
+  --theme-hero-bg-to:    #ecfdf5;
+  --theme-badge-bg:      #dcfce7;
+  --theme-badge-text:    #166534;
+  --theme-glow:          rgba(22, 163, 74, 0.3);
+  --theme-name:          "Nature Green";
+}
+[data-theme="teal"] {
+  --theme-primary:       #0d9488;
+  --theme-primary-dark:  #0f766e;
+  --theme-secondary:     #0369a1;
+  --theme-accent:        #22d3ee;
+  --theme-gradient-from: #0d9488;
+  --theme-gradient-to:   #0369a1;
+  --theme-hero-bg-from:  #f0fdfa;
+  --theme-hero-bg-to:    #eff6ff;
+  --theme-badge-bg:      #ccfbf1;
+  --theme-badge-text:    #134e4a;
+  --theme-glow:          rgba(13, 148, 136, 0.3);
+  --theme-name:          "Ocean Teal";
+}
+[data-theme="orange"] {
+  --theme-primary:       #ea580c;
+  --theme-primary-dark:  #c2410c;
+  --theme-secondary:     #b45309;
+  --theme-accent:        #f59e0b;
+  --theme-gradient-from: #ea580c;
+  --theme-gradient-to:   #b45309;
+  --theme-hero-bg-from:  #fff7ed;
+  --theme-hero-bg-to:    #fefce8;
+  --theme-badge-bg:      #ffedd5;
+  --theme-badge-text:    #9a3412;
+  --theme-glow:          rgba(234, 88, 12, 0.3);
+  --theme-name:          "Sunset Orange";
+}
+[data-theme="purple"] {
+  --theme-primary:       #7c3aed;
+  --theme-primary-dark:  #6d28d9;
+  --theme-secondary:     #a21caf;
+  --theme-accent:        #e879f9;
+  --theme-gradient-from: #7c3aed;
+  --theme-gradient-to:   #a21caf;
+  --theme-hero-bg-from:  #faf5ff;
+  --theme-hero-bg-to:    #fdf4ff;
+  --theme-badge-bg:      #ede9fe;
+  --theme-badge-text:    #5b21b6;
+  --theme-glow:          rgba(124, 58, 237, 0.3);
+  --theme-name:          "Royal Purple";
+}
+.hero-grid-bg { background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+.blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.25; pointer-events: none; }
+.blob-primary { background: radial-gradient(circle at 30% 30%, var(--theme-gradient-from), transparent 60%), radial-gradient(circle at 70% 70%, var(--theme-gradient-to), transparent 60%); }
+.blob-secondary { background: radial-gradient(circle at 70% 30%, var(--theme-gradient-to), transparent 60%), radial-gradient(circle at 30% 70%, var(--theme-gradient-from), transparent 60%); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px);} to { opacity:1; transform: translateY(0);} }
+@keyframes fadeInScale { from { opacity: 0; transform: translateY(12px) scale(0.96);} to { opacity:1; transform: translateY(0) scale(1);} }
+.animate-fade-in { animation: fadeIn 0.6s ease both; }
+.animate-fade-in-up { animation: fadeInUp 0.7s ease both; }
+.animate-fade-in-scale { animation: fadeInScale 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 0; transform: translateY(20px); transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 700ms ease; will-change: transform, opacity; }
+.reveal-left { transform: translateX(-24px); }
+.reveal-right { transform: translateX(24px); }
+.reveal-scale { transform: translateY(12px) scale(0.96); }
+.revealed { opacity: 1; transform: none; }
+.theme-gradient { background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to)); }
+.theme-gradient-text { background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.theme-border { border-color: var(--theme-primary); }
+.theme-bg-light { background: linear-gradient(135deg, var(--theme-hero-bg-from), var(--theme-hero-bg-to)); }
+.theme-text { color: var(--theme-primary); }
+.theme-badge { background: var(--theme-badge-bg); color: var(--theme-badge-text); }
+.theme-glow-effect { box-shadow: 0 0 30px var(--theme-glow), 0 20px 60px rgba(0,0,0,0.1); }
+.theme-btn { background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to)); color: #fff; border: none; transition: all 0.3s ease; }
+.theme-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--theme-glow); }
+.theme-btn-outline { border: 2px solid var(--theme-primary); color: var(--theme-primary); background: transparent; transition: all 0.3s ease; }
+.theme-btn-outline:hover { background: var(--theme-primary); color: #fff; transform: translateY(-2px); }
+.progress-wrapper { position: relative; background: #f3f4f6; border-radius: 999px; overflow: hidden; height: 10px; }
+.progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--theme-gradient-from), var(--theme-gradient-to)); position: relative; transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
+.progress-bar.animated { width: var(--progress-target, 100%); }
