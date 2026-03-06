@@ -1,5 +1,5 @@
 'use client'
-import EditorMediaLibrary from "../../../../src/app/pages/editor/EditorMediaLibrary";
+import MediaPage from "../../_components/pages/MediaPage";
 export default function Page() {
-  return <EditorMediaLibrary />;
+  return <MediaPage />;
 }

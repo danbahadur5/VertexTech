@@ -1,27 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { DashboardLayout } from '../components/layout/DashboardLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
+import { DashboardLayout } from '../../../components/layout/DashboardLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
 import { 
   Users, 
   FileText, 
   Briefcase, 
-  MessageSquare, 
-  TrendingUp, 
   Activity,
   ArrowUpRight,
-  ArrowDownRight,
-  Plus
+  ArrowDownRight
 } from 'lucide-react';
-import { mockDashboardStats } from '../lib/mock-data';
-import { Badge } from '../components/ui/badge';
+import { useEffect, useState } from 'react';
+import { Badge } from '../../../components/ui/badge';
 
 export default function AdminDashboard() {
+  const [statsData, setStatsData] = useState({ users: 0, pages: 0, posts: 0, projects: 0, tickets: 0 });
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch('/api/admin/stats', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setStatsData(data);
+        }
+      } catch {}
+    };
+    load();
+  }, []);
   const stats = [
     {
       name: 'Total Users',
-      value: mockDashboardStats.users.toLocaleString(),
+      value: statsData.users.toLocaleString(),
       change: '+12%',
       trend: 'up',
       icon: Users,
@@ -29,7 +39,7 @@ export default function AdminDashboard() {
     },
     {
       name: 'Published Pages',
-      value: mockDashboardStats.pages.toString(),
+      value: statsData.pages.toString(),
       change: '+5',
       trend: 'up',
       icon: FileText,
@@ -37,7 +47,7 @@ export default function AdminDashboard() {
     },
     {
       name: 'Blog Posts',
-      value: mockDashboardStats.posts.toString(),
+      value: statsData.posts.toString(),
       change: '+18',
       trend: 'up',
       icon: FileText,
@@ -45,12 +55,12 @@ export default function AdminDashboard() {
     },
     {
       name: 'Active Projects',
-      value: mockDashboardStats.projects.toString(),
+      value: statsData.projects.toString(),
       change: '+8',
       trend: 'up',
       icon: Briefcase,
-      href: '/dashboard/admin/portfolio',
-    },
+      href: '/dashboard/admin/caseStudy',
+    },  
   ];
 
   const recentActivity = [
@@ -58,13 +68,13 @@ export default function AdminDashboard() {
     { action: 'Blog post published', user: 'Sarah Johnson', time: '5 hours ago', type: 'content' },
     { action: 'Service page updated', user: 'Michael Chen', time: '1 day ago', type: 'content' },
     { action: 'Support ticket resolved', user: 'Admin User', time: '1 day ago', type: 'support' },
-    { action: 'New portfolio project added', user: 'Sarah Johnson', time: '2 days ago', type: 'content' },
+    { action: 'New Case Study added', user: 'Sarah Johnson', time: '2 days ago', type: 'content' },
   ];
 
   const quickActions = [
     { name: 'Create New Page', href: '/dashboard/admin/pages', icon: FileText },
     { name: 'Add Blog Post', href: '/dashboard/admin/blog', icon: FileText },
-    { name: 'Add Portfolio Project', href: '/dashboard/admin/portfolio', icon: Briefcase },
+    { name: 'Add Case Study', href: '/dashboard/admin/caseStudy', icon: Briefcase },
     { name: 'Manage Users', href: '/dashboard/admin/users', icon: Users },
   ];
 
@@ -176,15 +186,15 @@ export default function AdminDashboard() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Published Pages</span>
-                <Badge variant="secondary">{mockDashboardStats.pages}</Badge>
+                <Badge variant="secondary">{statsData.pages}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Draft Posts</span>
                 <Badge>12</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Portfolio Projects</span>
-                <Badge variant="secondary">{mockDashboardStats.projects}</Badge>
+                <span className="text-sm text-gray-600">Case Study Projects</span>
+                <Badge variant="secondary">{statsData.projects}</Badge>
               </div>
             </CardContent>
           </Card>

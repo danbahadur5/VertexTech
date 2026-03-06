@@ -28,7 +28,7 @@ export default function BlogPage() {
           <div className="mt-8 max-w-md mx-auto animate-fade-in delay-300">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input type="text" placeholder="Search articles..." className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm text-sm focus:outline-none focus:ring-2 transition-shadow" />
+              <input type="text" placeholder="Search articles..." className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-gray-600 bg-white shadow-sm text-sm focus:outline-none focus:ring-1 transition-shadow" />
             </div>
           </div>
         </div>

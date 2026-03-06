@@ -1,0 +1,265 @@
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router';
+import { 
+  LayoutDashboard, 
+  FileText, 
+  Users, 
+  Settings, 
+  Briefcase, 
+  MessageSquare, 
+  Image as ImageIcon,
+  Palette,
+  LogOut,
+  Menu,
+  X,
+  Home,
+  UserCircle,
+  CreditCard,
+  HelpCircle,
+  Newspaper,
+  FolderOpen,
+  ChevronLeft,
+  ChevronRight,
+  Plus
+} from 'lucide-react';
+import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { useAuth } from '../../lib/auth-context';
+import { Badge } from '../ui/badge';
+
+export function DashboardLayout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { user, logout, hasRole } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const isOverview = (p) => /^\/dashboard\/(admin|editor|client)$/.test(p);
+  const isActive = (path) => {
+    if (isOverview(path)) {
+      return location.pathname === path;
+    }
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
+
+  // Navigation items based on role
+  const getNavigationItems = () => {
+    const role = user?.role;
+    
+    if (role === 'admin') {
+      return [
+        { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
+        { name: 'Pages', href: '/dashboard/admin/pages', icon: FileText },
+        { name: 'Services', href: '/dashboard/admin/services', icon: Briefcase },
+        { name: 'Blog', href: '/dashboard/admin/blog', icon: Newspaper },
+        { name: 'Case Study', href: '/dashboard/admin/caseStudy', icon: FolderOpen },
+        { name: 'Media Library', href: '/dashboard/admin/media', icon: ImageIcon },
+        { name: 'Users', href: '/dashboard/admin/users', icon: Users },
+        { name: 'Support', href: '/dashboard/admin/support', icon: MessageSquare },
+        { name: 'Theme', href: '/dashboard/admin/theme', icon: Palette },
+        { name: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
+      ];
+    } else if (role === 'editor') {
+      return [
+        { name: 'Overview', href: '/dashboard/editor', icon: LayoutDashboard },
+        { name: 'Pages', href: '/dashboard/editor/pages', icon: FileText },
+        { name: 'Blog', href: '/dashboard/editor/blog', icon: Newspaper },
+        { name: 'Case Study', href: '/dashboard/editor/caseStudy', icon: FolderOpen },
+        { name: 'Media Library', href: '/dashboard/editor/media', icon: ImageIcon },
+      ];
+    } else {
+      return [
+        { name: 'Overview', href: '/dashboard/client', icon: LayoutDashboard },
+        { name: 'My Projects', href: '/dashboard/client/projects', icon: FolderOpen },
+        { name: 'Support', href: '/dashboard/client/support', icon: MessageSquare },
+        { name: 'Profile', href: '/dashboard/client/profile', icon: UserCircle },
+        { name: 'Billing', href: '/dashboard/client/billing', icon: CreditCard },
+      ];
+    }
+  };
+
+  const navigationItems = getNavigationItems();
+
+
+  const getRoleBadgeColor = (role) => {
+    switch (role) {
+      case 'admin':
+        return 'bg-purple-100 text-purple-800';
+      case 'editor':
+        return 'bg-blue-100 text-blue-800';
+      case 'client':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const role = user?.role;
+  const activeBg = role === 'admin' ? 'from-orange-900 to-red-500' : role === 'editor' ? 'from-blue-600 to-purple-600' : 'from-emerald-600 to-green-500';
+  const sectionLabel = role === 'admin' ? 'Admin' : role === 'editor' ? 'Editor' : 'Client';
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <aside className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
+        <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 bg-gradient-to-b from-white to-gray-50 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
+          <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white border-gray-200 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
+            <Link to="/" className="flex items-center gap-2">
+              <span className={`font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${sidebarCollapsed ? 'text-xl' : 'text-2xl'}`}>
+                V
+              </span>
+              {!sidebarCollapsed && (
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  ertexTech
+                </span>
+              )}
+            </Link>
+            <button
+              aria-label="Toggle sidebar"
+              className="inline-flex items-center justify-center rounded-md border px-2.5 py-2 text-gray-600 hover:bg-gray-100"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </button>
+          </div>
+          {!sidebarCollapsed && (
+            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2">
+              {sectionLabel}
+            </div>
+          )}
+          <nav className="flex flex-1 flex-col">
+            <ul role="list" className="flex flex-1 flex-col gap-y-2">
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+                return (
+                  <li key={item.name}>
+                    <Link
+                      to={item.href}
+                      title={item.name}
+                      className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                    >
+                      {active && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-white/90" />
+                      )}
+                      <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
+                      {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mt-auto pt-4 border-t border-gray-200">
+              <div className={`flex items-center gap-x-3 ${sidebarCollapsed ? 'px-1.5 py-3 justify-center' : 'px-2 py-3'}`}>
+                <Avatar>
+                  <AvatarImage src={user?.avatar} alt={user?.name} />
+                  <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                </Avatar>
+                {!sidebarCollapsed && (
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-gray-900">{user?.name}</div>
+                    <Badge className={`text-xs mt-1 ${getRoleBadgeColor(user?.role || 'client')}`}>{user?.role}</Badge>
+                  </div>
+                )}
+              </div>
+              <div className={`${sidebarCollapsed ? 'px-1.5 pb-3' : 'px-2 pb-3'}`}>
+                <Button
+                  variant="ghost"
+                  className={`w-full cursor-pointer ${sidebarCollapsed ? 'justify-center' : 'justify-start'} text-red-600 hover:text-red-700 hover:bg-red-50`}
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  {!sidebarCollapsed && 'Logout'}
+                </Button>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </aside>
+
+      {/* Mobile sidebar */}
+      {sidebarOpen && (
+        <div className="lg:hidden">
+          <div className="fixed inset-0 z-50 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div className="flex h-16 shrink-0 items-center justify-between">
+              <Link to="/" className="flex items-center gap-2">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  VertexTech
+                </span>
+              </Link>
+              <button onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
+                <X className="h-6 w-6 text-gray-700" />
+              </button>
+            </div>
+            <nav className="mt-6">
+              <ul role="list" className="space-y-1">
+                {navigationItems.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        to={item.href}
+                        onClick={() => setSidebarOpen(false)}
+                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                      >
+                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
+
+      <div className={sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'}>
+        {/* Top bar for mobile */}
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+          <button
+            type="button"
+            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Menu className="h-6 w-6" aria-hidden="true" />
+          </button>
+          
+          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 items-center justify-between">
+            <div className="flex items-center gap-4">
+              <h1 className="text-lg font-semibold text-gray-900">Dashboard</h1>
+            </div>
+            <div className="flex items-center gap-x-4 lg:gap-x-6">
+              {role === 'editor' && (
+                <Button size="sm" asChild>
+                  <Link to="/dashboard/editor/pages">
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Page
+                  </Link>
+                </Button>
+              )}
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/">
+                  <Home className="h-4 w-4 mr-2" />
+                  View Site
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <main className="py-10">
+          <div className="px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}

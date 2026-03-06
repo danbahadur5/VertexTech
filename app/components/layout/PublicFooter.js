@@ -11,7 +11,7 @@ export function PublicFooter() {
     ],
     resources: [
       { name: 'Pricing',       href: '/pricing' },
-      { name: 'Portfolio',     href: '/portfolio' },
+      { name: 'Case Study',     href: '/case-study' },
       { name: 'Blog',          href: '/blog' },
       { name: 'Documentation', href: '#' },
     ],

@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowRight } from 'lucide-react';
-import { mockPortfolio } from '../lib/mock-data';
+import { mockCaseStudy } from '../lib/mock-data';
 
-export default function PortfolioPage() {
+export default function CaseStudyPage() {
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -17,10 +17,10 @@ export default function PortfolioPage() {
           <div className="text-center mb-16">
             <Badge className="mb-4">Our Work</Badge>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">Success Stories & Projects</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Explore our portfolio of successful projects.</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Explore our Case Study of successful projects.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockPortfolio.map((project) => (
+            {mockCaseStudy.map((project) => (
               <Card key={project.id} className="overflow-hidden hover:shadow-2xl transition-shadow">
                 <div className="aspect-video overflow-hidden">
                   <img src={project.gallery[0]} alt={project.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
@@ -34,11 +34,11 @@ export default function PortfolioPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-gray-600 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech) => (<Badge key={tech} variant="outline" className="text-xs">{tech}</Badge>))}
+                  <div className="flex flex-wrap  gap-2 mb-4">
+                    {project.technologies.slice(0, 4).map((tech) => (<Badge key={tech} variant="outline" className="text-xs text-gray-500 text-bold">{tech}</Badge>))}
                   </div>
-                  <Link to={`/portfolio/${project.slug}`}>
-                    <Button variant="ghost" className="w-full">
+                  <Link to={`/caseStudy/${project.slug}`}>      
+                    <Button variant="ghost" className="w-full cursor-pointer">
                       View Case Study <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

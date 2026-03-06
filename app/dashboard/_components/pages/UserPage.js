@@ -1,19 +1,55 @@
-import React from 'react';
-import { DashboardLayout } from '../../components/layout/DashboardLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Badge } from '../../components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
+import React, { useEffect, useState } from 'react';
+import { DashboardLayout } from '../../../components/layout/DashboardLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Button } from '../../../components/ui/button';
+import { Badge } from '../../../components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/ui/table';
 import { Plus, Edit, Trash2, UserCog } from 'lucide-react';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 
 export default function UserPage() {
-  const users = [
-    { id: '1', name: 'Admin User', email: 'admin@vertextech.com', role: 'admin', status: 'active', createdAt: '2024-01-01' },
-    { id: '2', name: 'Editor User', email: 'editor@vertextech.com', role: 'editor', status: 'active', createdAt: '2024-01-15' },
-    { id: '3', name: 'Client User', email: 'client@example.com', role: 'client', status: 'active', createdAt: '2024-02-01' },
-    { id: '4', name: 'John Smith', email: 'john@example.com', role: 'client', status: 'active', createdAt: '2024-02-15' },
-    { id: '5', name: 'Sarah Johnson', email: 'sarah@example.com', role: 'editor', status: 'active', createdAt: '2024-02-20' },
-  ];
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [roleOpen, setRoleOpen] = useState(false);
+  const [current, setCurrent] = useState(null);
+  const [newRole, setNewRole] = useState('client');
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/users', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      setUsers(data.users || []);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const openRoleModal = (user) => {
+    setCurrent(user);
+    setNewRole(user.role || 'client');
+    setRoleOpen(true);
+  };
+  const saveRole = async () => {
+    if (!current) return;
+    const res = await fetch('/api/users', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: current._id, role: newRole }),
+    });
+    if (res.ok) {
+      const { user } = await res.json();
+      setUsers((prev) => prev.map((u) => (u._id === user._id ? user : u)));
+      setRoleOpen(false);
+      setCurrent(null);
+    }
+  };
 
   const getRoleBadgeColor = (role) => {
     switch (role) {
@@ -44,7 +80,7 @@ export default function UserPage() {
               <CardTitle>Total Users</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{users.length}</div>
+              <div className="text-3xl font-bold">{users?.length || 0}</div>
             </CardContent>
           </Card>
           <Card>
@@ -52,7 +88,7 @@ export default function UserPage() {
               <CardTitle>Admins</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{users.filter(u => u.role === 'admin').length}</div>
+              <div className="text-3xl font-bold">{(users || []).filter(u => u.role === 'admin').length}</div>
             </CardContent>
           </Card>
           <Card>
@@ -60,7 +96,7 @@ export default function UserPage() {
               <CardTitle>Editors</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{users.filter(u => u.role === 'editor').length}</div>
+              <div className="text-3xl font-bold">{(users || []).filter(u => u.role === 'editor').length}</div>
             </CardContent>
           </Card>
         </div>
@@ -71,6 +107,7 @@ export default function UserPage() {
             <CardDescription>Manage user accounts and roles</CardDescription>
           </CardHeader>
           <CardContent>
+            {loading && <div className="text-sm text-gray-500">Loading users…</div>}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -84,7 +121,7 @@ export default function UserPage() {
               </TableHeader>
               <TableBody>
                 {users.map((user) => (
-                  <TableRow key={user.id}>
+                  <TableRow key={user._id || user.id}>
                     <TableCell className="font-medium">{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
@@ -96,7 +133,7 @@ export default function UserPage() {
                     <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => openRoleModal(user)}>
                           <UserCog className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="sm">
@@ -114,6 +151,32 @@ export default function UserPage() {
           </CardContent>
         </Card>
       </div>
+      <Dialog open={roleOpen} onOpenChange={setRoleOpen}>
+        <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+          <DialogHeader>
+            <DialogTitle>Change User Role</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="text-sm text-slate-600 dark:text-slate-300">
+              Set role for <span className="font-semibold">{current?.name}</span> ({current?.email})
+            </div>
+            <Select value={newRole} onValueChange={setNewRole}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="editor">Editor</SelectItem>
+                <SelectItem value="client">Client</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setRoleOpen(false)}>Cancel</Button>
+            <Button type="button" onClick={saveRole} className="bg-blue-600 hover:bg-blue-700 text-white">Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }

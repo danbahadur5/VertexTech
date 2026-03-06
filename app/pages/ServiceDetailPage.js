@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -6,11 +6,38 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
-import { mockServices } from '../lib/mock-data';
+
 
 export default function ServiceDetailPage() {
   const { slug } = useParams();
-  const service = mockServices.find((s) => s.slug === slug);
+  const [service, setService] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/services/${slug}`, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setService(data.item);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (slug) load();
+  }, [slug]);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <PublicHeader />
+        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
+          <h1 className="text-2xl font-semibold">Loading…</h1>
+        </div>
+        <PublicFooter />
+      </div>
+    );
+  }
   if (!service) {
     return (
       <div className="min-h-screen bg-white">

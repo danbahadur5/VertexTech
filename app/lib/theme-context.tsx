@@ -25,7 +25,7 @@ interface ColorThemeContextType {
 }
 
 const ColorThemeContext = createContext<ColorThemeContextType>({
-  colorTheme: 'blue',
+  colorTheme: 'red',
   setColorTheme: () => {},
   currentTheme: THEME_OPTIONS[0],
 });
@@ -33,7 +33,7 @@ const ColorThemeContext = createContext<ColorThemeContextType>({
 export function ColorThemeProvider({ children }: { children: React.ReactNode }) {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('sn-color-theme') : null;
-    return (saved as ColorTheme) || 'blue';
+    return (saved as ColorTheme) || 'red';
   });
 
   const currentTheme = THEME_OPTIONS.find(t => t.id === colorTheme)!;

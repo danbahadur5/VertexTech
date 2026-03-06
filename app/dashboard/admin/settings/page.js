@@ -1,5 +1,5 @@
 'use client'
-import AdminThemeSettings from "../../../../src/app/pages/admin/AdminThemeSettings";
+import SettingPage from "../../_components/pages/SettingPage";
 export default function Page() {
-  return <AdminThemeSettings />;
+  return <SettingPage />;
 }

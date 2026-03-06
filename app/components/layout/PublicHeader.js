@@ -1,11 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router';
-import { X, ChevronDown, Sun, Moon, Shield, Home, LayoutGrid, DollarSign, Info, FileText, Images, Mail, LogIn, LayoutDashboard, User, Menu } from 'lucide-react';
-import { Button } from '../ui/button';
-import { useAuth } from '../../lib/auth-context';
-import { useTheme } from 'next-themes';
-import { ThemeSwitcher } from '../ui/ThemeSwitcher';
-import { siteSettings } from '../../lib/site-settings';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router";
+import {
+  X,
+  ChevronDown,
+  Sun,
+  Moon,
+  Shield,
+  Home,
+  LayoutGrid,
+  DollarSign,
+  Info,
+  FileText,
+  Images,
+  Mail,
+  LogIn,
+  LayoutDashboard,
+  User,
+  Menu,
+} from "lucide-react";
+import { Button } from "../ui/button";
+import { useAuth } from "../../lib/auth-context";
+import { useTheme } from "next-themes";
+import { ThemeSwitcher } from "../ui/ThemeSwitcher";
+import { siteSettings } from "../../lib/site-settings";
 
 // --- Subcomponents ---
 
@@ -15,7 +32,7 @@ const Logo = () => (
       <Shield className="h-5 w-5 text-white" />
     </div>
     <span className="text-xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
-      {siteSettings.brand.name.split('Tech')[0]}
+      {siteSettings.brand.name.split("Tech")[0]}
       <span className="theme-gradient-text">Tech</span>
     </span>
   </Link>
@@ -28,9 +45,10 @@ const NavLink = ({ item, isActive, onClick }) => {
       className={`relative px-3 py-2 rounded-lg text-sm font-semibold transition-colors
         after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[2px] 
         after:bg-[var(--theme-primary)] after:rounded-full after:transition-transform after:duration-300
-        ${isActive 
-          ? 'theme-text after:scale-x-100' 
-          : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100'
+        ${
+          isActive
+            ? "theme-text after:scale-x-100"
+            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100"
         }`}
       onClick={onClick}
     >
@@ -52,13 +70,16 @@ const DropdownNav = ({ item, isActive }) => {
         className={`flex items-center gap-x-1 px-3 py-2 rounded-lg text-sm font-semibold transition-colors
           relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[2px] 
           after:bg-[var(--theme-primary)] after:rounded-full after:transition-transform after:duration-300
-          ${isActive 
-            ? 'theme-text after:scale-x-100' 
-            : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100'
+          ${
+            isActive
+              ? "theme-text after:scale-x-100"
+              : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100"
           }`}
       >
         <span>{item.name}</span>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
       {open && (
@@ -70,7 +91,10 @@ const DropdownNav = ({ item, isActive }) => {
                 to={sub.href}
                 className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--theme-primary)' }} />
+                <span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: "var(--theme-primary)" }}
+                />
                 {sub.name}
               </Link>
             ))}
@@ -81,14 +105,25 @@ const DropdownNav = ({ item, isActive }) => {
   );
 };
 
-const MobileMenu = ({ isOpen, onClose, navigation, isActive, isAuthenticated, user, toggleTheme }) => {
+const MobileMenu = ({
+  isOpen,
+  onClose,
+  navigation,
+  isActive,
+  isAuthenticated,
+  user,
+  toggleTheme,
+}) => {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden" onClick={onClose} />
+      <div
+        className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
+        onClick={onClose}
+      />
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-2xl rounded-t-2xl lg:hidden animate-slide-up">
         <div className="flex items-center justify-between px-6 py-4 border-b dark:border-gray-700">
           <Logo />
@@ -107,7 +142,7 @@ const MobileMenu = ({ isOpen, onClose, navigation, isActive, isAuthenticated, us
                 key={item.name}
                 to={item.href}
                 className={`flex items-center gap-3 rounded-lg px-4 py-3 text-base font-semibold transition-colors
-                  ${isActive(item.href) ? 'theme-text' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                  ${isActive(item.href) ? "theme-text" : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
                 onClick={onClose}
               >
                 {Icon && <Icon className="h-5 w-5" />}
@@ -119,7 +154,10 @@ const MobileMenu = ({ isOpen, onClose, navigation, isActive, isAuthenticated, us
             {isAuthenticated ? (
               <Button
                 className="theme-btn w-full flex items-center gap-2"
-                onClick={() => { navigate(`/dashboard/${user?.role}`); onClose(); }}
+                onClick={() => {
+                  navigate(`/dashboard/${user?.role}`);
+                  onClose();
+                }}
               >
                 <LayoutDashboard className="h-4 w-4" /> Dashboard
               </Button>
@@ -128,15 +166,21 @@ const MobileMenu = ({ isOpen, onClose, navigation, isActive, isAuthenticated, us
                 <Button
                   variant="outline"
                   className="w-full flex items-center gap-2"
-                  onClick={() => { navigate('/login'); onClose(); }}
+                  onClick={() => {
+                    navigate("/login");
+                    onClose();
+                  }}
                 >
                   <LogIn className="h-4 w-4" /> Log in
                 </Button>
                 <Button
                   className="theme-btn w-full flex items-center gap-2"
-                  onClick={() => { navigate('/contact'); onClose(); }}
+                  onClick={() => {
+                    navigate("/contact");
+                    onClose();
+                  }}
                 >
-                   Start Project
+                  Start Project
                 </Button>
               </>
             )}
@@ -157,43 +201,43 @@ export function PublicHeader() {
   const { isAuthenticated, user } = useAuth();
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const isActive = (href) => {
-    if (href === '/') return location.pathname === '/';
+    if (href === "/") return location.pathname === "/";
     return location.pathname.startsWith(href);
   };
 
   const isUserActive = () => {
-    if (isAuthenticated) return location.pathname.startsWith('/dashboard');
-    return location.pathname === '/login' || location.pathname === '/register';
+    if (isAuthenticated) return location.pathname.startsWith("/dashboard");
+    return location.pathname === "/login" || location.pathname === "/register";
   };
 
   const navigation = [
-    { name: 'Home', href: '/', icon: Home },
+    { name: "Home", href: "/", icon: Home },
     {
-      name: 'Services',
-      href: '/services',
+      name: "Services",
+      href: "/services",
       icon: LayoutGrid,
       hasDropdown: true,
       dropdown: [
-        { name: 'Cloud Solutions', href: '/services/cloud-solutions' },
-        { name: 'Cybersecurity', href: '/services/cybersecurity' },
-        { name: 'Custom Software', href: '/services/custom-software' },
-        { name: 'Data Analytics', href: '/services/data-analytics' },
+        { name: "Cloud Solutions", href: "/services/cloud-solutions" },
+        { name: "Cybersecurity", href: "/services/cybersecurity" },
+        { name: "Custom Software", href: "/services/custom-software" },
+        { name: "Data Analytics", href: "/services/data-analytics" },
       ],
     },
-    { name: 'Pricing', href: '/pricing', icon: DollarSign },
-    { name: 'About', href: '/about', icon: Info },
-    { name: 'Blog', href: '/blog', icon: FileText },
-    { name: 'Portfolio', href: '/portfolio', icon: Images },
-    { name: 'Contact', href: '/contact', icon: Mail },
+    { name: "Pricing", href: "/pricing", icon: DollarSign },
+    { name: "About", href: "/about", icon: Info },
+    { name: "Blog", href: "/blog", icon: FileText },
+    { name: "Case Study", href: "/caseStudy", icon: Images },
+    { name: "Contact", href: "/contact", icon: Mail },
   ];
 
   return (
@@ -201,12 +245,16 @@ export function PublicHeader() {
       {/* Desktop Header */}
       <header
         className={`sticky top-0 z-50 w-full transition-all duration-300 hidden lg:block
-          ${scrolled
-            ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:border-gray-800'
-            : 'bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800'
+          ${
+            scrolled
+              ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:border-gray-800"
+              : "bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800"
           }`}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8" aria-label="Global">
+        <nav
+          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
+          aria-label="Global"
+        >
           <div className="flex lg:flex-1">
             <Logo />
           </div>
@@ -224,7 +272,7 @@ export function PublicHeader() {
           </div>
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 items-center">
-            {/* <ThemeSwitcher /> */}
+            {/* <ThemeSwitcher />  */}
             <Button
               variant="outline"
               size="icon"
@@ -248,7 +296,7 @@ export function PublicHeader() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate("/login")}
                   className="font-semibold text-gray-900 dark:text-gray-100 cursor-pointer border px-5 py-2 hover:bg-transparent transition-all duration-300"
                 >
                   Log in
@@ -258,7 +306,7 @@ export function PublicHeader() {
                     key={cta.name}
                     size="sm"
                     variant={cta.variant}
-                    className={`${cta.variant === 'default' ? 'theme-btn' : 'theme-btn-outline cursor-pointer'} rounded-lg px-5 h-9 text-sm font-semibold cursor-pointer`}
+                    className={`${cta.variant === "default" ? "theme-btn" : "theme-btn-outline cursor-pointer"} rounded-lg px-5 h-9 text-sm font-semibold cursor-pointer`}
                     onClick={() => navigate(cta.href)}
                   >
                     {cta.name}
@@ -278,7 +326,7 @@ export function PublicHeader() {
               <Shield className="h-4 w-4 text-white" />
             </div>
             <span className="text-lg font-extrabold text-gray-900 dark:text-gray-100">
-              {siteSettings.brand.name.split('Tech')[0]}
+              {siteSettings.brand.name.split("Tech")[0]}
               <span className="theme-gradient-text">Tech</span>
             </span>
           </Link>
@@ -296,9 +344,9 @@ export function PublicHeader() {
             </Button>
 
             <Link
-              to={isAuthenticated ? `/dashboard/${user?.role}` : '/login'}
+              to={isAuthenticated ? `/dashboard/${user?.role}` : "/login"}
               className={`flex items-center justify-center h-9 w-9 rounded-full transition-colors
-                ${isUserActive() ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                ${isUserActive() ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
             >
               <User className="h-5 w-5" />
             </Link>
@@ -319,7 +367,7 @@ export function PublicHeader() {
           <Link
             to="/services"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
-              ${isActive('/services') ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+              ${isActive("/services") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <LayoutGrid className="h-5 w-5" />
             <span className="text-[10px] mt-1 font-medium">Services</span>
@@ -327,7 +375,7 @@ export function PublicHeader() {
           <Link
             to="/about"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
-              ${isActive('/about') ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+              ${isActive("/about") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <Info className="h-5 w-5" />
             <span className="text-[10px] mt-1 font-medium">About</span>
@@ -335,25 +383,29 @@ export function PublicHeader() {
           <Link
             to="/"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors relative
-              ${isActive('/') ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+              ${isActive("/") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
-            <div className={`p-2 rounded-full ${isActive('/') ? 'theme-gradient' : 'bg-gray-100 dark:bg-gray-800'}`}>
-              <Home className={`h-6 w-6 ${isActive('/') ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`} />
+            <div
+              className={`p-2 rounded-full ${isActive("/") ? "theme-gradient" : "bg-gray-100 dark:bg-gray-800"}`}
+            >
+              <Home
+                className={`h-6 w-6 ${isActive("/") ? "text-white" : "text-gray-600 dark:text-gray-400"}`}
+              />
             </div>
             <span className="text-[10px] mt-1 font-medium">Home</span>
           </Link>
           <Link
-            to="/portfolio"
+            to="/caseStudy"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
-              ${isActive('/portfolio') ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+              ${isActive("/caseStudy") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <Images className="h-5 w-5" />
-            <span className="text-[10px] mt-1 font-medium">Portfolio</span>
+            <span className="text-[10px] mt-1 font-medium">Case Study</span>
           </Link>
           <Link
             to="/contact"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
-              ${isActive('/contact') ? 'theme-text' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+              ${isActive("/contact") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <Mail className="h-5 w-5" />
             <span className="text-[10px] mt-1 font-medium">Contact</span>
@@ -374,7 +426,6 @@ export function PublicHeader() {
 
       {/* Spacers for fixed elements */}
       <div className="lg:hidden h-14" />
-      <div className="lg:hidden h-16" />
     </>
   );
 }

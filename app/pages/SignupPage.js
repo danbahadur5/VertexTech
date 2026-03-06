@@ -33,8 +33,8 @@ export default function SignupPage() {
 
     try {
       await register(name, email, password);
-      toast.success('Account created successfully!');
-      navigate('/dashboard/client');
+      toast.success('Account created. Please verify your email to sign in.');
+      navigate('/login');
     } catch (error) {
       toast.error('Failed to create account');
     } finally {
@@ -51,8 +51,6 @@ export default function SignupPage() {
               VertexTech
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-gray-600 mt-2">Join VertexTech and start your journey</p>
         </div>
 
         <Card>
@@ -110,7 +108,7 @@ export default function SignupPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full cursor-pointer mt-4" disabled={isLoading}>
                 {isLoading ? 'Creating account...' : 'Create Account'}
               </Button>
               <p className="text-sm text-center text-gray-600">

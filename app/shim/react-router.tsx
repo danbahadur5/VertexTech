@@ -3,7 +3,8 @@ import LinkNext from "next/link";
 import { useRouter, usePathname, useParams as useNextParams } from "next/navigation";
 
 type LinkProps = {
-  to: string;
+  to?: string;
+  href?: string;
   children?: React.ReactNode;
   className?: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -11,9 +12,10 @@ type LinkProps = {
   prefetch?: boolean;
 };
 
-export function Link({ to, children, className, onClick, replace, prefetch }: LinkProps) {
+export function Link({ to, href, children, className, onClick, replace, prefetch }: LinkProps) {
+  const actual = to ?? href ?? "/";
   return (
-    <LinkNext href={to} className={className} onClick={onClick} replace={replace} prefetch={prefetch}>
+    <LinkNext href={actual} className={className} onClick={onClick} replace={replace} prefetch={prefetch}>
       {children}
     </LinkNext>
   );

@@ -19,12 +19,9 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      const current = await login(email, password);
       toast.success('Login successful!');
-      
-      // Redirect based on role
-      const user = JSON.parse(localStorage.getItem('vertextech_user') || '{}');
-      navigate(`/dashboard/${user.role}`);
+      navigate(`/dashboard/${current.role}`);
     } catch (error) {
       toast.error('Invalid email or password');
     } finally {
@@ -47,18 +44,16 @@ export default function LoginPage() {
               VertexTech
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account to continue</p>
         </div>
 
-        <Card>
+        <Card className='py-7 px-4'>
           <form onSubmit={handleSubmit}>
             <CardHeader>
-              <CardTitle>Sign In</CardTitle>
-              <CardDescription>Enter your credentials to access your account</CardDescription>
+              {/* <CardTitle>Sign In</CardTitle> */}
+              {/* <CardDescription>Enter your credentials to access your account</CardDescription> */}
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -72,7 +67,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+                  <Link to="/forgot-password" className="text-sm text-blue-400 hover:underline">
                     Forgot password?
                   </Link>
                 </div>
@@ -86,36 +81,9 @@ export default function LoginPage() {
                 />
               </div>
 
-              {/* Demo credentials */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm font-semibold text-gray-700 mb-2">Demo Accounts (Click to auto-fill):</p>
-                <div className="space-y-2 text-sm">
-                  <button
-                    type="button"
-                    onClick={() => quickLogin('admin@vertextech.com')}
-                    className="block w-full text-left p-2 rounded hover:bg-blue-100 transition-colors"
-                  >
-                    <span className="font-medium text-blue-600">Admin:</span> admin@vertextech.com
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => quickLogin('editor@vertextech.com')}
-                    className="block w-full text-left p-2 rounded hover:bg-blue-100 transition-colors"
-                  >
-                    <span className="font-medium text-blue-600">Editor:</span> editor@vertextech.com
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => quickLogin('client@example.com')}
-                    className="block w-full text-left p-2 rounded hover:bg-blue-100 transition-colors"
-                  >
-                    <span className="font-medium text-blue-600">Client:</span> client@example.com
-                  </button>
-                </div>
-              </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full cursor-pointer mt-7" disabled={isLoading}>
                 {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
               <p className="text-sm text-center text-gray-600">

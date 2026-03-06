@@ -1,5 +1,5 @@
 'use client'
-import EditorPagesManager from "../../../../src/app/pages/editor/EditorPagesManager";
+import PagesPages from "../../_components/pages/PagesPages";
 export default function Page() {
-  return <EditorPagesManager />;
+  return <PagesPages />;
 }

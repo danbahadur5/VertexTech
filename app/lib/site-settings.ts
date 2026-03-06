@@ -9,7 +9,7 @@ export const siteSettings = {
         { name: 'Cyber Security', href: '/services/cybersecurity' },
         { name: 'AI Agent Build', href: '/services/data-analytics' },
       ]},
-      { name: 'Portfolio', href: '/portfolio' },
+      { name: 'Case Study', href: '/Case Study' },
       { name: 'Blog', href: '/blog' },
       { name: 'Contact', href: '/contact' },
     ],
@@ -21,7 +21,7 @@ export const siteSettings = {
     titleGradient: 'AI‑Powered Solutions',
     subtitle: 'Enterprise web development, cybersecurity, and AI agent automation — unified under one platform for digital growth.',
     primaryCTA: { label: 'Start Project', href: '/contact' },
-    secondaryCTA: { label: 'Watch Demo', href: '/portfolio' },
+    secondaryCTA: { label: 'Watch Demo', href: '/Case Study' },
     features: [
       { icon: 'Shield', label: 'Cyber Defense' },
       { icon: 'Zap', label: 'Automation' },

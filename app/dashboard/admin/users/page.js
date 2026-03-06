@@ -1,5 +1,5 @@
 'use client'
-import UsersPage from "../../_components/pages/UsersPage";
+import UserPage from "../../_components/pages/UserPage";
 export default function Page() {
-  return <UsersPage />;
+  return <UserPage />;
 }

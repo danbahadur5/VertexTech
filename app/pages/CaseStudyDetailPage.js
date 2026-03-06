@@ -6,18 +6,18 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, Quote } from 'lucide-react';
-import { mockPortfolio } from '../lib/mock-data';
+import { mockCaseStudy } from '../lib/mock-data';
 
-export default function PortfolioDetailPage() {
+export default function CaseStudyDetailPage() {
   const { slug } = useParams();
-  const project = mockPortfolio.find((p) => p.slug === slug);
+  const project = mockCaseStudy.find((p) => p.slug === slug);
   if (!project) {
-    return (
+    return (      
       <div className="min-h-screen bg-white">
         <PublicHeader />
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h1 className="text-4xl font-bold">Project Not Found</h1>
-          <Link to="/portfolio"><Button className="mt-6">Back to Portfolio</Button></Link>
+          <Link to="/caseStudy"><Button className="mt-6">Back to Case Study</Button></Link>
         </div>
         <PublicFooter />
       </div>
@@ -28,7 +28,7 @@ export default function PortfolioDetailPage() {
       <PublicHeader />
       <section className="py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <Link to="/portfolio"><Button variant="ghost" className="mb-6"><ArrowLeft className="h-4 w-4 mr-2" />Back to Portfolio</Button></Link>
+          <Link to="/caseStudy"><Button variant="ghost" className="mb-6 text-gray-400"><ArrowLeft className="h-4 w-4 mr-2" />Back to Case Study</Button></Link>
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
               <Badge variant="secondary">{project.client}</Badge>

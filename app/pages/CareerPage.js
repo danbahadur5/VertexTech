@@ -72,27 +72,6 @@ export default function CareersPage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">50+</div>
-                <p className="text-gray-600">Team Members</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">15+</div>
-                <p className="text-gray-600">Countries</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">4.9/5</div>
-                <p className="text-gray-600">Employee Rating</p>
-              </CardContent>
-            </Card>
-          </div>
-
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Open Positions</h2>
             <div className="space-y-4">

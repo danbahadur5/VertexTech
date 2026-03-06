@@ -1,5 +1,5 @@
 'use client'
-import ThemeSettingsPage from "../../_components/pages/ThemeSettingsPage";
+import ThemePage from "../../_components/pages/ThemePage";
 export default function Page() {
-  return <ThemeSettingsPage />;
+  return <ThemePage />;
 }

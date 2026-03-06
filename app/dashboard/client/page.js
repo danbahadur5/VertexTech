@@ -1,5 +1,5 @@
 'use client'
-import ClientDashboard from "../../../src/app/pages/ClientDashboard";
+import ClientDashboardPage from "../_components/pages/ClientDashboardPage";
 export default function Page() {
-  return <ClientDashboard />;
+  return <ClientDashboardPage />;
 }

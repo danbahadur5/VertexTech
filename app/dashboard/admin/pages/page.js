@@ -1,5 +1,5 @@
 'use client'
-import PagesPage from "../../_components/pages/PagesPage";
+import PagesPages from "../../_components/pages/PagesPages";
 export default function Page() {
-  return <PagesPage />;
+  return <PagesPages />;
 }

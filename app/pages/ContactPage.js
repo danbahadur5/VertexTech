@@ -145,16 +145,6 @@ export default function ContactPage() {
                   );
                 })}
               </div>
-              <div className="rounded-2xl p-6 text-white theme-gradient">
-                <div className="flex items-center gap-3 mb-3">
-                  <Shield className="h-6 w-6 text-white/80" />
-                  <h3 className="text-lg font-bold">24/7 Security Incident Hotline</h3>
-                </div>
-                <p className="text-white/75 text-sm mb-4 leading-relaxed">
-                  Experiencing an active breach or security emergency? Our SOC team is standing by.
-                </p>
-                <a href="tel:+15551234567" className="text-2xl font-extrabold text-white block hover:text-white/90 transition-colors">+1 (555) 123-4567</a>
-              </div>
               <div className="bg-green-50 border border-green-200 rounded-2xl p-5">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 shrink-0" />
@@ -176,43 +166,9 @@ export default function ContactPage() {
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Global Offices</Badge>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Visit Us</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              With offices in San Francisco, New York, and London, we're always close by.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {offices.map((office, idx) => (
-              <Card key={office.city} className="reveal hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-0 shadow-md" style={{ transitionDelay: `${idx * 0.15}s` }}>
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <MapPin className="h-6 w-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">{office.city}</CardTitle>
-                  <CardDescription className="font-semibold" style={{ color: 'var(--theme-primary)' }}>
-                    {office.country}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="h-4 w-4 text-gray-400 mt-0.5 shrink-0" />
-                    <p className="text-sm text-gray-600">{office.address}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-gray-400 shrink-0" />
-                    <a href={`tel:${office.phone}`} className="text-sm theme-text hover:underline">
-                      {office.phone}
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section className="pb-24 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden h-72 flex items-center justify-center shadow-inner reveal">
+      <div className="bg-gray-50">
+        <div className="mx-auto">
             <div className="text-center">
               <div className="w-16 h-16 rounded-2xl theme-gradient flex items-center justify-center mx-auto mb-4">
                 <MapPin className="h-8 w-8 text-white" />
@@ -220,9 +176,14 @@ export default function ContactPage() {
               <p className="font-semibold text-gray-700">Interactive Map</p>
               <p className="text-sm text-gray-400 mt-1">Google Maps integration</p>
             </div>
+          
+        </div>
+      </div>
+
           </div>
         </div>
       </section>
+
 
       <PublicFooter />
     </div>

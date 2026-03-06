@@ -1,5 +1,5 @@
 'use client'
-import EditorBlogManager from "../../../../src/app/pages/editor/EditorBlogManager";
+import BlogPage from "../../_components/pages/BlogPage";
 export default function Page() {
-  return <EditorBlogManager />;
+  return <BlogPage />;
 }

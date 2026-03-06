@@ -1,5 +1,5 @@
 'use client'
-import EditorDashboard from "../../../src/app/pages/EditorDashboard";
+import EditorDashboardPage from "../_components/pages/EditorDashboardPage";
 export default function Page() {
-  return <EditorDashboard />;
+  return <EditorDashboardPage />;
 }

@@ -1,5 +1,5 @@
 'use client'
-import DashboardPage from "../../_components/pages/DashboardPage";
+import AdminDashboardPage from "../_components/pages/AdminDashboarPage";
 export default function Page() {
-  return <DashboardPage />;
+  return <AdminDashboardPage />;
 }

@@ -1,5 +1,5 @@
 'use client'
-import ClientProfile from "../../../../src/app/pages/client/ClientProfile";
+import ClientBillingPage from "../../_components/pages/ClientBillingPage";
 export default function Page() {
-  return <ClientProfile />;
+  return <ClientBillingPage />;
 }

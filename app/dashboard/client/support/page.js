@@ -1,5 +1,5 @@
 'use client'
-import ClientSupport from "../../../../src/app/pages/client/ClientSupport";
+import ClientSupportPage from "../../_components/pages/ClientSupportPage";
 export default function Page() {
-  return <ClientSupport />;
+  return <ClientSupportPage />;
 }
