@@ -7,13 +7,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Plus, Edit, Trash2, UserCog } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { toast } from 'sonner';
+import { useAuth } from '../../../lib/auth-context';
 
 export default function UserPage() {
+  const { user: me } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roleOpen, setRoleOpen] = useState(false);
   const [current, setCurrent] = useState(null);
   const [newRole, setNewRole] = useState('client');
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -48,6 +53,33 @@ export default function UserPage() {
       setUsers((prev) => prev.map((u) => (u._id === user._id ? user : u)));
       setRoleOpen(false);
       setCurrent(null);
+    }
+  };
+
+  const startDelete = (u) => {
+    setCurrent(u);
+    setDeleteOpen(true);
+  };
+  const confirmDelete = async () => {
+    if (!current) return;
+    if (me && (current._id === me.id || current.authUserId === me.id)) {
+      toast.error('You cannot delete your own account');
+      setDeleteOpen(false);
+      return;
+    }
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/users/${current._id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete user');
+      const { user } = await res.json();
+      setUsers((prev) => prev.map((u) => (u._id === user._id ? user : u)));
+      toast.success('User deactivated');
+      setDeleteOpen(false);
+      setCurrent(null);
+    } catch (err) {
+      toast.error(err.message || 'Failed to delete user');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -139,9 +171,11 @@ export default function UserPage() {
                         <Button variant="ghost" size="sm">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
+                        {(me ? (user._id !== me.id && user.authUserId !== me.id) : true) && (
+                          <Button variant="ghost" size="sm" onClick={() => startDelete(user)}>
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -174,6 +208,24 @@ export default function UserPage() {
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setRoleOpen(false)}>Cancel</Button>
             <Button type="button" onClick={saveRole} className="bg-blue-600 hover:bg-blue-700 text-white">Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent className="sm:max-w-md bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+          <DialogHeader>
+            <DialogTitle>Deactivate User</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Are you sure you want to deactivate <span className="font-semibold">{current?.name}</span>? They will no longer have access.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setDeleteOpen(false)}>Cancel</Button>
+            <Button type="button" onClick={confirmDelete} disabled={deleting} className="bg-red-600 hover:bg-red-700 text-white">
+              {deleting ? 'Deactivating…' : 'Yes, Deactivate'}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

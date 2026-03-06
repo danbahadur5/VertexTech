@@ -31,7 +31,7 @@ export default function AdminDashboard() {
   const stats = [
     {
       name: 'Total Users',
-      value: statsData.users.toLocaleString(),
+      value: (statsData.users || 0).toLocaleString(),
       change: '+12%',
       trend: 'up',
       icon: Users,
@@ -39,7 +39,7 @@ export default function AdminDashboard() {
     },
     {
       name: 'Published Pages',
-      value: statsData.pages.toString(),
+      value: String(statsData.pages || 0),
       change: '+5',
       trend: 'up',
       icon: FileText,
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
     },
     {
       name: 'Blog Posts',
-      value: statsData.posts.toString(),
+      value: String(statsData.posts || 0),
       change: '+18',
       trend: 'up',
       icon: FileText,
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
     },
     {
       name: 'Active Projects',
-      value: statsData.projects.toString(),
+      value: String(statsData.projects || 0),
       change: '+8',
       trend: 'up',
       icon: Briefcase,
@@ -186,15 +186,15 @@ export default function AdminDashboard() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Published Pages</span>
-                <Badge variant="secondary">{statsData.pages}</Badge>
+                <Badge variant="secondary">{statsData?.pagesByStatus?.published ?? statsData.pages ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Draft Posts</span>
-                <Badge>12</Badge>
+                <Badge>{statsData?.postsByStatus?.draft ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Case Study Projects</span>
-                <Badge variant="secondary">{statsData.projects}</Badge>
+                <Badge variant="secondary">{statsData?.projects ?? 0}</Badge>
               </div>
             </CardContent>
           </Card>
@@ -206,15 +206,15 @@ export default function AdminDashboard() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Open</span>
-                <Badge variant="destructive">5</Badge>
+                <Badge variant="destructive">{statsData?.ticketsByStatus?.open ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">In Progress</span>
-                <Badge className="bg-yellow-100 text-yellow-800">8</Badge>
+                <Badge className="bg-yellow-100 text-yellow-800">{statsData?.ticketsByStatus?.inProgress ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Resolved</span>
-                <Badge className="bg-green-100 text-green-800">142</Badge>
+                <Badge className="bg-green-100 text-green-800">{statsData?.ticketsByStatus?.resolved ?? 0}</Badge>
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4" asChild>
                 <Link to="/dashboard/admin/support">View All Tickets</Link>
@@ -229,15 +229,15 @@ export default function AdminDashboard() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Admin Users</span>
-                <Badge>5</Badge>
+                <Badge>{statsData?.usersByRole?.admin ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Editors</span>
-                <Badge>12</Badge>
+                <Badge>{statsData?.usersByRole?.editor ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Clients</span>
-                <Badge variant="secondary">1,217</Badge>
+                <Badge variant="secondary">{statsData?.usersByRole?.client ?? 0}</Badge>
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4" asChild>
                 <Link to="/dashboard/admin/users">Manage Users</Link>

@@ -31,7 +31,7 @@ export default function EditorDashboardPage() {
   const stats = [
     {
       name: 'Published Pages',
-      value: statsData.pages.toString(),
+      value: String(statsData?.pages ?? 0),
       change: '+5',
       trend: 'up',
       icon: FileText,
@@ -39,7 +39,7 @@ export default function EditorDashboardPage() {
     },
     {
       name: 'Blog Posts',
-      value: statsData.posts.toString(),
+      value: String(statsData?.posts ?? 0),
       change: '+18',
       trend: 'up',
       icon: FileText,
@@ -47,7 +47,7 @@ export default function EditorDashboardPage() {
     },
     {
       name: 'Case Study Projects',
-      value: statsData.projects.toString(),
+      value: String(statsData?.projects ?? 0),
       change: '+3',
       trend: 'up',
       icon: Briefcase,
@@ -149,15 +149,15 @@ export default function EditorDashboardPage() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Published Pages</span>
-                <Badge variant="secondary">{statsData.pages}</Badge>
+                <Badge variant="secondary">{statsData?.pagesByStatus?.published ?? statsData?.pages ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Published Posts</span>
-                <Badge>128</Badge>
+                <Badge>{statsData?.postsByStatus?.published ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Case Studies</span>
-                <Badge variant="secondary">{statsData.projects}</Badge>
+                <Badge variant="secondary">{statsData?.projects ?? 0}</Badge>
               </div>
             </CardContent>
           </Card>
