@@ -16,8 +16,17 @@ const createSchema = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   description: z.string().min(1),
+  tagline: z.string().optional(),
   icon: z.string().optional(),
   features: z.array(z.string()).default([]),
+  capabilities: z
+    .array(
+      z.object({
+        label: z.string(),
+        value: z.number().min(0).max(100),
+      })
+    )
+    .optional(),
   pricing: z
     .object({
       basic: z.number().optional(),

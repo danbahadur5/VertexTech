@@ -1,38 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Shield } from 'lucide-react';
 export function PublicFooter() {
-  const footerLinks = {
-    solutions: [
-      { name: 'Endpoint Detection', href: '/services/endpoint-detection' },
-      { name: 'Cloud Security',     href: '/services/cloud-security' },
-      { name: 'Identity Protection',href: '/services/identity-protection' },
-      { name: 'Threat Intelligence',href: '/services/threat-intelligence' },
-    ],
-    resources: [
-      { name: 'Pricing',       href: '/pricing' },
-      { name: 'Case Study',     href: '/case-study' },
-      { name: 'Blog',          href: '/blog' },
-      { name: 'Documentation', href: '#' },
-    ],
-    company: [
-      { name: 'About Us',  href: '/about' },
-      { name: 'Careers',   href: '/careers' },
-      { name: 'Contact',   href: '/contact' },
-      { name: 'Support',   href: '/contact' },
-    ],
-    legal: [
-      { name: 'Privacy Policy',    href: '#' },
-      { name: 'Terms of Service',  href: '#' },
-      { name: 'Cookie Policy',     href: '#' },
-      { name: 'GDPR Compliance',   href: '#' },
-    ],
-  };
-  const socials = [
-    { Icon: Facebook,  href: '#', label: 'Facebook' },
-    { Icon: Twitter,   href: '#', label: 'Twitter' },
-    { Icon: Linkedin,  href: '#', label: 'LinkedIn' },
-    { Icon: Instagram, href: '#', label: 'Instagram' },
+  const [blurb, setBlurb] = useState('AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
+  const [contact, setContact] = useState({ email: 'contact@vertextech.com', phone: '+1 (555) 123-4567', address: '123 Tech Street, San Francisco, CA 94105' });
+  const [columns, setColumns] = useState([
+    { title: 'Solutions', links: [{ name: 'Endpoint Detection', href: '/services/endpoint-detection' }, { name: 'Cloud Security', href: '/services/cloud-security' }, { name: 'Identity Protection', href: '/services/identity-protection' }, { name: 'Threat Intelligence', href: '/services/threat-intelligence' }] },
+    { title: 'Resources', links: [{ name: 'Pricing', href: '/pricing' }, { name: 'Case Study', href: '/case-study' }, { name: 'Blog', href: '/blog' }, { name: 'Documentation', href: '#' }] },
+    { title: 'Company', links: [{ name: 'About Us', href: '/about' }, { name: 'Careers', href: '/careers' }, { name: 'Contact', href: '/contact' }, { name: 'Support', href: '/contact' }] },
+    { title: 'Legal', links: [{ name: 'Privacy Policy', href: '#' }, { name: 'Terms of Service', href: '#' }, { name: 'Cookie Policy', href: '#' }, { name: 'GDPR Compliance', href: '#' }] },
+  ]);
+  const [socials, setSocials] = useState({ facebook: '#', twitter: '#', linkedin: '#', instagram: '#' });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/settings/footer', { cache: 'no-store' });
+        if (!res.ok) return;
+        const json = await res.json();
+        const d = json?.item?.data || {};
+        if (d.blurb) setBlurb(d.blurb);
+        if (d.contact) setContact({ email: d.contact.email || '', phone: d.contact.phone || '', address: d.contact.address || '' });
+        if (Array.isArray(d.columns) && d.columns.length) setColumns(d.columns);
+        if (d.socials) setSocials({ facebook: d.socials.facebook || '#', twitter: d.socials.twitter || '#', linkedin: d.socials.linkedin || '#', instagram: d.socials.instagram || '#' });
+      } catch {}
+    })();
+  }, []);
+
+  const socialList = [
+    { Icon: Facebook, href: socials.facebook || '#', label: 'Facebook' },
+    { Icon: Twitter, href: socials.twitter || '#', label: 'Twitter' },
+    { Icon: Linkedin, href: socials.linkedin || '#', label: 'LinkedIn' },
+    { Icon: Instagram, href: socials.instagram || '#', label: 'Instagram' },
   ];
   return (
     <footer className="bg-gray-950 text-white">
@@ -47,44 +46,36 @@ export function PublicFooter() {
                 Vertex<span className="theme-gradient-text">Tech</span>
               </span>
             </Link>
-            <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">
-              AI-powered cybersecurity platform protecting 10M+ endpoints worldwide.
-              Your trusted partner for complete digital defense.
-            </p>
+            <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">{blurb}</p>
             <div className="space-y-3 mb-6">
               <div className="flex items-center gap-3 text-gray-400 text-sm">
                 <Mail className="h-4 w-4 shrink-0" style={{ color: 'var(--theme-primary)' }} />
-                <span>contact@vertextech.com</span>
+                <span>{contact.email}</span>
               </div>
               <div className="flex items-center gap-3 text-gray-400 text-sm">
                 <Phone className="h-4 w-4 shrink-0" style={{ color: 'var(--theme-primary)' }} />
-                <span>+1 (555) 123-4567</span>
+                <span>{contact.phone}</span>
               </div>
               <div className="flex items-center gap-3 text-gray-400 text-sm">
                 <MapPin className="h-4 w-4 shrink-0" style={{ color: 'var(--theme-primary)' }} />
-                <span>123 Tech Street, San Francisco, CA 94105</span>
+                <span>{contact.address}</span>
               </div>
             </div>
             <div className="flex gap-3">
-              {socials.map(({ Icon, href, label }) => (
-                <a key={label} href={href} aria-label={label} className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-gray-700 hover:text-white transition-all duration-200">
+              {socialList.map(({ Icon, href, label }) => (
+                <a key={label} href={href} aria-label={label} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-gray-700 hover:text-white transition-all duration-200">
                   <Icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
           </div>
-          {[
-            { title: 'Solutions',  links: footerLinks.solutions },
-            { title: 'Resources',  links: footerLinks.resources },
-            { title: 'Company',    links: footerLinks.company },
-            { title: 'Legal',      links: footerLinks.legal },
-          ].map(({ title, links }) => (
-            <div key={title}>
-              <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">{title}</h3>
+          {columns.map((col, idx) => (
+            <div key={`${col.title}-${idx}`}>
+              <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">{col.title}</h3>
               <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.name}>
-                    <Link to={link.href} className="text-gray-400 hover:text-white transition-colors text-sm">{link.name}</Link>
+                {(col.links || []).map((link, i) => (
+                  <li key={`${link.name}-${i}`}>
+                    <Link to={link.href || '#'} className="text-gray-400 hover:text-white transition-colors text-sm">{link.name}</Link>
                   </li>
                 ))}
               </ul>

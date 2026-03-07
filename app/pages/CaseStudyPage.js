@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -6,9 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowRight } from 'lucide-react';
-import { mockCaseStudy } from '../lib/mock-data';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function CaseStudyPage() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/case-studies', { cache: 'no-store' });
+        if (!res.ok) return;
+        const js = await res.json();
+        setItems(Array.isArray(js.items) ? js.items : []);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -20,10 +34,10 @@ export default function CaseStudyPage() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">Explore our Case Study of successful projects.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockCaseStudy.map((project) => (
-              <Card key={project.id} className="overflow-hidden hover:shadow-2xl transition-shadow">
+            {(loading ? [] : items).map((project) => (
+              <Card key={project.slug} className="overflow-hidden hover:shadow-2xl transition-shadow">
                 <div className="aspect-video overflow-hidden">
-                  <img src={project.gallery[0]} alt={project.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
+                  <ImageWithFallback src={project.gallery?.[0]} alt={project.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
@@ -35,7 +49,7 @@ export default function CaseStudyPage() {
                 <CardContent>
                   <p className="text-sm text-gray-600 mb-4">{project.description}</p>
                   <div className="flex flex-wrap  gap-2 mb-4">
-                    {project.technologies.slice(0, 4).map((tech) => (<Badge key={tech} variant="outline" className="text-xs text-gray-500 text-bold">{tech}</Badge>))}
+                    {(project.technologies || []).slice(0, 4).map((tech) => (<Badge key={tech} variant="outline" className="text-xs text-gray-500 text-bold">{tech}</Badge>))}
                   </div>
                   <Link to={`/caseStudy/${project.slug}`}>      
                     <Button variant="ghost" className="w-full cursor-pointer">

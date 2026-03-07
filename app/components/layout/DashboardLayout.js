@@ -9,6 +9,9 @@ import {
   MessageSquare, 
   Image as ImageIcon,
   Palette,
+  Layers,
+  ChevronDown,
+  ChevronUp,
   LogOut,
   Menu,
   X,
@@ -33,6 +36,8 @@ export function DashboardLayout({ children }) {
   const { user, logout, hasRole } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [appearanceOpen, setAppearanceOpen] = useState(true);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -58,6 +63,38 @@ export function DashboardLayout({ children }) {
         { name: 'Services', href: '/dashboard/admin/services', icon: Briefcase },
         { name: 'Blog', href: '/dashboard/admin/blog', icon: Newspaper },
         { name: 'Case Study', href: '/dashboard/admin/caseStudy', icon: FolderOpen },
+        {
+          name: 'Appearance',
+          icon: Palette,
+          children: [
+            { name: 'Hero Section', href: '/dashboard/admin/appearance/hero' },
+            { name: 'Hero Trusted Count', href: '/dashboard/admin/appearance/hero-trusted-count' },
+            { name: 'Trusted Company', href: '/dashboard/admin/appearance/trusted-company' },
+            { name: 'Trusted Security Leader', href: '/dashboard/admin/appearance/trusted-security-leader' },
+            { name: 'FAQ', href: '/dashboard/admin/appearance/faq' },
+            { name: 'Security Exports', href: '/dashboard/admin/appearance/security-exports' },
+            { name: 'Footer', href: '/dashboard/admin/appearance/footer' },
+            { name: 'Pricing', href: '/dashboard/admin/appearance/pricing' },
+          ],
+        },
+        {
+          name: 'About',
+          icon: Layers,
+          children: [
+            { name: 'How We Think', href: '/dashboard/admin/about/how-we-think' },
+            { name: 'Milestones That Matter', href: '/dashboard/admin/about/milestones' },
+            { name: 'Defending the Digital Frontier', href: '/dashboard/admin/about/hero' },
+            { name: 'Meet Our Team', href: '/dashboard/admin/about/team' },
+          ],
+        },
+        {
+          name: 'Contact',
+          icon: HelpCircle,
+          children: [
+            { name: 'Contact Content', href: '/dashboard/admin/contact' },
+            { name: 'Enquiries', href: '/dashboard/admin/contact/enquiries' },
+          ],
+        },
         { name: 'Media Library', href: '/dashboard/admin/media', icon: ImageIcon },
         { name: 'Users', href: '/dashboard/admin/users', icon: Users },
         { name: 'Support', href: '/dashboard/admin/support', icon: MessageSquare },
@@ -134,23 +171,65 @@ export function DashboardLayout({ children }) {
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-2">
               {navigationItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href);
-                return (
-                  <li key={item.name}>
-                    <Link
-                      to={item.href}
-                      title={item.name}
-                      className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
-                    >
-                      {active && (
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-white/90" />
+                if (item.children && item.children.length) {
+                  const open = item.name === 'Appearance' ? appearanceOpen : item.name === 'About' ? aboutOpen : false;
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.name} className="space-y-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
+                          if (item.name === 'About') setAboutOpen(!aboutOpen);
+                        }}
+                        className={`w-full flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 hover:text-blue-600'}`}
+                        title={item.name}
+                      >
+                        <div className="flex items-center gap-x-3">
+                          <Icon className="h-5 w-5 shrink-0 text-gray-400" />
+                          {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
+                        </div>
+                        {!sidebarCollapsed && (open ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />)}
+                      </button>
+                      {open && !sidebarCollapsed && (
+                        <ul className="ml-8 space-y-1">
+                          {item.children.map((child) => {
+                            const active = isActive(child.href);
+                            return (
+                              <li key={child.name}>
+                                <Link
+                                  to={child.href}
+                                  className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                                  title={child.name}
+                                >
+                                  <span className="truncate">{child.name}</span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
                       )}
-                      <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
-                      {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
-                    </Link>
-                  </li>
-                );
+                    </li>
+                  );
+                } else {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        to={item.href}
+                        title={item.name}
+                        className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                      >
+                        {active && (
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-white/90" />
+                        )}
+                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
+                        {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
+                      </Link>
+                    </li>
+                  );
+                }
               })}
             </ul>
             <div className="mt-auto pt-4 border-t border-gray-200">

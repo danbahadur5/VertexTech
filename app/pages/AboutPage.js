@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -11,30 +11,76 @@ import { useScrollReveal } from '../lib/use-scroll-reveal';
 
 export default function AboutPage() {
   useScrollReveal();
-  const team = [
-    { name: 'Sarah Johnson',  position: 'CEO & Founder',    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop', bio: '15+ years in enterprise technology' },
-    { name: 'Michael Chen',   position: 'CTO',              avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop', bio: 'Expert in cloud architecture & AI' },
-    { name: 'Emily Roberts',  position: 'Head of Design',   avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop', bio: 'Award-winning UX designer' },
-    { name: 'David Kim',      position: 'Lead Developer',   avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop', bio: 'Full-stack engineering specialist' },
-  ];
-  const values = [
-    { icon: Target,       title: 'Innovation First',  description: 'We stay ahead of the curve with cutting-edge technology solutions.' },
-    { icon: Users,        title: 'Client-Centric',    description: 'Your success is our priority. We build lasting partnerships.' },
-    { icon: CheckCircle2, title: 'Quality Assured',   description: 'Enterprise-grade solutions with rigorous testing and support.' },
-    { icon: Award,        title: 'Excellence',        description: 'Award-winning team delivering exceptional results consistently.' },
-  ];
-  const milestones = [
-    { year: '2010', event: 'VertexTech Founded', desc: 'Started with a small team of passionate developers in San Francisco.' },
-    { year: '2014', event: 'First Enterprise Client', desc: 'Landed our first Fortune 500 client — Global Financial Corp.' },
-    { year: '2018', event: 'Global Expansion', desc: 'Opened offices in New York and London, serving clients worldwide.' },
-    { year: '2022', event: 'AI Security Launch', desc: 'Launched our AI-powered cybersecurity platform, protecting 10M+ endpoints.' },
-    { year: '2026', event: 'Now', desc: '2,000+ security teams trust us to protect their critical infrastructure every day.' },
-  ];
-  const principles = [
-    { icon: Shield, title: 'Zero Trust Mindset',       desc: 'We assume breach by default, building systems that verify every access request.' },
-    { icon: Zap,    title: 'Radical Transparency',     desc: 'No black boxes. We explain every decision, every alert, every action taken.' },
-    { icon: Globe,  title: 'Relentless Innovation',    desc: 'The threat landscape never stops evolving — neither do we.' },
-  ];
+  const [team, setTeam] = useState([]);
+  const [hero, setHero] = useState({
+    badge: 'About VertexTech',
+    titleLeading: 'Defending the',
+    titleGradient: 'Digital Frontier',
+    subtitle1:
+      "Founded by ex-NSA and military cyber operators, VertexTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
+    subtitle2:
+      "Today, we're proud to have delivered over 500 successful projects, helping businesses across industries leverage cloud computing, cybersecurity, custom software, and data analytics to achieve their goals.",
+    heroImage:
+      'https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
+    stats: [
+      { num: '500+', label: 'Projects Completed' },
+      { num: '300+', label: 'Happy Clients' },
+      { num: '50+', label: 'Team Members' },
+      { num: '15+', label: 'Years Experience' },
+    ],
+  });
+  const [values, setValues] = useState([
+    { icon: Target, title: 'Innovation First', description: 'We stay ahead with cutting-edge technology solutions.' },
+    { icon: Users, title: 'Client-Centric', description: 'Your success is our priority.' },
+    { icon: CheckCircle2, title: 'Quality Assured', description: 'Enterprise-grade solutions and support.' },
+    { icon: Award, title: 'Excellence', description: 'Award-winning team delivering results.' },
+  ]);
+  const [milestones, setMilestones] = useState([]);
+  const [principles, setPrinciples] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [hRes, pRes, mRes, tRes] = await Promise.all([
+          fetch('/api/settings/about-hero', { cache: 'no-store' }),
+          fetch('/api/settings/about-principles', { cache: 'no-store' }),
+          fetch('/api/settings/about-milestones', { cache: 'no-store' }),
+          fetch('/api/settings/about-team', { cache: 'no-store' }),
+        ]);
+        if (hRes.ok) {
+          const hj = await hRes.json();
+          const d = hj?.item?.data || {};
+          setHero((prev) => ({
+            badge: d.badge || prev.badge,
+            titleLeading: d.titleLeading || prev.titleLeading,
+            titleGradient: d.titleGradient || prev.titleGradient,
+            subtitle1: d.subtitle1 || prev.subtitle1,
+            subtitle2: d.subtitle2 || prev.subtitle2,
+            heroImage: d.heroImage || prev.heroImage,
+            stats: Array.isArray(d.stats) && d.stats.length ? d.stats : prev.stats,
+          }));
+        }
+        if (pRes.ok) {
+          const pj = await pRes.json();
+          const items = Array.isArray(pj?.item?.data?.items) ? pj.item.data.items : [];
+          setPrinciples(items.map((i) => {
+            const icons = { Shield, Zap, Globe };
+            return { icon: icons[i.icon] || Shield, title: i.title, desc: i.desc };
+          }));
+        }
+        if (mRes.ok) {
+          const mj = await mRes.json();
+          const items = Array.isArray(mj?.item?.data?.items) ? mj.item.data.items : [];
+          setMilestones(items);
+        }
+        if (tRes.ok) {
+          const tj = await tRes.json();
+          const items = Array.isArray(tj?.item?.data?.items) ? tj.item.data.items : [];
+          setTeam(items.map((m) => ({ name: m.name, position: m.position, avatar: m.avatarUrl, bio: m.bio })));
+        }
+      } catch {}
+    })();
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -43,41 +89,30 @@ export default function AboutPage() {
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] left-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">About VertexTech</Badge>
+            <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
             <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">
-              Defending the <span className="theme-gradient-text">Digital Frontier</span>
+              {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-              Founded by ex-NSA and military cyber operators, VertexTech builds the next
-              generation of threat protection for modern enterprises. For over 15 years,
-              we've helped organizations transform through innovative technology solutions.
+              {hero.subtitle1}
             </p>
           </div>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-left delay-300">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl theme-glow-effect">
-                <ImageWithFallback src="https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080" alt="Our team working together" className="w-full h-auto" />
+                <ImageWithFallback src={hero.heroImage} alt="Our team working together" className="w-full h-auto" />
               </div>
             </div>
             <div className="animate-fade-in-right delay-300">
               <h2 className="text-3xl font-bold text-gray-900 mb-5">Our Story</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                Founded in 2010, VertexTech started with a simple vision: to make enterprise
-                technology accessible, reliable, and transformative. What began as a small team
-                of passionate developers has grown into a global leader serving Fortune 500 companies.
+                {hero.subtitle1}
               </p>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Today, we're proud to have delivered over 500 successful projects, helping businesses
-                across industries leverage cloud computing, cybersecurity, custom software, and data
-                analytics to achieve their goals.
+                {hero.subtitle2}
               </p>
               <div className="grid grid-cols-2 gap-6">
-                {[
-                  { num: '500+', label: 'Projects Completed' },
-                  { num: '300+', label: 'Happy Clients' },
-                  { num: '50+',  label: 'Team Members' },
-                  { num: '15+',  label: 'Years Experience' },
-                ].map(({ num, label }) => (
+                {hero.stats.map(({ num, label }) => (
                   <div key={label} className="text-center bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
                     <div className="text-3xl font-extrabold theme-gradient-text mb-1">{num}</div>
                     <div className="text-sm text-gray-500">{label}</div>

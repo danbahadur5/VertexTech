@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -6,11 +6,38 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, Quote } from 'lucide-react';
-import { mockCaseStudy } from '../lib/mock-data';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function CaseStudyDetailPage() {
   const { slug } = useParams();
-  const project = mockCaseStudy.find((p) => p.slug === slug);
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/case-studies/${slug}`, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setProject(data.item);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (slug) load();
+  }, [slug]);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <PublicHeader />
+        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
+          <h1 className="text-2xl font-semibold">Loading…</h1>
+        </div>
+        <PublicFooter />
+      </div>
+    );
+  }
   if (!project) {
     return (      
       <div className="min-h-screen bg-white">
@@ -39,9 +66,9 @@ export default function CaseStudyDetailPage() {
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              {project.gallery.map((image, index) => (
+              {(project.gallery || []).map((image, index) => (
                 <div key={index} className="aspect-video overflow-hidden rounded-2xl">
-                  <img src={image} alt={`${project.title} - ${index + 1}`} className="w-full h-full object-cover" />
+                  <ImageWithFallback src={image} alt={`${project.title} - ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               ))}
               {project.testimonial && (
@@ -61,7 +88,7 @@ export default function CaseStudyDetailPage() {
               <Card>
                 <CardContent className="pt-6">
                   <h3 className="font-bold text-gray-900 mb-4">Technologies Used</h3>
-                  <div className="flex flex-wrap gap-2">{project.technologies.map((tech) => (<Badge key={tech} variant="secondary">{tech}</Badge>))}</div>
+                  <div className="flex flex-wrap gap-2">{(project.technologies || []).map((tech) => (<Badge key={tech} variant="secondary">{tech}</Badge>))}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -73,7 +100,7 @@ export default function CaseStudyDetailPage() {
               <Card>
                 <CardContent className="pt-6">
                   <h3 className="font-bold text-gray-900 mb-2">Completed</h3>
-                  <p className="text-gray-600">{new Date(project.completedAt).toLocaleDateString()}</p>
+                  <p className="text-gray-600">{project.completedAt ? new Date(project.completedAt).toLocaleDateString() : ''}</p>
                 </CardContent>
               </Card>
               <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">

@@ -39,9 +39,22 @@ const ServiceSchema = new Schema(
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true, index: true },
     description: { type: String, required: true },
+    tagline: { type: String },
     icon: { type: String, default: "Code" },
     illustration: { type: String },
     features: { type: [String], default: [] },
+    capabilities: {
+      type: [
+        new Schema(
+          {
+            label: { type: String },
+            value: { type: Number },
+          },
+          { _id: false }
+        ),
+      ],
+      default: [],
+    },
     pricing: { type: PricingSchema, default: {} },
     seo: { type: SEOSchema, default: {} },
   },
@@ -154,6 +167,27 @@ const VerificationTokenSchema = new Schema(
   { timestamps: true }
 );
 
+const SiteSettingSchema = new Schema(
+  {
+    key: { type: String, required: true, unique: true, index: true },
+    data: { type: Schema.Types.Mixed, default: {} },
+    updatedAtISO: { type: String },
+  },
+  { timestamps: true }
+);
+
+const EnquirySchema = new Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, index: true },
+    company: { type: String },
+    subject: { type: String, required: true },
+    message: { type: String, required: true },
+    status: { type: String, enum: ["new", "read"], default: "new", index: true },
+  },
+  { timestamps: true }
+);
+
 export const AppUser = models.AppUser || model("AppUser", AppUserSchema);
 export const Service = models.Service || model("Service", ServiceSchema);
 export const BlogPost = models.BlogPost || model("BlogPost", BlogPostSchema);
@@ -162,3 +196,5 @@ export const Page = models.Page || model("Page", PageSchema);
 export const MediaFile = models.MediaFile || model("MediaFile", MediaFileSchema);
 export const SupportTicket = models.SupportTicket || model("SupportTicket", SupportTicketSchema);
 export const VerificationToken = models.VerificationToken || model("VerificationToken", VerificationTokenSchema);
+export const SiteSetting = models.SiteSetting || model("SiteSetting", SiteSettingSchema);
+export const Enquiry = models.Enquiry || model("Enquiry", EnquirySchema);

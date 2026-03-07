@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -8,14 +8,26 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../co
 import { CheckCircle2, ArrowRight, Shield, Zap, Crown } from 'lucide-react';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
-const plans = [
-  { id: 'essentials', name: 'Essentials', icon: Shield, tagline: 'Core endpoint protection', price: '$8', period: 'per endpoint/mo', features: ['NGAV', 'EDR', 'USB control', 'Threat intel'] },
-  { id: 'advanced', name: 'Advanced', icon: Zap, tagline: 'Full platform protection', price: '$18', period: 'per endpoint/mo', features: ['Everything in Essentials', 'Cloud posture', 'Identity protection', 'Vuln mgmt'] },
-  { id: 'enterprise', name: 'Enterprise', icon: Crown, tagline: 'Complete cyber defense', price: 'Custom', period: '', features: ['Everything in Advanced', 'Threat hunting', 'Custom detections', 'Unlimited retention'] },
-];
+const ICONS = { Shield, Zap, Crown };
 
 export default function PricingPage() {
   useScrollReveal();
+  const [heroTitle, setHeroTitle] = useState('Protection That Scales');
+  const [heroSubtitle, setHeroSubtitle] = useState('Per-endpoint pricing that grows with your organization.');
+  const [plans, setPlans] = useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/settings/pricing', { cache: 'no-store' });
+        if (!res.ok) return;
+        const js = await res.json();
+        const d = js?.item?.data || {};
+        setHeroTitle(d.heroTitle || heroTitle);
+        setHeroSubtitle(d.heroSubtitle || heroSubtitle);
+        setPlans(Array.isArray(d.plans) ? d.plans : []);
+      } catch {}
+    })();
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -25,10 +37,10 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold">Transparent Pricing</Badge>
           <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 mb-6 animate-fade-in-up delay-100">
-            Protection That <span className="theme-gradient-text">Scales</span>
+            {heroTitle.split(' ').slice(0, -1).join(' ')} <span className="theme-gradient-text">{heroTitle.split(' ').slice(-1)}</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-up delay-200">
-            Per-endpoint pricing that grows with your organization.
+            {heroSubtitle}
           </p>
         </div>
       </section>
@@ -36,7 +48,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             {plans.map((plan, idx) => {
-              const Icon = plan.icon;
+              const Icon = ICONS[plan.icon] || Shield;
               return (
                 <Card key={plan.id} className="reveal reveal-scale rounded-2xl border border-gray-200 p-2 hover:shadow-2xl transition-all duration-300" style={{ animationDelay: `${idx * 0.12}s` }}>
                   <CardHeader>

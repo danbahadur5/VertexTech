@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowRight, Star, Search } from 'lucide-react';
-import { mockBlogPosts } from '../lib/mock-data';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
@@ -14,7 +13,21 @@ const categories = ['All', 'Cloud Technology', 'Security', 'Development', 'AI & 
 
 export default function BlogPage() {
   useScrollReveal();
-  const featuredPost = mockBlogPosts[0];
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/blog', { cache: 'no-store' });
+        if (!res.ok) return;
+        const js = await res.json();
+        setPosts(Array.isArray(js.items) ? js.items : []);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+  const featuredPost = posts.find((p) => p.status === 'published') || posts[0];
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -35,6 +48,7 @@ export default function BlogPage() {
       </section>
       <section className="py-16 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          {!loading && featuredPost && (
           <Card className="overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 group">
             <div className="grid lg:grid-cols-2">
               <div className="aspect-video lg:aspect-auto overflow-hidden">
@@ -43,15 +57,15 @@ export default function BlogPage() {
               <div className="flex flex-col justify-center p-10">
                 <div className="flex items-center gap-3 mb-4">
                   <Badge className="theme-badge">{featuredPost.category}</Badge>
-                  <span className="text-sm text-gray-400">{new Date(featuredPost.publishedAt).toLocaleDateString()}</span>
+                  <span className="text-sm text-gray-400">{featuredPost.publishedAt ? new Date(featuredPost.publishedAt).toLocaleDateString() : ''}</span>
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">{featuredPost.title}</h2>
                 <p className="text-gray-600 mb-6 leading-relaxed">{featuredPost.excerpt}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <img src={featuredPost.author.avatar} alt={featuredPost.author.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100" />
+                    <img src={featuredPost?.author?.avatar} alt={featuredPost?.author?.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100" />
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">{featuredPost.author.name}</div>
+                      <div className="text-sm font-semibold text-gray-900">{featuredPost?.author?.name}</div>
                       <div className="text-xs text-gray-400">Author</div>
                     </div>
                   </div>
@@ -62,12 +76,13 @@ export default function BlogPage() {
               </div>
             </div>
           </Card>
+          )}
         </div>
       </section>
       <section className="py-16 bg-gray-50">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockBlogPosts.map((post, idx) => (
+            {(loading ? [] : posts).map((post, idx) => (
               <Card key={post.id} className="reveal overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-0 shadow-md bg-white" style={{ transitionDelay: `${idx * 0.12}s` }}>
                 <div className="aspect-video overflow-hidden">
                   <ImageWithFallback src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -75,7 +90,7 @@ export default function BlogPage() {
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge className="theme-badge text-xs">{post.category}</Badge>
-                    <span className="text-xs text-gray-400">{new Date(post.publishedAt).toLocaleDateString()}</span>
+                    <span className="text-xs text-gray-400">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}</span>
                   </div>
                   <CardTitle className="line-clamp-2 text-base leading-snug">{post.title}</CardTitle>
                   <CardDescription className="line-clamp-2 text-sm">{post.excerpt}</CardDescription>
@@ -83,8 +98,8 @@ export default function BlogPage() {
                 <CardContent>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <img src={post.author.avatar} alt={post.author.name} className="w-7 h-7 rounded-full object-cover" />
-                      <span className="text-xs text-gray-500">{post.author.name}</span>
+                      <img src={post?.author?.avatar} alt={post?.author?.name} className="w-7 h-7 rounded-full object-cover" />
+                      <span className="text-xs text-gray-500">{post?.author?.name}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (<Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />))}

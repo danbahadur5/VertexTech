@@ -1,0 +1,75 @@
+{
+  "color": {
+    "brand": {
+      "primary": "#2563eb",
+      "primaryHover": "#1d4ed8",
+      "secondary": "#0ea5e9"
+    },
+    "text": {
+      "default": "#111827",
+      "muted": "#4b5563",
+      "onPrimary": "#ffffff",
+      "link": "#1d4ed8",
+      "linkHover": "#1e3a8a"
+    },
+    "surface": {
+      "base": "#ffffff",
+      "subtle": "#f9fafb",
+      "elevated": "#ffffff",
+      "border": "#e5e7eb"
+    },
+    "state": {
+      "focus": "#1d4ed8",
+      "ring": "#1d4ed8"
+    },
+    "gradient": {
+      "lightFrom": "#2563eb",
+      "lightTo": "#7c3aed",
+      "darkFrom": "#1d4ed8",
+      "darkTo": "#6d28d9"
+    }
+  },
+  "typography": {
+    "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji",
+    "sizes": {
+      "headline": 28,
+      "subheadline": 18,
+      "body": 16,
+      "caption": 12
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "extrabold": 800
+    },
+    "lineHeight": {
+      "tight": 1.1,
+      "normal": 1.5
+    }
+  },
+  "spacing8pt": [4, 8, 12, 16, 20, 24, 32, 40],
+  "radius": {
+    "sm": 8,
+    "md": 12,
+    "lg": 16
+  },
+  "shadow": {
+    "subtle": "0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04)",
+    "card": "0 6px 20px rgba(0,0,0,0.06)"
+  },
+  "button": {
+    "primary": {
+      "bg": "{color.brand.primary}",
+      "bgHover": "{color.brand.primaryHover}",
+      "fg": "{color.text.onPrimary}",
+      "focusRing": "{color.state.ring}"
+    },
+    "link": {
+      "fg": "{color.text.link}",
+      "fgHover": "{color.text.linkHover}",
+      "decoration": "underline"
+    }
+  }
+}

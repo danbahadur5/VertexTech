@@ -81,11 +81,56 @@ export default function AdminDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Welcome back! Here's what's happening with your platform.</p>
-        </div>
+        <Card className="border shadow-sm rounded-2xl">
+          <CardContent className="p-8 md:p-10">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="max-w-2xl space-y-3">
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-50 text-blue-800">
+                  Admin
+                </div>
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-[-0.02em] text-gray-900">
+                  Manage Your Site Content With Clarity
+                </h1>
+                <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                  Review key metrics and jump straight into editing hero content, pages, and media. Designed for accessibility and focus.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    className="bg-blue-600 hover:bg-blue-700 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                  >
+                    <Link to="/dashboard/admin/appearance/hero">Edit Hero Content</Link>
+                  </Button>
+                  <Link
+                    to="/dashboard/admin/media"
+                    className="text-blue-700 font-semibold underline underline-offset-4 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 rounded"
+                  >
+                    Manage Media
+                  </Link>
+                </div>
+              </div>
+              <div className="w-full md:w-auto md:min-w-[320px]">
+                <div className="rounded-xl border bg-white shadow-sm p-6">
+                  <div className="text-sm font-semibold text-gray-700 mb-2">At a Glance</div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900">{String(statsData.pages || 0)}</div>
+                      <div className="text-xs text-gray-600 mt-1">Pages</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900">{String(statsData.posts || 0)}</div>
+                      <div className="text-xs text-gray-600 mt-1">Posts</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gray-900">{String(statsData.projects || 0)}</div>
+                      <div className="text-xs text-gray-600 mt-1">Projects</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Stats Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -15,6 +15,45 @@ import { useScrollReveal } from '../lib/use-scroll-reveal';
 export default function ContactPage() {
   useScrollReveal();
 
+  const [hero, setHero] = useState({
+    badge: 'Get in Touch',
+    titleLeading: 'Talk to a',
+    titleGradient: 'Security Expert',
+    subtitle: 'Ready to strengthen your security posture? Our team of cybersecurity experts is available 24/7 to assess your needs and recommend the right protection.',
+  });
+  const [contactData, setContactData] = useState({
+    email: 'contact@vertextech.com',
+    emailLink: 'mailto:contact@vertextech.com',
+    phone: '+1 (555) 123-4567',
+    phoneLink: 'tel:+15551234567',
+    hqAddress: '123 Tech Street, San Francisco, CA 94105',
+    hqLink: 'https://maps.google.com',
+    hours: 'Mon–Fri: 9:00 AM – 6:00 PM PST',
+  });
+  const [offices, setOffices] = useState([
+    { city: 'San Francisco', country: 'USA', address: '123 Tech Street, CA 94105', phone: '+1 (555) 123-4567' },
+    { city: 'New York', country: 'USA', address: '456 Innovation Ave, NY 10001', phone: '+1 (555) 987-6543' },
+    { city: 'London', country: 'UK', address: '789 Tech Hub, London EC1A 1BB', phone: '+44 20 1234 5678' },
+  ]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/settings/contact-page', { cache: 'no-store' });
+        if (!res.ok) return;
+        const js = await res.json();
+        const d = js?.item?.data || {};
+        setHero((prev) => ({
+          badge: d.badge || prev.badge,
+          titleLeading: d.titleLeading || prev.titleLeading,
+          titleGradient: d.titleGradient || prev.titleGradient,
+          subtitle: d.subtitle || prev.subtitle,
+        }));
+        if (d.contact) setContactData((prev) => ({ ...prev, ...d.contact }));
+        if (Array.isArray(d.offices) && d.offices.length) setOffices(d.offices);
+      } catch {}
+    })();
+  }, []);
+
   const [formData, setFormData] = useState({ name: '', email: '', company: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -22,25 +61,29 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setSubmitted(true);
-    toast.success("Message sent! We'll get back to you within 24 hours.");
-    setFormData({ name: '', email: '', company: '', subject: '', message: '' });
-    setTimeout(() => setSubmitted(false), 4000);
+    try {
+      const res = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error('Failed to send');
+      setSubmitted(true);
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch (err) {
+      toast.error(err.message || 'Failed to send');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const contactInfo = [
-    { icon: Mail, title: 'Email', content: 'contact@vertextech.com', link: 'mailto:contact@vertextech.com' },
-    { icon: Phone, title: 'Phone', content: '+1 (555) 123-4567', link: 'tel:+15551234567' },
-    { icon: MapPin, title: 'Headquarters', content: '123 Tech Street, San Francisco, CA 94105', link: 'https://maps.google.com' },
-    { icon: Clock, title: 'Business Hours', content: 'Mon–Fri: 9:00 AM – 6:00 PM PST' },
-  ];
-
-  const offices = [
-    { city: 'San Francisco', country: 'USA', address: '123 Tech Street, CA 94105', phone: '+1 (555) 123-4567' },
-    { city: 'New York', country: 'USA', address: '456 Innovation Ave, NY 10001', phone: '+1 (555) 987-6543' },
-    { city: 'London', country: 'UK', address: '789 Tech Hub, London EC1A 1BB', phone: '+44 20 1234 5678' },
+    { icon: Mail, title: 'Email', content: contactData.email, link: contactData.emailLink },
+    { icon: Phone, title: 'Phone', content: contactData.phone, link: contactData.phoneLink },
+    { icon: MapPin, title: 'Headquarters', content: contactData.hqAddress, link: contactData.hqLink },
+    { icon: Clock, title: 'Business Hours', content: contactData.hours },
   ];
 
   return (
@@ -51,12 +94,12 @@ export default function ContactPage() {
         <div className="blob blob-primary w-80 h-80 top-[-100px] left-[-80px]" />
         <div className="blob blob-secondary w-64 h-64 bottom-[-60px] right-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">Get in Touch</Badge>
+          <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
           <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">
-            Talk to a <span className="theme-gradient-text">Security Expert</span>
+            {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-            Ready to strengthen your security posture? Our team of cybersecurity experts is available 24/7 to assess your needs and recommend the right protection.
+            {hero.subtitle}
           </p>
         </div>
       </section>

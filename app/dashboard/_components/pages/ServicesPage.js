@@ -30,11 +30,18 @@ export default function ServicesPage() {
     title: '',
     slug: '',
     description: '',
+    tagline: '',
     icon: 'Code',
     basic: '',
     professional: '',
     enterprise: '',
     features: '',
+    cap1Label: '',
+    cap1Value: '',
+    cap2Label: '',
+    cap2Value: '',
+    cap3Label: '',
+    cap3Value: '',
   });
 
   const iconOptions = [
@@ -76,11 +83,17 @@ export default function ServicesPage() {
         title: form.title.trim(),
         slug: form.slug.trim().replace(/^\//, ''),
         description: form.description.trim(),
+        tagline: form.tagline.trim() || undefined,
         icon: form.icon,
         features: form.features
           .split(',')
           .map((f) => f.trim())
           .filter(Boolean),
+        capabilities: [
+          { label: form.cap1Label.trim(), value: Number(form.cap1Value) },
+          { label: form.cap2Label.trim(), value: Number(form.cap2Value) },
+          { label: form.cap3Label.trim(), value: Number(form.cap3Value) },
+        ].filter((c) => c.label && !Number.isNaN(c.value)),
         pricing: {
           basic: form.basic ? Number(form.basic) : undefined,
           professional: form.professional ? Number(form.professional) : undefined,
@@ -126,11 +139,18 @@ export default function ServicesPage() {
       title: '',
       slug: '',
       description: '',
+      tagline: '',
       icon: 'Code',
       basic: '',
       professional: '',
       enterprise: '',
       features: '',
+      cap1Label: '',
+      cap1Value: '',
+      cap2Label: '',
+      cap2Value: '',
+      cap3Label: '',
+      cap3Value: '',
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -149,11 +169,18 @@ export default function ServicesPage() {
       title: svc.title || '',
       slug: svc.slug || '',
       description: svc.description || '',
+      tagline: svc.tagline || '',
       icon: svc.icon || 'Code',
       basic: svc?.pricing?.basic?.toString?.() || '',
       professional: svc?.pricing?.professional?.toString?.() || '',
       enterprise: svc?.pricing?.enterprise?.toString?.() || '',
       features: Array.isArray(svc.features) ? svc.features.join(', ') : '',
+      cap1Label: svc?.capabilities?.[0]?.label || '',
+      cap1Value: svc?.capabilities?.[0]?.value?.toString?.() || '',
+      cap2Label: svc?.capabilities?.[1]?.label || '',
+      cap2Value: svc?.capabilities?.[1]?.value?.toString?.() || '',
+      cap3Label: svc?.capabilities?.[2]?.label || '',
+      cap3Value: svc?.capabilities?.[2]?.value?.toString?.() || '',
     });
     setEditOpen(true);
   };
@@ -169,11 +196,17 @@ export default function ServicesPage() {
       const payload = {
         title: form.title.trim(),
         description: form.description.trim(),
+        tagline: form.tagline.trim() || undefined,
         icon: form.icon,
         features: form.features
           .split(',')
           .map((f) => f.trim())
           .filter(Boolean),
+        capabilities: [
+          { label: form.cap1Label.trim(), value: Number(form.cap1Value) },
+          { label: form.cap2Label.trim(), value: Number(form.cap2Value) },
+          { label: form.cap3Label.trim(), value: Number(form.cap3Value) },
+        ].filter((c) => c.label && !Number.isNaN(c.value)),
         pricing: {
           basic: form.basic ? Number(form.basic) : undefined,
           professional: form.professional ? Number(form.professional) : undefined,
@@ -280,6 +313,14 @@ export default function ServicesPage() {
                       placeholder="Short description"
                     />
                   </div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Tagline (short)</Label>
+                  <Input
+                    value={form.tagline}
+                    onChange={(e) => setForm({ ...form, tagline: e.target.value })}
+                    placeholder="Short tagline"
+                  />
+                </div>
 
                   <div className="space-y-2">
 
@@ -327,6 +368,23 @@ export default function ServicesPage() {
                       placeholder="Feature A, Feature B"
                     />
                   </div>
+                <div className="sm:col-span-2">
+                  <Label className="mb-2 block">Capabilities (label and %)</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-2">
+                      <Input placeholder="Label 1" value={form.cap1Label} onChange={(e) => setForm({ ...form, cap1Label: e.target.value })} />
+                      <Input type="number" placeholder="Value %" value={form.cap1Value} onChange={(e) => setForm({ ...form, cap1Value: e.target.value })} />
+                    </div>
+                    <div className="space-y-2">
+                      <Input placeholder="Label 2" value={form.cap2Label} onChange={(e) => setForm({ ...form, cap2Label: e.target.value })} />
+                      <Input type="number" placeholder="Value %" value={form.cap2Value} onChange={(e) => setForm({ ...form, cap2Value: e.target.value })} />
+                    </div>
+                    <div className="space-y-2">
+                      <Input placeholder="Label 3" value={form.cap3Label} onChange={(e) => setForm({ ...form, cap3Label: e.target.value })} />
+                      <Input type="number" placeholder="Value %" value={form.cap3Value} onChange={(e) => setForm({ ...form, cap3Value: e.target.value })} />
+                    </div>
+                  </div>
+                </div>
 
                   <div className="space-y-2">
                     <Label>Basic Price</Label>
@@ -415,6 +473,14 @@ export default function ServicesPage() {
                       placeholder="Short description"
                     />
                   </div>
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label>Tagline (short)</Label>
+                    <Input
+                      value={form.tagline}
+                      onChange={(e) => setForm({ ...form, tagline: e.target.value })}
+                      placeholder="Short tagline"
+                    />
+                  </div>
                   <div className="space-y-2">
                     <Label>Icon</Label>
                     <div className="flex items-center gap-3">
@@ -451,6 +517,23 @@ export default function ServicesPage() {
                       onChange={(e) => setForm({ ...form, features: e.target.value })}
                       placeholder="Feature A, Feature B"
                     />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <Label className="mb-2 block">Capabilities (label and %)</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="space-y-2">
+                        <Input placeholder="Label 1" value={form.cap1Label} onChange={(e) => setForm({ ...form, cap1Label: e.target.value })} />
+                        <Input type="number" placeholder="Value %" value={form.cap1Value} onChange={(e) => setForm({ ...form, cap1Value: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <Input placeholder="Label 2" value={form.cap2Label} onChange={(e) => setForm({ ...form, cap2Label: e.target.value })} />
+                        <Input type="number" placeholder="Value %" value={form.cap2Value} onChange={(e) => setForm({ ...form, cap2Value: e.target.value })} />
+                      </div>
+                      <div className="space-y-2">
+                        <Input placeholder="Label 3" value={form.cap3Label} onChange={(e) => setForm({ ...form, cap3Label: e.target.value })} />
+                        <Input type="number" placeholder="Value %" value={form.cap3Value} onChange={(e) => setForm({ ...form, cap3Value: e.target.value })} />
+                      </div>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <Label>Basic Price</Label>

@@ -2,39 +2,47 @@ import HeroMap from "../assets/map.svg";
 import HeroImage from "../assets/images.jpg";
 import { Link } from "react-router";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 // --- Subcomponents ---
 
-const RatingStars = () => (
-  <div className="flex items-center gap-2 text-xl leading-none mb-1">
-    <div className="text-gray-900 font-semibold">4.8</div>
-    {[...Array(5)].map((_, i) => (
-      <svg
-        key={i}
-        xmlns="http://www.w3.org/2000/svg"
-        width={14}
-        height={14}
-        fill="currentColor"
-        className="bi bi-star-fill text-yellow-500"
-        viewBox="0 0 16 16"
-      >
-        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-      </svg>
-    ))}
-  </div>
-);
+const RatingStars = ({ score = 4.8 }) => {
+  const rounded = Math.max(0, Math.min(5, Number(score) || 0));
+  const full = Math.floor(rounded);
+  const stars = [...Array(5)].map((_, i) => (
+    <svg
+      key={i}
+      xmlns="http://www.w3.org/2000/svg"
+      width={14}
+      height={14}
+      fill="currentColor"
+      className={`bi bi-star-fill ${i < full ? 'text-yellow-500' : 'text-gray-300'}`}
+      viewBox="0 0 16 16"
+    >
+      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+    </svg>
+  ));
+  return (
+    <div className="flex items-center gap-2 text-xl leading-none mb-1">
+      <div className="text-gray-900 font-semibold">{rounded.toFixed(1)}</div>
+      {stars}
+    </div>
+  );
+};
 
-const AvatarGroup = () => {
-  const avatars = [
-    "https://images.unsplash.com/photo-1545996124-0501ebae84d0?w=100&h=100&fit=crop",
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    "https://images.unsplash.com/photo-1545996124-0501ebae84d0?w=100&h=100&fit=crop",
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-  ];
-
+const AvatarGroup = ({ avatars }) => {
+  const list =
+    Array.isArray(avatars) && avatars.length
+      ? avatars
+      : [
+          "https://images.unsplash.com/photo-1545996124-0501ebae84d0?w=100&h=100&fit=crop",
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+          "https://images.unsplash.com/photo-1545996124-0501ebae84d0?w=100&h=100&fit=crop",
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+        ];
   return (
     <div className="flex -space-x-2">
-      {avatars.map((src, index) => (
+      {list.map((src, index) => (
         <span
           key={index}
           className="w-10 h-10 rounded-full overflow-hidden border-2 border-white"
@@ -52,15 +60,57 @@ const AvatarGroup = () => {
 
 // --- Service Ring ---
 
-const ServiceRing = () => {
-  const services = [
-    { name: "Cyber Security", icon: "shield" },
-    { name: "Web Development", icon: "globe" },
-    { name: "Data Analysis", icon: "chart" },
-    { name: "App Development", icon: "app" },
-    { name: "AI Agent Build", icon: "ai" },
-    { name: "Graphics Design", icon: "design" },
-  ];
+const ServiceRing = ({ items }) => {
+  const services =
+    Array.isArray(items) && items.length
+      ? items
+      : [
+          { name: "Cyber Security", icon: "shield" },
+          { name: "Web Development", icon: "globe" },
+          { name: "Data Analysis", icon: "chart" },
+          { name: "App Development", icon: "app" },
+          { name: "AI Agent Build", icon: "ai" },
+          { name: "Graphics Design", icon: "design" },
+        ];
+  const iconNode = (icon) => {
+    if (typeof icon === "string" && /^https?:\/\//i.test(icon)) {
+      return <img src={icon} alt="" className="w-5 h-5 object-contain" />;
+    }
+    const key = String(icon || "").toLowerCase();
+    const icons = {
+      shield: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      ),
+      globe: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+        </svg>
+      ),
+      chart: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M7 10l3-3 3 3 4-4" />
+        </svg>
+      ),
+      app: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="4" y="4" width="16" height="16" rx="2" />
+        </svg>
+      ),
+      ai: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+        </svg>
+      ),
+      design: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="2.5" />
+        </svg>
+      ),
+    };
+    return icons[key] || icons.design;
+  };
 
   const angles = [0, 60, 120, 180, 240, 300];
   const ringRadius = "12rem";
@@ -163,7 +213,7 @@ const ServiceRing = () => {
             }}
           >
             <div className="bg-orange-800 text-white px-4 py-2 rounded-full shadow-md border border-gray-200 text-sm font-medium flex items-center gap-2 whitespace-nowrap">
-              <span className="w-5 h-5">{icons[service.icon]}</span>
+              <span className="w-5 h-5">{iconNode(service.icon)}</span>
               {service.name}
             </div>
           </div>
@@ -176,9 +226,55 @@ const ServiceRing = () => {
 // --- Main Component ---
 
 export default function HeroSection() {
+  const [data, setData] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+  const cleanUrl = (u) => {
+    if (typeof u !== "string") return u;
+    let s = u.trim();
+    const m = s.match(/^\s*url\((.*)\)\s*$/i);
+    if (m) s = m[1];
+    s = s.replace(/^['"]|['"]$/g, "").replace(/\)+$/, "");
+    return s;
+  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const resGroups = await fetch("/api/settings/hero-groups", { cache: "no-store" });
+        if (resGroups.ok) {
+          const jg = await resGroups.json();
+          const items = Array.isArray(jg?.item?.data?.items) ? jg.item.data.items : [];
+          const active = items.find((g) => g.active) || items[0];
+          if (active) {
+            setData(active);
+            return;
+          }
+        }
+        const resSingle = await fetch("/api/settings/hero", { cache: "no-store" });
+        const js = await resSingle.json();
+        setData(js?.item?.data || null);
+      } catch {
+        setData(null);
+      }
+    })();
+    if (typeof window !== "undefined") {
+      const mq = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+      const get = () => {
+        const hasClass = document?.documentElement?.classList?.contains("dark");
+        setIsDark(hasClass || (mq ? mq.matches : false));
+      };
+      get();
+      if (mq && mq.addEventListener) {
+        mq.addEventListener("change", get);
+        return () => mq.removeEventListener("change", get);
+      }
+    }
+  }, []);
   const getImageSrc = (image) => {
     return typeof image === "string" ? image : image?.src || "";
   };
+  const gradFrom = (isDark ? data?.theme?.dark?.gradientFrom : data?.theme?.light?.gradientFrom) || "#2563eb";
+  const gradTo = (isDark ? data?.theme?.dark?.gradientTo : data?.theme?.light?.gradientTo) || "#7c3aed";
+  const heroImg = cleanUrl(data?.heroImage) || HeroImage;
 
   return (
     <section className="relative theme-bg-light hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-24">
@@ -192,33 +288,43 @@ export default function HeroSection() {
             <div className="w-full lg:w-5/12 px-4">
               <div className="max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
                 <span className="theme-text font-semibold inline-block mb-2">
-                  Welcome to VertexTech
+                  {data?.badge || "Welcome to VertexTech"}
                 </span>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 leading-tight">
-                  Powering Your Digital Transformation
+                  {(data?.titleLeading || "Powering Your") + " "}
+                  <span
+                    className="theme-gradient-text"
+                    style={{ backgroundImage: `linear-gradient(90deg, ${gradFrom}, ${gradTo})` }}
+                  >
+                    {data?.titleGradient || "Digital Transformation"}
+                  </span>
                 </h1>
 
                 <p className="mb-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
-                  Cloud, cybersecurity, and software that scale with your
-                  ambition.
+                  {data?.subtitle ||
+                    "Cloud, cybersecurity, and software that scale with your ambition."}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                   <Link
-                    to="/contact"
+                    to={data?.primaryCTA?.href || "/contact"}
                     className="inline-block theme-btn rounded-xl font-semibold py-3 px-10 w-[80%] text-lg whitespace-nowrap"
                   >
-                    Get Started
+                    {data?.primaryCTA?.label || "Get Started"}
                   </Link>
 
                   <div className="flex flex-col items-center sm:items-start">
                     <div className="flex items-center gap-3">
-                      <AvatarGroup />
-                      <RatingStars />
+                      <AvatarGroup avatars={data?.avatars} />
+                      <RatingStars score={data?.rating?.score} />
                     </div>
                     <div className="text-sm text-gray-600 mt-1">
-                      Engaged Students
+                      {data?.rating?.caption
+                        ? data.rating.caption
+                        : Array.isArray(data?.features) && data.features.length
+                        ? data.features.map((f) => f.label).join(" • ")
+                        : "Trusted by teams worldwide"}
                     </div>
                   </div>
                 </div>
@@ -238,14 +344,14 @@ export default function HeroSection() {
                 {/* image */}
                 <div className="absolute inset-0 z-10 overflow-hidden rounded-full">
                   <Image
-                    src={HeroImage}
+                    src={heroImg}
                     alt="VertexTech product showcase"
                     fill
                     className="object-cover object-bottom"
                   />
                 </div>
 
-                <ServiceRing />
+                <ServiceRing items={data?.services} />
               </div>
             </div>
           </div>
