@@ -40,7 +40,7 @@ export async function PUT(req: Request, { params }: any) {
   const body = updateSchema.safeParse(json);
   if (!body.success) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
   await connectDB();
-  const updated = await BlogPost.findOneAndUpdate({ slug: params.slug } as any, { $set: body.data }, { new: true } as any);
+  const updated = await BlogPost.findOneAndUpdate({ slug: params.slug } as any, { $set: body.data }, { returnDocument: "after" } as any);
   return NextResponse.json({ item: updated });
 }
 

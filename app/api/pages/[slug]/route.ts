@@ -30,7 +30,7 @@ export async function PUT(req: Request, { params }: any) {
   const updated = await Page.findOneAndUpdate(
     { slug: params.slug } as any,
     { $set: { ...body.data, updatedAtISO: new Date().toISOString() } },
-    { new: true } as any
+    { returnDocument: "after" } as any
   );
   return NextResponse.json({ item: updated });
 }

@@ -39,7 +39,7 @@ export async function PUT(req: Request) {
   const updated = await AppUser.findOneAndUpdate(
     { authUserId: session.user.id } as any,
     { $set: { ...body.data } },
-    { new: true, upsert: true } as any
+    { returnDocument: "after", upsert: true } as any
   );
   return NextResponse.json({ user: updated });
 }

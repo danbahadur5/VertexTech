@@ -36,7 +36,7 @@ export function DashboardLayout({ children }) {
   const { user, logout, hasRole } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [appearanceOpen, setAppearanceOpen] = useState(true);
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
   const handleLogout = () => {

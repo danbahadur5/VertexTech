@@ -30,8 +30,7 @@ export async function POST(req: Request) {
         status: "active",
       },
     },
-    { new: true, upsert: true } as any
+    { returnDocument: "after", upsert: true } as any
   );
   return NextResponse.json({ user: updated });
 }
-
