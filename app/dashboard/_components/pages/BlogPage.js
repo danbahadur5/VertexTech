@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Input } from '../../../components/ui/input';
 import { Textarea } from '../../../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { Switch } from '../../../components/ui/switch';
+import { Label } from '../../../components/ui/label';
 import { toast } from 'sonner';
 
 export default function BlogPage() {
@@ -32,6 +34,7 @@ export default function BlogPage() {
     category: '',
     tags: '',
     status: 'draft',
+    featured: false,
   });
 
   useEffect(() => {
@@ -62,6 +65,7 @@ export default function BlogPage() {
       category: '',
       tags: '',
       status: 'draft',
+      featured: false,
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -89,6 +93,7 @@ export default function BlogPage() {
         category: form.category.trim() || undefined,
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         status: form.status,
+        featured: !!form.featured,
       };
       const res = await fetch('/api/blog', {
         method: 'POST',
@@ -118,6 +123,7 @@ export default function BlogPage() {
       category: post.category || '',
       tags: Array.isArray(post.tags) ? post.tags.join(', ') : '',
       status: post.status || 'draft',
+      featured: !!post.featured,
     });
     setEditOpen(true);
   };
@@ -138,6 +144,7 @@ export default function BlogPage() {
         category: form.category.trim() || undefined,
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         status: form.status,
+        featured: !!form.featured,
       };
       const newSlug = form.slug.trim().replace(/^\//, '');
       if (newSlug && newSlug !== originalSlug) {
@@ -220,6 +227,10 @@ export default function BlogPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Switch id="featured" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
+                    <Label htmlFor="featured">Featured</Label>
+                  </div>
                 </div>
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
@@ -253,6 +264,10 @@ export default function BlogPage() {
                         <SelectItem value="published">Published</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch id="featured-edit" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
+                    <Label htmlFor="featured-edit">Featured</Label>
                   </div>
                 </div>
                 <DialogFooter>
@@ -294,6 +309,7 @@ export default function BlogPage() {
                   <TableHead>Author</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Featured</TableHead>
                   <TableHead>Published</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -310,6 +326,9 @@ export default function BlogPage() {
                       <Badge className={post.status === 'published' ? 'bg-green-100 text-green-800' : ''}>
                         {post.status}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {post.featured ? <Badge className="bg-yellow-100 text-yellow-800">Featured</Badge> : '-'}
                     </TableCell>
                     <TableCell>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '-'}</TableCell>
                     <TableCell className="text-right">

@@ -29,7 +29,7 @@ export default function PricingPage() {
     })();
   }, []);
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
       <section className="relative overflow-hidden theme-bg-light hero-grid-bg py-24">
         <div className="blob blob-primary w-96 h-96 top-[-120px] left-[-100px]" />
@@ -44,27 +44,27 @@ export default function PricingPage() {
           </p>
         </div>
       </section>
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             {plans.map((plan, idx) => {
               const Icon = ICONS[plan.icon] || Shield;
               return (
-                <Card key={plan.id} className="reveal reveal-scale rounded-2xl border border-gray-200 p-2 hover:shadow-2xl transition-all duration-300" style={{ animationDelay: `${idx * 0.12}s` }}>
+                <Card key={plan.id} className="reveal reveal-scale rounded-2xl border border-gray-200 dark:border-gray-800 p-2 hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-900" style={{ animationDelay: `${idx * 0.12}s` }}>
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center">
                         <Icon className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <CardTitle className="text-xl">{plan.name}</CardTitle>
-                        <CardDescription>{plan.tagline}</CardDescription>
+                        <CardTitle className="text-xl dark:text-gray-100">{plan.name}</CardTitle>
+                        <CardDescription className="dark:text-gray-400">{plan.tagline}</CardDescription>
                       </div>
                     </div>
                     <div className="mt-2">
                       <div className="flex items-baseline gap-1">
-                        <span className="text-5xl font-extrabold text-gray-900">{plan.price}</span>
-                        {plan.period && <span className="text-gray-500 text-sm">{plan.period}</span>}
+                        <span className="text-5xl font-extrabold text-gray-900 dark:text-gray-100">{plan.price}</span>
+                        {plan.period && <span className="text-gray-500 dark:text-gray-400 text-sm">{plan.period}</span>}
                       </div>
                     </div>
                   </CardHeader>
@@ -73,7 +73,7 @@ export default function PricingPage() {
                       {plan.features.map((feat) => (
                         <div key={feat} className="flex items-start gap-2">
                           <CheckCircle2 className="h-4 w-4 mt-0.5" style={{ color: 'var(--theme-primary)' }} />
-                          <span className="text-sm text-gray-700">{feat}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{feat}</span>
                         </div>
                       ))}
                     </div>

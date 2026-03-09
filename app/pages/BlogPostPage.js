@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { Skeleton } from '../components/ui/skeleton';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -28,18 +29,33 @@ export default function BlogPostPage() {
   }, [slug]);
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-gray-950">
         <PublicHeader />
-        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-          <h1 className="text-2xl font-semibold">Loading…</h1>
-        </div>
+        <section className="py-12">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mb-8">
+              <Skeleton className="h-6 w-28 mb-3 rounded-full" />
+              <Skeleton className="h-10 w-2/3 mb-4" />
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <Skeleton className="h-4 w-1/3" />
+              </div>
+            </div>
+            <Skeleton className="h-56 w-full rounded-2xl mb-8" />
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+          </div>
+        </section>
         <PublicFooter />
       </div>
     );
   }
   if (!post) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-gray-950">
         <PublicHeader />
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h1 className="text-4xl font-bold">Post Not Found</h1>
@@ -50,19 +66,19 @@ export default function BlogPostPage() {
     );
   }
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
       <article className="py-12">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <Link to="/blog"><Button variant="ghost" className="mb-6"><ArrowLeft className="h-4 w-4 mr-2" />Back to Blog</Button></Link>
           <div className="mb-8">
             <Badge className="mb-4">{post.category}</Badge>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">{post.title}</h1>
-            <div className="flex items-center gap-6 text-gray-600">
+            <h1 className="text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">{post.title}</h1>
+            <div className="flex items-center gap-6 text-gray-600 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <img src={post?.author?.avatar} alt={post?.author?.name} className="w-12 h-12 rounded-full object-cover" />
                 <div>
-                  <div className="font-semibold text-gray-900">{post?.author?.name}</div>
+                  <div className="font-semibold text-gray-900 dark:text-gray-100">{post?.author?.name}</div>
                   <div className="text-sm">{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}</div>
                 </div>
               </div>
@@ -73,9 +89,9 @@ export default function BlogPostPage() {
               <ImageWithFallback src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
             </div>
           )}
-          <div className="prose prose-lg prose-gray max-w-none text-gray-700 whitespace-pre-wrap">{post.content}</div>
+          <div className="prose prose-lg prose-gray max-w-none text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{post.content}</div>
           {!!(post.tags || []).length && (
-            <div className="mt-12 pt-8 border-t">
+            <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (<Badge key={tag} variant="outline">{tag}</Badge>))}
               </div>

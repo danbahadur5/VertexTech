@@ -87,7 +87,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
 
       <section className="relative py-24 overflow-hidden theme-bg-light hero-grid-bg">
@@ -104,51 +104,51 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
             <div className="reveal-left">
-              <Card className="border border-gray-100 shadow-xl">
+              <Card className="border border-gray-100 dark:border-gray-800 shadow-xl bg-white dark:bg-gray-900">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-xl theme-gradient flex items-center justify-center">
                       <MessageSquare className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl">Send Us a Message</CardTitle>
-                      <CardDescription>We'll get back to you within 24 hours.</CardDescription>
+                      <CardTitle className="text-xl dark:text-gray-100">Send Us a Message</CardTitle>
+                      <CardDescription className="dark:text-gray-400">We'll get back to you within 24 hours.</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   {submitted ? (
                     <div className="text-center py-12 animate-scale-in">
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                         <CheckCircle2 className="h-8 w-8 text-green-600" />
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h3>
-                      <p className="text-gray-500 text-sm">Our team will reach out to you shortly.</p>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Message Sent!</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">Our team will reach out to you shortly.</p>
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-5">
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="name" className="text-sm font-semibold">Full Name *</Label>
-                          <Input id="name" placeholder="John Smith" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="rounded-xl border-gray-200 focus:border-transparent" />
+                          <Input id="name" placeholder="John Smith" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required className="rounded-xl border-gray-200 dark:border-gray-700 focus:border-transparent" />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="email" className="text-sm font-semibold">Email *</Label>
-                          <Input id="email" type="email" placeholder="john@company.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="rounded-xl border-gray-200" />
+                          <Input id="email" type="email" placeholder="john@company.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required className="rounded-xl border-gray-200 dark:border-gray-700" />
                         </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="company" className="text-sm font-semibold">Company</Label>
-                        <Input id="company" placeholder="Your Company Name" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="rounded-xl border-gray-200" />
+                        <Input id="company" placeholder="Your Company Name" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="rounded-xl border-gray-200 dark:border-gray-700" />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="subject" className="text-sm font-semibold">I'm interested in *</Label>
                         <Select value={formData.subject} onValueChange={(v) => setFormData({ ...formData, subject: v })} required>
-                          <SelectTrigger className="rounded-xl border-gray-200">
+                          <SelectTrigger className="rounded-xl border-gray-200 dark:border-gray-700">
                             <SelectValue placeholder="Select a topic" />
                           </SelectTrigger>
                           <SelectContent>
@@ -163,7 +163,7 @@ export default function ContactPage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="message" className="text-sm font-semibold">Message *</Label>
-                        <Textarea id="message" placeholder="Tell us about your organization and security needs..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required className="rounded-xl border-gray-200 resize-none" />
+                        <Textarea id="message" placeholder="Tell us about your organization and security needs..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required className="rounded-xl border-gray-200 dark:border-gray-700 resize-none" />
                       </div>
                       <Button type="submit" size="lg" className="theme-btn w-full rounded-xl h-12 font-bold" disabled={submitting}>
                         {submitting ? (<><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-rotate mr-2" />Sending...</>) : (<><Send className="h-4 w-4 mr-2" /> Send Message</>)}
@@ -178,22 +178,22 @@ export default function ContactPage() {
                 {contactInfo.map((info) => {
                   const Icon = info.icon;
                   return (
-                    <div key={info.title} className="bg-gray-50 rounded-2xl p-5 border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                    <div key={info.title} className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                       <div className="w-10 h-10 rounded-xl theme-gradient flex items-center justify-center mb-3">
                         <Icon className="h-5 w-5 text-white" />
                       </div>
-                      <p className="font-bold text-gray-900 text-sm mb-1">{info.title}</p>
-                      {info.link ? (<a href={info.link} className="text-sm theme-text hover:underline leading-snug">{info.content}</a>) : (<p className="text-sm text-gray-600 leading-snug">{info.content}</p>)}
+                      <p className="font-bold text-gray-900 dark:text-gray-100 text-sm mb-1">{info.title}</p>
+                      {info.link ? (<a href={info.link} className="text-sm theme-text hover:underline leading-snug">{info.content}</a>) : (<p className="text-sm text-gray-600 dark:text-gray-400 leading-snug">{info.content}</p>)}
                     </div>
                   );
                 })}
               </div>
-              <div className="bg-green-50 border border-green-200 rounded-2xl p-5">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-5">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-sm font-bold text-green-900">Our Response Promise</p>
-                    <p className="text-xs text-green-700 mt-1 leading-relaxed">
+                    <p className="text-sm font-bold text-green-900 dark:text-green-300">Our Response Promise</p>
+                    <p className="text-xs text-green-700 dark:text-green-400 mt-1 leading-relaxed">
                       We respond to every inquiry within 24 hours on business days, and within 4 hours for security incidents.
                     </p>
                   </div>
@@ -204,20 +204,20 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Global Offices</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Visit Us</h2>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Visit Us</h2>
 
-      <div className="bg-gray-50">
+      <div className="bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto">
             <div className="text-center">
               <div className="w-16 h-16 rounded-2xl theme-gradient flex items-center justify-center mx-auto mb-4">
                 <MapPin className="h-8 w-8 text-white" />
               </div>
-              <p className="font-semibold text-gray-700">Interactive Map</p>
-              <p className="text-sm text-gray-400 mt-1">Google Maps integration</p>
+              <p className="font-semibold text-gray-700 dark:text-gray-300">Interactive Map</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Google Maps integration</p>
             </div>
           
         </div>

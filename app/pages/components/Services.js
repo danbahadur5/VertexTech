@@ -26,11 +26,13 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
+import { ContentLoader } from "../../components/ui/content-loader";
 
 import { useEffect, useState } from "react";
 export default function Services() {
   const serviceIcons = { Cloud, Shield, Code, BarChart3 };
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const load = async () => {
       try {
@@ -38,13 +40,16 @@ export default function Services() {
         if (!res.ok) return;
         const data = await res.json();
         setItems(data.items || []);
-      } catch {}
+      } catch {} finally {
+        setLoading(false);
+      }
     };
     load();
   }, []);
   return (
     <section className="py-24 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {loading && <ContentLoader variant="card" count={8} columns={4} aspect="auto" className="mb-10" />}
         <div className="text-center mb-16 reveal">
           <Badge className="mb-4 theme-badge">Our Solutions</Badge>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">

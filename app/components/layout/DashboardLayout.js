@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { 
   LayoutDashboard, 
@@ -38,6 +38,32 @@ export function DashboardLayout({ children }) {
   const location = useLocation();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [autoHideEnabled, setAutoHideEnabled] = useState(false);
+
+  useEffect(() => {
+    const p = location.pathname || "";
+    const shouldEnable = /^\/dashboard\/(admin|editor)\/services(\/.*)?$/.test(p);
+    setAutoHideEnabled(shouldEnable);
+    setLastScrollY(0);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!autoHideEnabled) return;
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      const delta = y - lastScrollY;
+      if (delta > 30 && !sidebarCollapsed) {
+        setSidebarCollapsed(true);
+        if (sidebarOpen) setSidebarOpen(false);
+      } else if (delta < -30 && sidebarCollapsed) {
+        setSidebarCollapsed(false);
+      }
+      setLastScrollY(y);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [autoHideEnabled, lastScrollY, sidebarCollapsed, sidebarOpen]);
 
   const handleLogout = () => {
     logout();
@@ -182,7 +208,7 @@ export function DashboardLayout({ children }) {
                           if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
                           if (item.name === 'About') setAboutOpen(!aboutOpen);
                         }}
-                        className={`w-full flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 hover:text-blue-600'}`}
+                        className={`w-full cursor-pointer flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 hover:text-blue-600'}`}
                         title={item.name}
                       >
                         <div className="flex items-center gap-x-3">

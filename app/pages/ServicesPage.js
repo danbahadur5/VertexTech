@@ -27,7 +27,7 @@ export default function ServicesPage() {
     })();
   }, []);
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
       <section className="relative py-28 overflow-hidden theme-bg-light hero-grid-bg">
         <div className="blob blob-primary w-96 h-96 top-[-120px] left-[-100px]" />
@@ -38,26 +38,26 @@ export default function ServicesPage() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">Comprehensive cybersecurity solutions to protect your endpoints, cloud infrastructure, identities, and data from advanced threats.</p>
         </div>
       </section>
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">End-to-End Protection</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Six integrated layers of defense, working together as one unified platform.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">End-to-End Protection</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Six integrated layers of defense, working together as one unified platform.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {(loading ? [] : services).map((svc, idx) => {
               const Icon = ICONS[svc.icon] || Code;
               return (
-                <div key={svc.slug} className="reveal-scale bg-white rounded-2xl border border-gray-100 shadow-md p-7 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                <div key={svc.slug} className="reveal-scale bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-md p-7 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.1}s` }}>
                   <div className="flex items-start gap-4 mb-5">
                     <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Icon className="h-6 w-6 text-white" /></div>
-                    <div><h3 className="font-bold text-gray-900 leading-tight">{svc.title}</h3><p className="text-xs text-gray-500 mt-1 leading-relaxed">{svc.tagline || svc.description}</p></div>
+                    <div><h3 className="font-bold text-gray-900 dark:text-gray-100 leading-tight">{svc.title}</h3><p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{svc.tagline || svc.description}</p></div>
                   </div>
                   {!!(svc.capabilities || []).length && (
                     <div className="space-y-4 mb-6">
                       {svc.capabilities.map((cap) => (
                         <div key={cap.label}>
-                          <div className="flex justify-between mb-1.5"><span className="text-xs text-gray-600">{cap.label}</span><span className="text-xs font-bold theme-text">{cap.value}%</span></div>
+                          <div className="flex justify-between mb-1.5"><span className="text-xs text-gray-600 dark:text-gray-400">{cap.label}</span><span className="text-xs font-bold theme-text">{cap.value}%</span></div>
                           <div className="progress-wrapper thin">
                             <div className="progress-bar" style={{ '--progress-target': `${cap.value}%` }} />
                           </div>
@@ -66,40 +66,40 @@ export default function ServicesPage() {
                     </div>
                   )}
                   <ul className="space-y-2 mb-6">
-                    {(svc.features || []).map((f) => (<li key={f} className="flex items-center gap-2 text-xs text-gray-600"><CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--theme-primary)' }} />{f}</li>))}
+                    {(svc.features || []).map((f) => (<li key={f} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400"><CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--theme-primary)' }} />{f}</li>))}
                   </ul>
-                  <Link to={`/services/${svc.slug}`}><Button variant="ghost" className="w-full theme-text hover:bg-gray-50 text-sm font-semibold">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                  <Link to={`/services/${svc.slug}`}><Button variant="ghost" className="w-full theme-text hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-semibold">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Enterprise Packages</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Full-Service Solutions</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Comprehensive technology services designed to transform your business and drive growth.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Full-Service Solutions</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Comprehensive technology services designed to transform your business and drive growth.</p>
           </div>
           <div className="grid lg:grid-cols-2 gap-8">
             {(loading ? [] : services).map((service, idx) => (
-              <Card key={service.slug} className="reveal hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style={{ transitionDelay: `${idx * 0.12}s` }}>
+              <Card key={service.slug} className="reveal hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
                 <CardHeader>
-                  <div className="flex items-start justify-between mb-3"><CardTitle className="text-2xl">{service.title}</CardTitle><Badge className="theme-badge">Enterprise</Badge></div>
-                  <CardDescription className="text-base leading-relaxed">{service.description}</CardDescription>
+                  <div className="flex items-start justify-between mb-3"><CardTitle className="text-2xl dark:text-gray-100">{service.title}</CardTitle><Badge className="theme-badge">Enterprise</Badge></div>
+                  <CardDescription className="text-base leading-relaxed dark:text-gray-400">{service.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-3 text-sm">Key Features:</h4>
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 text-sm">Key Features:</h4>
                     <ul className="space-y-2.5">
-                      {(service.features || []).map((feature) => (<li key={feature} className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" style={{ color: 'var(--theme-primary)' }} /><span className="text-sm text-gray-600">{feature}</span></li>))}
+                      {(service.features || []).map((feature) => (<li key={feature} className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" style={{ color: 'var(--theme-primary)' }} /><span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span></li>))}
                     </ul>
                   </div>
                   {service.pricing && typeof service.pricing.basic === 'number' && (
-                    <div className="pt-4 border-t border-gray-100">
-                      <p className="text-xs text-gray-500 mb-1">Starting from:</p>
-                      <div className="flex items-baseline gap-1"><span className="text-3xl font-extrabold text-gray-900">${service.pricing.basic.toLocaleString()}</span><span className="text-gray-400 text-sm">/month</span></div>
+                    <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Starting from:</p>
+                      <div className="flex items-baseline gap-1"><span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">${service.pricing.basic.toLocaleString()}</span><span className="text-gray-400 text-sm">/month</span></div>
                     </div>
                   )}
                   <Link to={`/services/${service.slug}`}><Button className="theme-btn w-full rounded-xl h-11 font-semibold" size="lg">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>

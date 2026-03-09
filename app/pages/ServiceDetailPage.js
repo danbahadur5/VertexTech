@@ -6,6 +6,7 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Skeleton } from '../components/ui/skeleton';
 
 
 export default function ServiceDetailPage() {
@@ -31,9 +32,25 @@ export default function ServiceDetailPage() {
     return (
       <div className="min-h-screen bg-white">
         <PublicHeader />
-        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-          <h1 className="text-2xl font-semibold">Loading…</h1>
-        </div>
+        <section className="py-12">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mb-8">
+              <Skeleton className="h-6 w-28 mb-3 rounded-full" />
+              <Skeleton className="h-10 w-2/3 mb-4" />
+              <Skeleton className="h-4 w-1/2 mb-2" />
+            </div>
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-4">
+                <Skeleton className="h-56 w-full rounded-xl" />
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+              <div className="space-y-4">
+                <Skeleton className="h-40 w-full rounded-xl" />
+              </div>
+            </div>
+          </div>
+        </section>
         <PublicFooter />
       </div>
     );

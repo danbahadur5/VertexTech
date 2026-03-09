@@ -70,6 +70,7 @@ const BlogPostSchema = new Schema(
     featuredImage: { type: String },
     category: { type: String },
     tags: { type: [String], default: [] },
+    featured: { type: Boolean, default: false, index: true },
     author: {
       id: { type: String },
       name: { type: String },
@@ -90,6 +91,8 @@ const CaseStudySchema = new Schema(
     description: { type: String, required: true },
     technologies: { type: [String], default: [] },
     gallery: { type: [String], default: [] },
+    liveUrl: { type: String },
+    status: { type: String, enum: ["in-progress", "completed"], default: "in-progress", index: true },
     testimonial: {
       quote: { type: String },
       author: { type: String },

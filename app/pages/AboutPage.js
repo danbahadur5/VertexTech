@@ -82,7 +82,7 @@ export default function AboutPage() {
     })();
   }, []);
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
       <section className="relative py-28 overflow-hidden theme-bg-light hero-grid-bg">
         <div className="blob blob-primary w-96 h-96 top-[-120px] right-[-100px]" />
@@ -90,10 +90,10 @@ export default function AboutPage() {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
-            <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">
+            <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6 animate-fade-in-up delay-100">
               {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
               {hero.subtitle1}
             </p>
           </div>
@@ -104,18 +104,18 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="animate-fade-in-right delay-300">
-              <h2 className="text-3xl font-bold text-gray-900 mb-5">Our Story</h2>
-              <p className="text-gray-600 mb-4 leading-relaxed">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-5">Our Story</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
                 {hero.subtitle1}
               </p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
                 {hero.subtitle2}
               </p>
               <div className="grid grid-cols-2 gap-6">
                 {hero.stats.map(({ num, label }) => (
-                  <div key={label} className="text-center bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+                  <div key={label} className="text-center bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:shadow-md transition-shadow">
                     <div className="text-3xl font-extrabold theme-gradient-text mb-1">{num}</div>
-                    <div className="text-sm text-gray-500">{label}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
                   </div>
                 ))}
               </div>
@@ -123,34 +123,34 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Our Principles</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">How We Think</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">The guiding principles that shape every solution we build.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">How We Think</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The guiding principles that shape every solution we build.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {principles.map((p, idx) => {
               const Icon = p.icon;
               return (
-                <div key={p.title} className="reveal-scale text-center p-8 rounded-2xl border border-gray-100 bg-gray-50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.15}s` }}>
+                <div key={p.title} className="reveal-scale text-center p-8 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.15}s` }}>
                   <div className="w-16 h-16 theme-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                     <Icon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{p.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{p.desc}</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{p.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{p.desc}</p>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Our Journey</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Milestones That Matter</h2>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Milestones That Matter</h2>
           </div>
           <div className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-0.5" style={{ background: 'linear-gradient(to bottom, var(--theme-gradient-from), var(--theme-gradient-to))' }} />
@@ -158,12 +158,12 @@ export default function AboutPage() {
               {milestones.map((m, i) => (
                 <div key={m.year} className="reveal flex gap-8 items-start pl-4" style={{ transitionDelay: `${i * 0.1}s` }}>
                   <div className="relative z-10 w-10 h-10 rounded-full theme-gradient flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg">{i + 1}</div>
-                  <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 flex-1 hover:shadow-md transition-shadow">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex-1 hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-3 mb-2">
                       <Badge className="theme-badge text-xs">{m.year}</Badge>
-                      <span className="font-bold text-gray-900">{m.event}</span>
+                      <span className="font-bold text-gray-900 dark:text-gray-100">{m.event}</span>
                     </div>
-                    <p className="text-sm text-gray-600">{m.desc}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{m.desc}</p>
                   </div>
                 </div>
               ))}
@@ -171,24 +171,24 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Our Values</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">The Principles That Guide Us</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">What we stand for, every single day.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">The Principles That Guide Us</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">What we stand for, every single day.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v, idx) => {
               const Icon = v.icon;
               return (
-                <Card key={v.title} className="reveal text-center hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.12}s` }}>
+                <Card key={v.title} className="reveal text-center hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
                   <CardContent className="pt-8 pb-6">
                     <div className="w-16 h-16 rounded-full theme-gradient flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform">
                       <Icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="font-bold text-gray-900 mb-2 text-lg">{v.title}</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">{v.description}</p>
+                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-lg">{v.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{v.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -196,31 +196,31 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Leadership Team</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">The talented people behind VertexTech's success.</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Meet Our Team</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The talented people behind VertexTech's success.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, idx) => (
-              <Card key={member.name} className="reveal text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden" style={{ transitionDelay: `${idx * 0.12}s` }}>
+              <Card key={member.name} className="reveal text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
                 <CardContent className="pt-8 pb-6">
                   <div className="relative inline-block mb-5">
                     <img
                       src={member.avatar}
                       alt={member.name}
-                      className="w-24 h-24 rounded-full mx-auto object-cover ring-4 ring-white shadow-lg group-hover:ring-4 transition-all"
+                      className="w-24 h-24 rounded-full mx-auto object-cover ring-4 ring-white dark:ring-gray-800 shadow-lg group-hover:ring-4 transition-all"
                       style={{ '--tw-ring-color': 'var(--theme-primary)' }}
                     />
                     <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full theme-gradient flex items-center justify-center shadow-sm">
                       <CheckCircle2 className="h-3.5 w-3.5 text-white" />
                     </div>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg mb-1">{member.name}</h3>
+                  <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg mb-1">{member.name}</h3>
                   <p className="text-sm font-semibold theme-text mb-2">{member.position}</p>
-                  <p className="text-xs text-gray-500">{member.bio}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{member.bio}</p>
                 </CardContent>
               </Card>
             ))}

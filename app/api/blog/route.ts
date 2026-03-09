@@ -20,6 +20,7 @@ const createSchema = z.object({
   featuredImage: z.string().optional(),
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
   author: z.object({ id: z.string().optional(), name: z.string().optional(), avatar: z.string().optional() }).optional(),
   seo: z
     .object({

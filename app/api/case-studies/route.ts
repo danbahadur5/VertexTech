@@ -19,6 +19,8 @@ const createSchema = z.object({
   description: z.string().min(1),
   technologies: z.array(z.string()).optional(),
   gallery: z.array(z.string()).optional(),
+  liveUrl: z.string().url().optional(),
+  status: z.enum(["in-progress", "completed"]).optional(),
   testimonial: z.object({ quote: z.string().optional(), author: z.string().optional(), position: z.string().optional() }).optional(),
   featured: z.boolean().optional(),
   completedAt: z.string().optional(),
