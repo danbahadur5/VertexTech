@@ -35,12 +35,12 @@ export default function FeaturedBlog() {
 
   if (!loading && items.length === 0) {
     return (
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <div className="text-center mb-8">
             <Badge className="mb-4 theme-badge">Insights</Badge>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Explore Our Blog</h2>
-            <p className="text-lg text-gray-600">Insights, trends, and best practices.</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Explore Our Blog</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300">Insights, trends, and best practices.</p>
           </div>
           <Button size="lg" variant="outline" className="theme-btn-outline rounded-xl px-8 h-12 font-bold" asChild>
             <Link href="/blog">View All Articles <ArrowRight className="ml-2 h-4 w-4" /></Link>
@@ -51,15 +51,15 @@ export default function FeaturedBlog() {
   }
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {loading && <ContentLoader variant="card" count={6} columns={3} aspect="video" className="mb-10" />}
         <div className="text-center mb-16 reveal">
           <Badge className="mb-4 theme-badge">Insights</Badge>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-4">
             Latest from Our Blog
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Trends, best practices, and expert insights in enterprise
             technology.
           </p>
@@ -68,7 +68,7 @@ export default function FeaturedBlog() {
           {(loading ? [] : items).map((post, idx) => (
             <Card
               key={post.slug || post.id || idx}
-              className="reveal overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md"
+              className="reveal overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md bg-white dark:bg-gray-900"
               style={{ transitionDelay: `${idx * 0.12}s` }}
             >
               <div className="aspect-video overflow-hidden">

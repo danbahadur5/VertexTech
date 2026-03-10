@@ -52,14 +52,14 @@ export default function HomePage() {
       <Services />
       <FeatureProject />
 
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">How It Works</Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Deployed in Hours. Defending in Minutes.
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground dark:text-gray-400 max-w-2xl mx-auto">
               Our four-step framework delivers comprehensive protection from day
               one.
             </p>
@@ -84,10 +84,10 @@ export default function HomePage() {
                     }}
                   />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">
                   {item.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                   {item.desc}
                 </p>
               </div>

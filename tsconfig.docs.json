@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "app/**/*.mts",
+    "app/**/*.js",
+    "app/**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "app/__tests__/**/*"
+  ],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

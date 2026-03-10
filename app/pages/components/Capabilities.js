@@ -10,17 +10,17 @@ export default function Capabilities() {
     { label: "SOC Analyst Efficiency Gain", value: 74, icon: Activity },
   ];
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="reveal">
               <Badge className="mb-4 theme-badge">Platform Capabilities</Badge>
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 Industry-Leading{" "}
                 <span className="theme-gradient-text">Security Metrics</span>
               </h2>
-              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
                 Our AI-driven platform consistently outperforms the competition
                 across every key security measurement — because your protection
                 depends on it.
@@ -41,7 +41,7 @@ export default function Capabilities() {
                           className="h-4 w-4"
                           style={{ color: "var(--theme-primary)" }}
                         />
-                        <span className="text-sm font-semibold text-gray-700">
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                           {cap.label}
                         </span>
                       </div>
@@ -87,14 +87,14 @@ export default function Capabilities() {
               return (
                 <div
                   key={feat.title}
-                  className="reveal-scale bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                  className="reveal-scale bg-white dark:bg-gray-950 rounded-2xl p-6 border cursor-pointer dark:border-gray-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                   style={{ transitionDelay: `${idx * 0.12}s` }}
                 >
                   <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="h-6 w-6 text-white" />
                   </div>
-                  <h4 className="font-bold text-gray-900 mb-2">{feat.title}</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{feat.title}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {feat.desc}
                   </p>
                 </div>

@@ -36,13 +36,13 @@ export default function BlogPage() {
         <div className="blob blob-primary w-80 h-80 top-[-100px] right-[-80px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">Insights & Updates</Badge>
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">
+          <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
             Security <span className="theme-gradient-text">Intelligence</span>
           </h1>
           <div className="mt-8 max-w-md mx-auto animate-fade-in delay-300">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input type="text" placeholder="Search articles..." className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-gray-600 bg-white shadow-sm text-sm focus:outline-none focus:ring-1 transition-shadow" />
+              <input type="text" placeholder="Search articles..." className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-gray-600 bg-white dark:bg-gray-700 dark:text-gray-200 shadow-sm text-sm focus:outline-none focus:ring-1 transition-shadow" />
             </div>
           </div>
         </div>

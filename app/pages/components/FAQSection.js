@@ -42,14 +42,14 @@ export default function FAQSection(){
   const right = faqs.filter((_, i) => i % 2 === 1);
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-gray-950">
       <div className="mx-auto max-w-5xl px-6 lg:px-8">
         <div className="text-center mb-14 reveal">
           <Badge className="mb-4 theme-badge">FAQ</Badge>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground dark:text-gray-400">
             Common questions about our platform and services.
           </p>
         </div>
@@ -60,12 +60,12 @@ export default function FAQSection(){
                 <AccordionItem
                   key={`l-${i}`}
                   value={`l-item-${i}`}
-                  className="bg-gray-50 rounded-xl border border-gray-200 px-6"
+                  className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
                 >
-                  <AccordionTrigger className="font-semibold text-gray-900 hover:no-underline py-5">
+                  <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 pb-5 leading-relaxed">
+                  <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -76,12 +76,12 @@ export default function FAQSection(){
                 <AccordionItem
                   key={`r-${i}`}
                   value={`r-item-${i}`}
-                  className="bg-gray-50 rounded-xl border border-gray-200 px-6"
+                  className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
                 >
-                  <AccordionTrigger className="font-semibold text-gray-900 hover:no-underline py-5">
+                  <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 pb-5 leading-relaxed">
+                  <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>

@@ -85,6 +85,7 @@
   --theme-name:          "Royal Purple";
 }
 .hero-grid-bg { background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+.dark .hero-grid-bg { background-image: linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px); }
 .blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.25; pointer-events: none; }
 .blob-primary { background: radial-gradient(circle at 30% 30%, var(--theme-gradient-from), transparent 60%), radial-gradient(circle at 70% 70%, var(--theme-gradient-to), transparent 60%); }
 .blob-secondary { background: radial-gradient(circle at 70% 30%, var(--theme-gradient-to), transparent 60%), radial-gradient(circle at 30% 70%, var(--theme-gradient-from), transparent 60%); }
@@ -103,6 +104,7 @@
 .theme-gradient-text { background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .theme-border { border-color: var(--theme-primary); }
 .theme-bg-light { background: linear-gradient(135deg, var(--theme-hero-bg-from), var(--theme-hero-bg-to)); }
+.dark .theme-bg-light { background: linear-gradient(135deg, #0f172a, #0b1020); }
 .theme-text { color: var(--theme-primary); }
 .theme-badge { background: var(--theme-badge-bg); color: var(--theme-badge-text); }
 .theme-glow-effect { box-shadow: 0 0 30px var(--theme-glow), 0 20px 60px rgba(0,0,0,0.1); }
@@ -111,5 +113,6 @@
 .theme-btn-outline { border: 2px solid var(--theme-primary); color: var(--theme-primary); background: transparent; transition: all 0.3s ease; }
 .theme-btn-outline:hover { background: var(--theme-primary); color: #fff; transform: translateY(-2px); }
 .progress-wrapper { position: relative; background: #f3f4f6; border-radius: 999px; overflow: hidden; height: 10px; }
+.dark .progress-wrapper { background: rgba(255,255,255,0.08); }
 .progress-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--theme-gradient-from), var(--theme-gradient-to)); position: relative; transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1); width: 0%; }
 .progress-bar.animated { width: var(--progress-target, 100%); }

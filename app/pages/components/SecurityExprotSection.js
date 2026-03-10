@@ -54,12 +54,12 @@ export default function SecurityExportSection() {
   ].filter((r) => r.label || r.sub);
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div className="reveal-left">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{data.title}</h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">{data.subtitle}</p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">{data.title}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">{data.subtitle}</p>
             <div className="space-y-4">
               {rows.map(({ Icon, label, sub }, idx) => (
                 <div key={idx} className="flex items-start gap-4">
@@ -67,20 +67,20 @@ export default function SecurityExportSection() {
                     <Icon className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    {!!label && <div className="font-semibold text-gray-900 text-sm">{label}</div>}
-                    {!!sub && <div className="text-sm text-gray-500 mt-0.5">{sub}</div>}
+                    {!!label && <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{label}</div>}
+                    {!!sub && <div className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{sub}</div>}
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="reveal-right rounded-2xl border border-gray-200 p-8 bg-white shadow-sm">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Office Hours</h3>
+          <div className="reveal-right rounded-2xl border border-gray-200 dark:border-gray-800 p-8 bg-white dark:bg-gray-900 shadow-sm">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Office Hours</h3>
             <div className="space-y-4">
               {data.hours.map(({ day, hours }, i) => (
                 <div key={`${day}-${i}`} className="flex items-center gap-3">
                   <Clock className="h-5 w-5 shrink-0" style={{ color: "var(--theme-primary)" }} />
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
                     <strong>{day}:</strong> {hours}
                   </span>
                 </div>

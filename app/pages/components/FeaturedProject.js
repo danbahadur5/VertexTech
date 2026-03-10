@@ -35,12 +35,12 @@ export default function FeaturedProject() {
 
   if (!loading && items.length === 0) {
     return (
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <div className="text-center mb-8">
             <Badge className="mb-4 theme-badge">Case Studies</Badge>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Explore Our Projects</h2>
-            <p className="text-lg text-muted-foreground">See how we deliver results across industries.</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Explore Our Projects</h2>
+            <p className="text-lg text-muted-foreground dark:text-gray-400">See how we deliver results across industries.</p>
           </div>
           <Button size="lg" variant="outline" className="theme-btn-outline rounded-xl px-8 h-12 font-bold" asChild>
             <Link href="/caseStudy">View All Projects <ArrowRight className="ml-2 h-4 w-4" /></Link>
@@ -51,15 +51,15 @@ export default function FeaturedProject() {
   }
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {loading && <ContentLoader variant="card" count={6} columns={3} aspect="video" className="mb-10" />}
         <div className="text-center mb-16 reveal">
           <Badge className="mb-4 theme-badge">Case Studies</Badge>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Featured Projects
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-400 max-w-2xl mx-auto">
             Success stories from our portfolio of enterprise solutions
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function FeaturedProject() {
           {(loading ? [] : items).map((project, idx) => (
             <Card
               key={project.slug || project.id || idx}
-              className="reveal overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md"
+              className="reveal overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md bg-white dark:bg-gray-900"
               style={{ transitionDelay: `${idx * 0.12}s` }}
             >
               <div className="aspect-video overflow-hidden">

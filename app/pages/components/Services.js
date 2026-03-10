@@ -47,15 +47,15 @@ export default function Services() {
     load();
   }, []);
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {loading && <ContentLoader variant="card" count={8} columns={4} aspect="auto" className="mb-10" />}
         <div className="text-center mb-16 reveal">
           <Badge className="mb-4 theme-badge">Our Solutions</Badge>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Complete Enterprise Solutions
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-400 max-w-2xl mx-auto">
             From endpoint to cloud, protect and scale every layer of your
             digital infrastructure.
           </p>

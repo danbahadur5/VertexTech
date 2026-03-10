@@ -95,7 +95,7 @@ export default function ContactPage() {
         <div className="blob blob-secondary w-64 h-64 bottom-[-60px] right-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">
+          <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
             {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
@@ -165,7 +165,7 @@ export default function ContactPage() {
                         <Label htmlFor="message" className="text-sm font-semibold">Message *</Label>
                         <Textarea id="message" placeholder="Tell us about your organization and security needs..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} required className="rounded-xl border-gray-200 dark:border-gray-700 resize-none" />
                       </div>
-                      <Button type="submit" size="lg" className="theme-btn w-full rounded-xl h-12 font-bold" disabled={submitting}>
+                      <Button type="submit" size="lg" className="theme-btn w-full cursor-pointer rounded-xl h-12 font-bold" disabled={submitting}>
                         {submitting ? (<><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-rotate mr-2" />Sending...</>) : (<><Send className="h-4 w-4 mr-2" /> Send Message</>)}
                       </Button>
                     </form>

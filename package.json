@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "docs": "typedoc --entryPointStrategy expand --tsconfig tsconfig.docs.json --out docs app",
+    "test": "vitest run --reporter=default"
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.5.4",
@@ -77,10 +79,21 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "20.14.9",
     "@types/react": "18.3.12",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
-    "tailwindcss": "^4"
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "jsdom": "^26.0.0",
+    "tailwindcss": "^4",
+    "typedoc": "^0.26.7",
+    "vitest": "^2.1.4"
   }
 }

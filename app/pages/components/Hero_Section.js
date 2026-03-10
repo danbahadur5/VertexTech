@@ -1,3 +1,4 @@
+"user client"
 import HeroMap from "../assets/map.svg";
 import HeroImage from "../assets/images.jpg";
 import { Link } from "react-router";
@@ -24,7 +25,7 @@ const RatingStars = ({ score = 4.8 }) => {
   ));
   return (
     <div className="flex items-center gap-2 text-xl leading-none mb-1">
-      <div className="text-gray-900 font-semibold">{rounded.toFixed(1)}</div>
+      <div className="text-gray-900 dark:text-gray-400 font-semibold">{rounded.toFixed(1)}</div>
       {stars}
     </div>
   );
@@ -116,68 +117,68 @@ const ServiceRing = ({ items }) => {
   const ringRadius = "12rem";
   const outerRingRadius = "15rem";
 
-  const icons = {
-    shield: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    globe: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <circle cx="12" cy="12" r="10" />
-      </svg>
-    ),
-    chart: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <path d="M7 10l3-3 3 3 4-4" />
-      </svg>
-    ),
-    app: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <rect x="4" y="4" width="16" height="16" rx="2" />
-      </svg>
-    ),
-    ai: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <circle cx="12" cy="12" r="10" />
-      </svg>
-    ),
-    design: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <circle cx="12" cy="12" r="2.5" />
-      </svg>
-    ),
-  };
+  // const icons = {
+  //   shield: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  //     </svg>
+  //   ),
+  //   globe: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <circle cx="12" cy="12" r="10" />
+  //     </svg>
+  //   ),
+  //   chart: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <path d="M7 10l3-3 3 3 4-4" />
+  //     </svg>
+  //   ),
+  //   app: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <rect x="4" y="4" width="16" height="16" rx="2" />
+  //     </svg>
+  //   ),
+  //   ai: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <circle cx="12" cy="12" r="10" />
+  //     </svg>
+  //   ),
+  //   design: (
+  //     <svg
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       stroke="currentColor"
+  //       strokeWidth="2"
+  //     >
+  //       <circle cx="12" cy="12" r="2.5" />
+  //     </svg>
+  //   ),
+  // };
 
   return (
     <div
@@ -212,7 +213,7 @@ const ServiceRing = ({ items }) => {
               transform: `rotate(${angle}deg) translateX(var(--ring-radius)) rotate(-${angle}deg)`,
             }}
           >
-            <div className="bg-orange-800 text-white px-4 py-2 rounded-full shadow-md border border-gray-200 text-sm font-medium flex items-center gap-2 whitespace-nowrap">
+            <div className="theme-gradient text-white px-4 py-2 rounded-full shadow-md border border-gray-200 text-sm font-medium flex items-center gap-2 whitespace-nowrap">
               <span className="w-5 h-5">{iconNode(service.icon)}</span>
               {service.name}
             </div>
@@ -277,7 +278,7 @@ export default function HeroSection() {
   const heroImg = cleanUrl(data?.heroImage) || HeroImage;
 
   return (
-    <section className="relative theme-bg-light hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-24">
+    <section className="relative theme-bg-light  hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="bg-no-repeat bg-right-top lg:bg-right bg-contain"
@@ -291,7 +292,7 @@ export default function HeroSection() {
                   {data?.badge || "Welcome to VertexTech"}
                 </span>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 leading-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">
                   {(data?.titleLeading || "Powering Your") + " "}
                   <span
                     className="theme-gradient-text"
@@ -301,7 +302,7 @@ export default function HeroSection() {
                   </span>
                 </h1>
 
-                <p className="mb-6 text-lg sm:text-xl text-gray-700 leading-relaxed">
+                <p className="mb-6 text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
                   {data?.subtitle ||
                     "Cloud, cybersecurity, and software that scale with your ambition."}
                 </p>
@@ -319,7 +320,7 @@ export default function HeroSection() {
                       <AvatarGroup avatars={data?.avatars} />
                       <RatingStars score={data?.rating?.score} />
                     </div>
-                    <div className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       {data?.rating?.caption
                         ? data.rating.caption
                         : Array.isArray(data?.features) && data.features.length

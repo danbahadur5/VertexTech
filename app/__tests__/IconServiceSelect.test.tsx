@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import IconServiceSelect from "../components/form/IconServiceSelect";
 
 describe("IconServiceSelect", () => {
@@ -12,8 +12,8 @@ describe("IconServiceSelect", () => {
 
   it("renders and opens popover", async () => {
     const onChange = vi.fn();
-    render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
-    const button = screen.getByRole("combobox");
+    const { container } = render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
+    const button = within(container).getAllByLabelText(/services/i)[0];
     expect(button).toBeInTheDocument();
     fireEvent.click(button);
     expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -21,18 +21,18 @@ describe("IconServiceSelect", () => {
 
   it("filters via search input", async () => {
     const onChange = vi.fn();
-    render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" />);
-    fireEvent.click(screen.getByRole("combobox"));
-    const input = screen.getByRole("textbox");
+    const { container } = render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
+    fireEvent.click(within(container).getAllByLabelText(/services/i)[0]);
+    const input = within(container).getByPlaceholderText("Search services…");
     fireEvent.change(input, { target: { value: "Web" } });
-    expect(screen.getByText("Web Development")).toBeInTheDocument();
+    expect(within(container).getByText("Web Development")).toBeInTheDocument();
   });
 
   it("supports multi-select", async () => {
     const onChange = vi.fn();
-    render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" />);
-    fireEvent.click(screen.getByRole("combobox"));
-    const option = screen.getByRole("option", { name: /Cyber Security/ });
+    const { container } = render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
+    fireEvent.click(within(container).getAllByLabelText(/services/i)[0]);
+    const option = within(container).getByRole("option", { name: /Cyber Security/ });
     fireEvent.click(option);
     expect(onChange).toHaveBeenCalled();
   });

@@ -54,14 +54,14 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center mb-16 reveal">
           <Badge className="mb-4 theme-badge">Testimonials</Badge>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             {title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-400 max-w-2xl mx-auto">
             {subtitle}
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function Testimonials() {
                   className="h-8 w-8 mb-4 opacity-30"
                   style={{ color: "var(--theme-primary)" }}
                 />
-                <p className="text-gray-700 mb-6 italic leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 mb-6 italic leading-relaxed">
                   "{t.quote}"
                 </p>
                 <div className="flex items-center gap-3">
@@ -95,13 +95,13 @@ export default function Testimonials() {
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-gray-100 ring-2 ring-gray-100" />
+                    <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 ring-2 ring-gray-100 dark:ring-gray-700" />
                   )}
                   <div>
-                    <div className="font-semibold text-gray-900 text-sm">
+                    <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
                       {t.name || "Security Leader"}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {[t.role, t.company].filter(Boolean).join(" • ")}
                     </div>
                   </div>

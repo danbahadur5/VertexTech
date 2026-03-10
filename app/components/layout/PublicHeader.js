@@ -247,7 +247,7 @@ export function PublicHeader() {
         className={`sticky top-0 z-50 w-full transition-all duration-300 hidden lg:block
           ${
             scrolled
-              ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:border-gray-800"
+              ? "bg-white/95 dark:bg-gray-950 backdrop-blur-md shadow-md border-b border-gray-100 dark:border-gray-800"
               : "bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800"
           }`}
       >
@@ -272,7 +272,7 @@ export function PublicHeader() {
           </div>
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 items-center">
-            {/* <ThemeSwitcher />  */}
+            {/* <ThemeSwitcher /> */}
             <Button
               variant="outline"
               size="icon"
@@ -286,7 +286,7 @@ export function PublicHeader() {
 
             {isAuthenticated ? (
               <Button
-                className="theme-btn rounded-lg px-5 h-9 text-sm font-semibold"
+                className="theme-btn rounded-lg px-5 h-9 cursor-pointer text-sm font-semibold"
                 onClick={() => navigate(`/dashboard/${user?.role}`)}
               >
                 Dashboard
@@ -370,7 +370,7 @@ export function PublicHeader() {
               ${isActive("/services") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <LayoutGrid className="h-5 w-5" />
-            <span className="text-[10px] mt-1 font-medium">Services</span>
+            <span className="text-[10px] mt-1 cursor-pointer font-medium">Services</span>
           </Link>
           <Link
             to="/about"

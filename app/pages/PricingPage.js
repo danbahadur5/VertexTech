@@ -36,10 +36,10 @@ export default function PricingPage() {
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] right-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold">Transparent Pricing</Badge>
-          <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 mb-6 animate-fade-in-up delay-100">
+          <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
             {heroTitle.split(' ').slice(0, -1).join(' ')} <span className="theme-gradient-text">{heroTitle.split(' ').slice(-1)}</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-up delay-200">
+          <p className="text-xl text-gray-600  max-w-2xl mx-auto animate-fade-in-up delay-200">
             {heroSubtitle}
           </p>
         </div>
