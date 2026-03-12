@@ -162,7 +162,7 @@ export default function Page() {
                             </div>
                           )}
                         </TableCell>
-                        <TableCell className="font-medium text-gray-900">{it.name}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-gray-400">{it.name}</TableCell>
                         <TableCell className="text-gray-600">{it.position}</TableCell>
                         <TableCell className="text-gray-600"><div className="line-clamp-2">{it.bio}</div></TableCell>
                         <TableCell className="text-right">

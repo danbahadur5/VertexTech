@@ -260,18 +260,18 @@ export default function ServicesPage() {
   return (
     <DashboardLayout>
 
-      <div className="space-y-8">
+      <div className="space-y-8 overflow-y-auto max-h-[70vh] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
         <div className="flex items-center justify-between">
 
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Services Manager</h1>
-            <p className="text-slate-600 mt-2">Create and manage your service offerings</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Services Manager</h1>
+            <p className="text-slate-600 dark:text-slate-300 mt-2">Create and manage your service offerings</p>
           </div>
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleNewServiceClick}>
+              <Button className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white" onClick={handleNewServiceClick}>
                 <Plus className="h-4 w-4 mr-2" />
                 New Service
               </Button>
@@ -598,30 +598,31 @@ export default function ServicesPage() {
           </Dialog>
         </div>
 
-        <Card className="border border-slate-200">
+          <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-900">
 
           <CardHeader>
             <CardTitle>All Services</CardTitle>
             <CardDescription>Manage your services and pricing</CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="text-gray-900 dark:text-gray-100 overflow-y-auto max-h-[60vh] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
             {loading && <div className="text-sm text-slate-500">Loading services...</div>}
             {error && <div className="text-sm text-red-600">{error}</div>}
 
             {!loading && !error && (
 
+              <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <Table>
 
-                <TableHeader>
+                <TableHeader className="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100">
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Slug</TableHead>
-                    <TableHead>Basic</TableHead>
-                    <TableHead>Pro</TableHead>
-                    <TableHead>Enterprise</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="dark:text-slate-100">Title</TableHead>
+                    <TableHead className="dark:text-slate-100">Slug</TableHead>
+                    <TableHead className="dark:text-slate-100">Basic</TableHead>
+                    <TableHead className="dark:text-slate-100">Pro</TableHead>
+                    <TableHead className="dark:text-slate-100">Enterprise</TableHead>
+                    <TableHead className="text-right dark:text-slate-100">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -640,19 +641,19 @@ export default function ServicesPage() {
                       </TableCell>
 
                       <TableCell>
-                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
                           ${svc?.pricing?.basic ?? '-'}
                         </Badge>
                       </TableCell>
 
                       <TableCell>
-                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
                           ${svc?.pricing?.professional ?? '-'}
                         </Badge>
                       </TableCell>
 
                       <TableCell>
-                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
+                        <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
                           ${svc?.pricing?.enterprise ?? '-'}
                         </Badge>
                       </TableCell>
@@ -664,7 +665,7 @@ export default function ServicesPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="hover:bg-blue-50"
+                            className="hover:bg-blue-50 dark:hover:bg-blue-900/30"
                             onClick={() => startEdit(svc)}
                           >
                             <Edit className="h-4 w-4 text-blue-600" />
@@ -673,7 +674,7 @@ export default function ServicesPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="hover:bg-red-50"
+                            className="hover:bg-red-50 dark:hover:bg-red-900/30"
                             onClick={() => startDelete(svc)}
                           >
                             <Trash2 className="h-4 w-4 text-red-600" />
@@ -690,6 +691,7 @@ export default function ServicesPage() {
                 </TableBody>
 
               </Table>
+              </div>
 
             )}
 

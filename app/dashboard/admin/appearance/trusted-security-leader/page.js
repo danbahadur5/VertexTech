@@ -185,7 +185,7 @@ export default function Page() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Trusted Security Leader</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Trusted Security Leader</h1>
             <p className="text-gray-600 mt-2">Showcase leader quotes and trust signals.</p>
           </div>
           <Button onClick={() => { setForm({ name: '', role: '', company: '', quote: '', avatarUrl: '', logoUrl: '', featured: false }); setOpen(true); }} className="bg-blue-600 hover:bg-blue-700 text-white">
@@ -247,8 +247,8 @@ export default function Page() {
                           </div>
                         )}
                       </TableCell>
-                      <TableCell className="font-medium text-gray-900">{it.name}</TableCell>
-                      <TableCell className="text-gray-600">{it.role}</TableCell>
+                      <TableCell className="font-medium text-gray-900 dark:text-slate-100">{it.name}</TableCell>
+                      <TableCell className="text-gray-600 dark:text-slate-400">{it.role}</TableCell>
                       <TableCell className="text-gray-600 flex items-center gap-2">
                         {it.logoUrl && <img src={it.logoUrl} alt={it.company} className="h-5 w-5 object-contain" />}
                         {it.company}

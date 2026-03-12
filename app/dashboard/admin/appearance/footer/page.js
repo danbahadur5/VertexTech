@@ -210,9 +210,9 @@ export default function Page() {
             ) : (
               <div className="grid md:grid-cols-4 gap-6">
                 {columns.map((col, colIdx) => (
-                  <div key={colIdx} className="rounded-xl border bg-white p-4">
+                  <div key={colIdx} className="rounded-xl border bg-white dark:bg-black p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <div className="font-semibold text-gray-900">{col.title}</div>
+                      <div className="font-semibold text-gray-900 dark:text-slate-100">{col.title}</div>
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm" onClick={() => startEditColumn(colIdx)}><Edit className="h-4 w-4" /></Button>
                         <Button variant="outline" size="sm" onClick={() => startAddLink(colIdx)}><Plus className="h-4 w-4" /></Button>
@@ -221,16 +221,16 @@ export default function Page() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Href</TableHead>
+                          <TableHead className="text-sm font-medium text-gray-900 dark:text-slate-100">Name</TableHead>
+                          <TableHead className="text-sm font-medium text-gray-900 dark:text-slate-100">Href</TableHead>
                           <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {(col.links || []).map((l, i) => (
                           <TableRow key={i}>
-                            <TableCell className="text-sm font-medium text-gray-900">{l.name}</TableCell>
-                            <TableCell className="text-sm text-gray-600">{l.href}</TableCell>
+                            <TableCell className="text-sm font-medium text-gray-900 dark:text-slate-100">{l.name}</TableCell>
+                            <TableCell className="text-sm text-gray-600 dark:text-slate-100">{l.href}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex justify-end gap-2">
                                 <Button variant="outline" size="sm" onClick={() => startEditLink(colIdx, l)}><Edit className="h-4 w-4" /></Button>
@@ -271,7 +271,7 @@ export default function Page() {
         </Dialog>
 
         <Dialog open={editOpen} onOpenChange={setEditOpen}>
-          <DialogContent className="sm:max-w-md bg-white dark:bg-white text-gray-900 rounded-xl">
+          <DialogContent className="sm:max-w-md bg-white dark:bg-black text-gray-900 dark:text-slate-100 rounded-xl">
             <DialogHeader><DialogTitle>{currentLink?.isColumn ? 'Edit Column' : 'Edit Link'}</DialogTitle></DialogHeader>
             {currentLink?.isColumn ? (
               <form onSubmit={onEditColumn} className="space-y-3">

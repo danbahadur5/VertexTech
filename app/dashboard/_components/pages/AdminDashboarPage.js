@@ -85,13 +85,13 @@ export default function AdminDashboard() {
           <CardContent className="p-8 md:p-10">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="max-w-2xl space-y-3">
-                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-50 text-blue-800">
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-50 dark:bg-blue-900 text-blue-800 dark:text-gray-300">
                   Admin
                 </div>
-                <h1 className="text-2xl md:text-3xl font-extrabold tracking-[-0.02em] text-gray-900">
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-[-0.02em] text-gray-900 dark:text-gray-300">
                   Manage Your Site Content With Clarity
                 </h1>
-                <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                <p className="text-base md:text-lg text-gray-700 dark:text-gray-400 leading-relaxed">
                   Review key metrics and jump straight into editing hero content, pages, and media. Designed for accessibility and focus.
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -109,20 +109,20 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
               </div>
-              <div className="w-full md:w-auto md:min-w-[320px]">
-                <div className="rounded-xl border bg-white shadow-sm p-6">
-                  <div className="text-sm font-semibold text-gray-700 mb-2">At a Glance</div>
+              <div className="w-full md:w-auto md:min-w-[320px] dark:bg-gray-800 rounded-xl">
+                <div className="rounded-xl bg-white shadow-sm p-6 dark:bg-black">
+                  <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">At a Glance</div>
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-900">{String(statsData.pages || 0)}</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-gray-300">{String(statsData.pages || 0)}</div>
                       <div className="text-xs text-gray-600 mt-1">Pages</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-900">{String(statsData.posts || 0)}</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-gray-300">{String(statsData.posts || 0)}</div>
                       <div className="text-xs text-gray-600 mt-1">Posts</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-gray-900">{String(statsData.projects || 0)}</div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-gray-300">{String(statsData.projects || 0)}</div>
                       <div className="text-xs text-gray-600 mt-1">Projects</div>
                     </div>
                   </div>
@@ -146,7 +146,7 @@ export default function AdminDashboard() {
                   <Icon className="h-4 w-4 text-gray-400" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-300">{stat.value}</div>
                   <div className="flex items-center mt-2">
                     {isPositive ? (
                       <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
@@ -184,10 +184,10 @@ export default function AdminDashboard() {
                     <Link key={action.name} to={action.href}>
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
-                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 dark:from-gray-800 dark:to-gray-700">
                             <Icon className="h-6 w-6 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-gray-900">{action.name}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{action.name}</p>
                         </CardContent>
                       </Card>
                     </Link>
@@ -207,14 +207,14 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start gap-4 pb-4 border-b last:border-0">
-                    <div className="bg-blue-100 p-2 rounded-lg">
+                    <div className="bg-blue-100 p-2 rounded-lg dark:bg-gray-700">
                       <Activity className="h-4 w-4 text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                      <p className="text-sm text-gray-600">{activity.user}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{activity.action}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{activity.user}</p>
                     </div>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">{activity.time}</span>
+                    <span className="text-xs text-gray-500 whitespace-nowrap dark:text-gray-500">{activity.time}</span>
                   </div>
                 ))}
               </div>
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
                 <span className="text-sm text-gray-600">Resolved</span>
                 <Badge className="bg-green-100 text-green-800">{statsData?.ticketsByStatus?.resolved ?? 0}</Badge>
               </div>
-              <Button variant="outline" size="sm" className="w-full mt-4" asChild>
+              <Button variant="outline" size="sm" className="w-full mt-4 dark:text-gray-300 dark:border-gray-600" asChild>
                 <Link to="/dashboard/admin/support">View All Tickets</Link>
               </Button>
             </CardContent>
@@ -284,7 +284,7 @@ export default function AdminDashboard() {
                 <span className="text-sm text-gray-600">Clients</span>
                 <Badge variant="secondary">{statsData?.usersByRole?.client ?? 0}</Badge>
               </div>
-              <Button variant="outline" size="sm" className="w-full mt-4" asChild>
+              <Button variant="outline" size="sm" className="w-full mt-4 dark:text-gray-300 dark:border-gray-600" asChild>
                 <Link to="/dashboard/admin/users">Manage Users</Link>
               </Button>
             </CardContent>

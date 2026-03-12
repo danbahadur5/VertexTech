@@ -193,8 +193,8 @@ export default function BlogPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Blog Manager</h1>
-            <p className="text-gray-600 mt-2">Create and manage blog posts</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Blog Manager</h1>
+            <p className="text-gray-600 mt-2 ">Create and manage blog posts</p>
           </div>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

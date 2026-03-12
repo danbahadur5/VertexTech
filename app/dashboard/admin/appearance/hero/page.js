@@ -278,7 +278,7 @@ export default function Page() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Hero Groups</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Hero Groups</h1>
             <p className="text-gray-600 mt-2">Manage multiple hero variants. Only one can be active.</p>
           </div>
           <Dialog open={open} onOpenChange={setOpen}>
@@ -288,7 +288,7 @@ export default function Page() {
                 New Hero Group
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-2xl bg-white dark:bg-white text-gray-900 rounded-xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-2xl bg-white dark:bg-black dark:text-slate-100 text-gray-900 rounded-xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Create Hero Group</DialogTitle>
               </DialogHeader>
@@ -335,7 +335,7 @@ export default function Page() {
                         if (fileInputRef.current) fileInputRef.current.value = '';
                       }
                     }} />
-                    <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}>
+                    <Button type="button"  variant="outline" onClick={() => fileInputRef.current?.click()}>
                       Upload Image
                     </Button>
                     {form.heroImage && <img src={form.heroImage} alt="Hero" className="h-10 w-10 rounded object-cover border" />}

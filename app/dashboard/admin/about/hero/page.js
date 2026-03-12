@@ -210,8 +210,8 @@ export default function Page() {
                   <TableBody>
                     {stats.map((it, idx) => (
                       <TableRow key={`${it.label}-${idx}`}>
-                        <TableCell className="font-medium text-gray-900">{it.num}</TableCell>
-                        <TableCell className="text-gray-600">{it.label}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-gray-400">{it.num}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-300">{it.label}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="outline" size="sm" onClick={() => startEdit(it)}><Edit className="h-4 w-4" /></Button>

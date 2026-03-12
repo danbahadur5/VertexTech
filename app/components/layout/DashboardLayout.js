@@ -23,12 +23,15 @@ import {
   FolderOpen,
   ChevronLeft,
   ChevronRight,
-  Plus
+  Plus,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useAuth } from '../../lib/auth-context';
 import { Badge } from '../ui/badge';
+import { useTheme } from 'next-themes';
 
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -40,6 +43,7 @@ export function DashboardLayout({ children }) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [autoHideEnabled, setAutoHideEnabled] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const p = location.pathname || "";
@@ -47,6 +51,16 @@ export function DashboardLayout({ children }) {
     setAutoHideEnabled(shouldEnable);
     setLastScrollY(0);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const items = getNavigationItems();
+    const appearanceChildren = items.find((i) => i.name === 'Appearance')?.children || [];
+    const aboutChildren = items.find((i) => i.name === 'About')?.children || [];
+    const appearanceActive = appearanceChildren.some((c) => isActive(c.href));
+    const aboutActive = aboutChildren.some((c) => isActive(c.href));
+    setAppearanceOpen(appearanceActive);
+    setAboutOpen(aboutActive);
+  }, [location.pathname, user?.role]);
 
   useEffect(() => {
     if (!autoHideEnabled) return;
@@ -167,10 +181,10 @@ export function DashboardLayout({ children }) {
   const sectionLabel = role === 'admin' ? 'Admin' : role === 'editor' ? 'Editor' : 'Client';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <aside className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
-        <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 bg-gradient-to-b from-white to-gray-50 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
-          <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white border-gray-200 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
+        <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
+          <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
             <Link to="/" className="flex items-center gap-2">
               <span className={`font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${sidebarCollapsed ? 'text-xl' : 'text-2xl'}`}>
                 V
@@ -183,14 +197,14 @@ export function DashboardLayout({ children }) {
             </Link>
             <button
               aria-label="Toggle sidebar"
-              className="inline-flex items-center justify-center rounded-md border px-2.5 py-2 text-gray-600 hover:bg-gray-100"
+              className="inline-flex items-center justify-center rounded-md border px-2.5 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             >
               {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </button>
           </div>
           {!sidebarCollapsed && (
-            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-2">
+            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide px-2">
               {sectionLabel}
             </div>
           )}
@@ -208,14 +222,14 @@ export function DashboardLayout({ children }) {
                           if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
                           if (item.name === 'About') setAboutOpen(!aboutOpen);
                         }}
-                        className={`w-full cursor-pointer flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 hover:text-blue-600'}`}
+                        className={`w-full cursor-pointer flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                         title={item.name}
                       >
                         <div className="flex items-center gap-x-3">
-                          <Icon className="h-5 w-5 shrink-0 text-gray-400" />
+                          <Icon className="h-5 w-5 shrink-0 text-gray-400 dark:text-gray-500" />
                           {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
                         </div>
-                        {!sidebarCollapsed && (open ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />)}
+                        {!sidebarCollapsed && (open ? <ChevronUp className="h-4 w-4 text-gray-400 dark:text-gray-500" /> : <ChevronDown className="h-4 w-4 text-gray-400 dark:text-gray-500" />)}
                       </button>
                       {open && !sidebarCollapsed && (
                         <ul className="ml-8 space-y-1">
@@ -225,7 +239,7 @@ export function DashboardLayout({ children }) {
                               <li key={child.name}>
                                 <Link
                                   to={child.href}
-                                  className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                                  className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                                   title={child.name}
                                 >
                                   <span className="truncate">{child.name}</span>
@@ -245,12 +259,12 @@ export function DashboardLayout({ children }) {
                       <Link
                         to={item.href}
                         title={item.name}
-                        className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                        className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                       >
                         {active && (
                           <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-white/90" />
                         )}
-                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
+                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600'}`} />
                         {!sidebarCollapsed && <span className="truncate">{item.name}</span>}
                       </Link>
                     </li>
@@ -258,7 +272,7 @@ export function DashboardLayout({ children }) {
                 }
               })}
             </ul>
-            <div className="mt-auto pt-4 border-t border-gray-200">
+            <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-800">
               <div className={`flex items-center gap-x-3 ${sidebarCollapsed ? 'px-1.5 py-3 justify-center' : 'px-2 py-3'}`}>
                 <Avatar>
                   <AvatarImage src={user?.avatar} alt={user?.name} />
@@ -266,7 +280,7 @@ export function DashboardLayout({ children }) {
                 </Avatar>
                 {!sidebarCollapsed && (
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-gray-900">{user?.name}</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user?.name}</div>
                     <Badge className={`text-xs mt-1 ${getRoleBadgeColor(user?.role || 'client')}`}>{user?.role}</Badge>
                   </div>
                 )}
@@ -274,7 +288,7 @@ export function DashboardLayout({ children }) {
               <div className={`${sidebarCollapsed ? 'px-1.5 pb-3' : 'px-2 pb-3'}`}>
                 <Button
                   variant="ghost"
-                  className={`w-full cursor-pointer ${sidebarCollapsed ? 'justify-center' : 'justify-start'} text-red-600 hover:text-red-700 hover:bg-red-50`}
+                  className={`w-full cursor-pointer ${sidebarCollapsed ? 'justify-center' : 'justify-start'} text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20`}
                   onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
@@ -289,8 +303,8 @@ export function DashboardLayout({ children }) {
       {/* Mobile sidebar */}
       {sidebarOpen && (
         <div className="lg:hidden">
-          <div className="fixed inset-0 z-50 bg-gray-900/80" onClick={() => setSidebarOpen(false)} />
-          <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white dark:bg-gray-900 px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-700/50">
             <div className="flex h-16 shrink-0 items-center justify-between">
               <Link to="/" className="flex items-center gap-2">
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -298,7 +312,7 @@ export function DashboardLayout({ children }) {
                 </span>
               </Link>
               <button onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
-                <X className="h-6 w-6 text-gray-700" />
+                <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
               </button>
             </div>
             <nav className="mt-6">
@@ -311,9 +325,9 @@ export function DashboardLayout({ children }) {
                       <Link
                         to={item.href}
                         onClick={() => setSidebarOpen(false)}
-                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 hover:text-blue-600'}`}
+                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                       >
-                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 group-hover:text-blue-600'}`} />
+                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600'}`} />
                         {item.name}
                       </Link>
                     </li>
@@ -327,10 +341,10 @@ export function DashboardLayout({ children }) {
 
       <div className={sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'}>
         {/* Top bar for mobile */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
-            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+            className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-300 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" aria-hidden="true" />
@@ -338,18 +352,28 @@ export function DashboardLayout({ children }) {
           
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-lg font-semibold text-gray-900">Dashboard</h1>
+              <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Dashboard</h1>
             </div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label="Toggle theme"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="bg-transparent dark:bg-gray-800 border-none cursor-pointer text-gray-900 dark:text-gray-100 h-9 w-9"
+              >
+                <Sun className="h-4 w-4 hidden dark:block" />
+                <Moon className="h-4 w-4 dark:hidden" />
+              </Button>
               {role === 'editor' && (
-                <Button size="sm" asChild>
+                <Button size="sm" asChild className='dark:text-gray-200 cursor-pointer'>
                   <Link to="/dashboard/editor/pages">
                     <Plus className="h-4 w-4 mr-2" />
                     New Page
                   </Link>
                 </Button>
               )}
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild className='dark:text-gray-200 cursor-pointer'>
                 <Link to="/">
                   <Home className="h-4 w-4 mr-2" />
                   View Site
@@ -360,7 +384,7 @@ export function DashboardLayout({ children }) {
         </div>
 
         <main className="py-10">
-          <div className="px-4 sm:px-6 lg:px-8">
+          <div className="px-4 sm:px-6 lg:px-8 overflow-y-auto max-h-[calc(100vh-4rem)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {children}
           </div>
         </main>

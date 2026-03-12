@@ -109,7 +109,7 @@ export default function Page() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">FAQ</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">FAQ</h1>
             <p className="text-gray-600 mt-2">Manage frequently asked questions</p>
           </div>
           <Button onClick={() => { setForm({ q: '', a: '' }); setOpen(true); }} className="bg-blue-600 hover:bg-blue-700 text-white">
@@ -136,7 +136,7 @@ export default function Page() {
                 <TableBody>
                   {items.map((it, idx) => (
                     <TableRow key={idx}>
-                      <TableCell className="font-medium text-gray-900">{it.q}</TableCell>
+                      <TableCell className="font-medium text-gray-900 ">{it.q}</TableCell>
                       <TableCell className="text-gray-600">
                         <div className="line-clamp-2">{it.a}</div>
                       </TableCell>

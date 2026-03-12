@@ -35,7 +35,7 @@ export default function SupportPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Support Tickets</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Support Tickets</h1>
             <p className="text-gray-600 mt-2">Track and manage user support requests</p>
           </div>
           <Button>

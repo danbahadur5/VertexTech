@@ -97,7 +97,7 @@ export default function UserPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Users Manager</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Users Manager</h1>
             <p className="text-gray-600 mt-2">Manage user accounts and permissions</p>
           </div>
           <Button>

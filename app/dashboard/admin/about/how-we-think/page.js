@@ -129,8 +129,8 @@ export default function Page() {
                   <TableBody>
                     {items.map((it, idx) => (
                       <TableRow key={`${it.title}-${idx}`}>
-                        <TableCell className="text-gray-600">{it.icon}</TableCell>
-                        <TableCell className="font-medium text-gray-900">{it.title}</TableCell>
+                        <TableCell className="text-gray-600 dark">{it.icon}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-gray-300">{it.title}</TableCell>
                         <TableCell className="text-gray-600"><div className="line-clamp-2">{it.desc}</div></TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">

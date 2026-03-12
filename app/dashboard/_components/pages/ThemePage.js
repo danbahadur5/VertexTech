@@ -17,7 +17,7 @@ export default function ThemePage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Theme Settings</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Theme Settings</h1>
           <p className="text-gray-600 mt-2">Customize the look and feel of your website</p>
         </div>
 

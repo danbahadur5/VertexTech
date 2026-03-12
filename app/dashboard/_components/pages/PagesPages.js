@@ -176,23 +176,23 @@ export default function AdminPagesManager() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Pages Manager</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-300">Pages Manager</h1>
             <p className="text-gray-600 mt-2">Create and manage website pages</p>
           </div>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => { resetForm(); setOpen(true); }}>
+              <Button className='cursor-pointer' onClick={() => { resetForm(); setOpen(true); }}>
                 <Plus className="h-4 w-4 mr-2" />
                 New Page
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg dark:bg-black dark:text-gray-400">
               <DialogHeader>
                 <DialogTitle>Create New Page</DialogTitle>
-                <DialogDescription>Provide required details for each section.</DialogDescription>
+                <DialogDescription className="dark:text-gray-400">Provide required details for each section.</DialogDescription>
               </DialogHeader>
               <form onSubmit={handleCreate} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1  sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
                     <Input id="title" placeholder="e.g. Pricing" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
@@ -236,17 +236,17 @@ export default function AdminPagesManager() {
                 </div>
 
                 <DialogFooter className="pt-2">
-                  <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                  <Button type="submit" disabled={saving}>{saving ? 'Creating…' : 'Create Page'}</Button>
+                  <Button className='cursor-pointer dark:text-gray-400' type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                  <Button className='cursor-pointer dark:text-gray-900' type="submit" disabled={saving}>{saving ? 'Creating…' : 'Create Page'}</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className="sm:max-w-lg dark:bg-black dark:text-gray-400">
               <DialogHeader>
                 <DialogTitle>Edit Page</DialogTitle>
-                <DialogDescription>Update page content and metadata.</DialogDescription>
+                <DialogDescription className="dark:text-gray-400">Update page content and metadata.</DialogDescription>
               </DialogHeader>
               <form onSubmit={onSubmitEdit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -290,26 +290,26 @@ export default function AdminPagesManager() {
                   </div>
                 </div>
                 <DialogFooter className="pt-2">
-                  <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
-                  <Button type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save Changes'}</Button>
+                  <Button className='cursor-pointer dark:text-gray-400' type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
+                  <Button className='cursor-pointer dark:text-gray-900' type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save Changes'}</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
           <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md dark:bg-black dark:text-gray-400">
               <DialogHeader>
                 <DialogTitle>Delete Page</DialogTitle>
-                <DialogDescription>This action cannot be undone.</DialogDescription>
+                <DialogDescription className="dark:text-gray-400">This action cannot be undone.</DialogDescription>
               </DialogHeader>
               <div className="space-y-2">
                 <p className="text-sm text-slate-600">
                   Are you sure you want to delete <span className="font-semibold">{current?.title}</span>?
                 </p>
               </div>
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setDeleteOpen(false)}>Cancel</Button>
-                <Button type="button" onClick={confirmDelete} disabled={deleting} className="bg-red-600 hover:bg-red-700 text-white">
+              <DialogFooter className="pt-2">
+                <Button className='cursor-pointer dark:text-gray-400' type="button" variant="outline" onClick={() => setDeleteOpen(false)}>Cancel</Button>
+                <Button className='cursor-pointer dark:text-gray-900' type="button" onClick={confirmDelete} disabled={deleting}>
                   {deleting ? 'Deleting…' : 'Yes, Delete'}
                 </Button>
               </DialogFooter>
@@ -324,7 +324,7 @@ export default function AdminPagesManager() {
           </CardHeader>
           <CardContent>
             <Table>
-              <TableHeader>
+              <TableHeader className='dark:bg-black dark:text-gray-400'>
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Slug</TableHead>
@@ -344,11 +344,11 @@ export default function AdminPagesManager() {
                     <TableCell>{new Date(page.updatedAt || page.updatedAtISO || page.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => startEdit(page)} className="hover:bg-blue-50">
+                        <Button variant="ghost" size="sm" onClick={() => startEdit(page)} className="hover:bg-blue-50 cursor-pointer">
                           <Edit className="h-4 w-4" />
                         </Button>
                         {isAdmin && (
-                          <Button variant="ghost" size="sm" onClick={() => startDelete(page)} className="hover:bg-red-50">
+                          <Button variant="ghost" size="sm" onClick={() => startDelete(page)} className="hover:bg-red-50 cursor-pointer">
                             <Trash2 className="h-4 w-4 text-red-600" />
                           </Button>
                         )}

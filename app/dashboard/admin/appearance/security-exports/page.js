@@ -213,8 +213,8 @@ export default function Page() {
                   <TableBody>
                     {hours.map((h, idx) => (
                       <TableRow key={idx}>
-                        <TableCell className="font-medium text-gray-900">{h.day}</TableCell>
-                        <TableCell className="text-gray-600">{h.hours}</TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-slate-100">{h.day}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-slate-400">{h.hours}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="outline" size="sm" onClick={() => startEdit(h)}><Edit className="h-4 w-4" /></Button>

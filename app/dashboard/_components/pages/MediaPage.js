@@ -68,7 +68,7 @@ export default function MediaPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Media Library</h1>
             <p className="text-gray-600 mt-2">Upload and manage media files</p>
           </div>
           <input ref={inputRef} type="file" hidden onChange={onFile} />

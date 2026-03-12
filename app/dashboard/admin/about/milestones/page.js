@@ -131,9 +131,9 @@ export default function Page() {
                   <TableBody>
                     {items.map((it, idx) => (
                       <TableRow key={`${it.year}-${idx}`}>
-                        <TableCell className="font-medium text-gray-900">{it.year}</TableCell>
-                        <TableCell className="text-gray-800">{it.event}</TableCell>
-                        <TableCell className="text-gray-600"><div className="line-clamp-2">{it.desc}</div></TableCell>
+                        <TableCell className="font-medium text-gray-900 dark:text-gray-400">{it.year}</TableCell>
+                        <TableCell className="text-gray-800 dark:text-gray-300">{it.event}</TableCell>
+                        <TableCell className="text-gray-600 dark:text-gray-200"><div className="line-clamp-2">{it.desc}</div></TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="outline" size="sm" onClick={() => startEdit(it)}><Edit className="h-4 w-4" /></Button>

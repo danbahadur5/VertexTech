@@ -49,7 +49,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, className }), 'dark:bg-black dark:text-slate-100 cursor-pointer')}
       {...props}
     />
   );
