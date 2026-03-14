@@ -88,11 +88,25 @@ const CaseStudySchema = new Schema(
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true, index: true },
     client: { type: String, required: true },
+    clientId: { type: String, index: true },
     description: { type: String, required: true },
     technologies: { type: [String], default: [] },
     gallery: { type: [String], default: [] },
     liveUrl: { type: String },
     status: { type: String, enum: ["in-progress", "completed"], default: "in-progress", index: true },
+    progress: { type: Number, default: 0, min: 0, max: 100 },
+    features: {
+      type: [
+        new Schema(
+          {
+            label: { type: String, required: true },
+            status: { type: String, enum: ["pending", "in-progress", "completed"], default: "pending" },
+          },
+          { _id: false }
+        ),
+      ],
+      default: [],
+    },
     testimonial: {
       quote: { type: String },
       author: { type: String },

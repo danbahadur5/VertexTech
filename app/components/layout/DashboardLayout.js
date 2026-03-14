@@ -25,13 +25,24 @@ import {
   ChevronRight,
   Plus,
   Sun,
-  Moon
+  Moon,
+  LogOut as LogOutIcon
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useAuth } from '../../lib/auth-context';
 import { Badge } from '../ui/badge';
 import { useTheme } from 'next-themes';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
 
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,6 +55,7 @@ export function DashboardLayout({ children }) {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [autoHideEnabled, setAutoHideEnabled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   useEffect(() => {
     const p = location.pathname || "";
@@ -79,7 +91,7 @@ export function DashboardLayout({ children }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, [autoHideEnabled, lastScrollY, sidebarCollapsed, sidebarOpen]);
 
-  const handleLogout = () => {
+  const confirmLogout = () => {
     logout();
     navigate('/login');
   };
@@ -103,6 +115,7 @@ export function DashboardLayout({ children }) {
         { name: 'Services', href: '/dashboard/admin/services', icon: Briefcase },
         { name: 'Blog', href: '/dashboard/admin/blog', icon: Newspaper },
         { name: 'Case Study', href: '/dashboard/admin/caseStudy', icon: FolderOpen },
+        { name: 'SEO', href: '/dashboard/admin/seo', icon: FileText },
         {
           name: 'Appearance',
           icon: Palette,
@@ -138,6 +151,7 @@ export function DashboardLayout({ children }) {
         { name: 'Media Library', href: '/dashboard/admin/media', icon: ImageIcon },
         { name: 'Users', href: '/dashboard/admin/users', icon: Users },
         { name: 'Support', href: '/dashboard/admin/support', icon: MessageSquare },
+        { name: 'Profile', href: '/dashboard/admin/profile', icon: UserCircle },
         { name: 'Theme', href: '/dashboard/admin/theme', icon: Palette },
         { name: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
       ];
@@ -147,7 +161,9 @@ export function DashboardLayout({ children }) {
         { name: 'Pages', href: '/dashboard/editor/pages', icon: FileText },
         { name: 'Blog', href: '/dashboard/editor/blog', icon: Newspaper },
         { name: 'Case Study', href: '/dashboard/editor/caseStudy', icon: FolderOpen },
+        { name: 'SEO', href: '/dashboard/editor/seo', icon: FileText },
         { name: 'Media Library', href: '/dashboard/editor/media', icon: ImageIcon },
+        { name: 'Profile', href: '/dashboard/editor/profile', icon: UserCircle },
       ];
     } else {
       return [
@@ -275,8 +291,8 @@ export function DashboardLayout({ children }) {
             <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-800">
               <div className={`flex items-center gap-x-3 ${sidebarCollapsed ? 'px-1.5 py-3 justify-center' : 'px-2 py-3'}`}>
                 <Avatar>
-                  <AvatarImage src={user?.avatar} alt={user?.name} />
-                  <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                  <AvatarImage />
+                  <AvatarFallback />
                 </Avatar>
                 {!sidebarCollapsed && (
                   <div className="flex-1">
@@ -289,9 +305,9 @@ export function DashboardLayout({ children }) {
                 <Button
                   variant="ghost"
                   className={`w-full cursor-pointer ${sidebarCollapsed ? 'justify-center' : 'justify-start'} text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20`}
-                  onClick={handleLogout}
+                  onClick={() => setLogoutDialogOpen(true)}
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
+                  <LogOutIcon className="h-4 w-4 mr-2" />
                   {!sidebarCollapsed && 'Logout'}
                 </Button>
               </div>
@@ -299,6 +315,27 @@ export function DashboardLayout({ children }) {
           </nav>
         </div>
       </aside>
+
+      {/* Logout Confirmation Dialog */}
+      <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
+        <AlertDialogContent className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-gray-900 dark:text-gray-100">Are you sure you want to logout?</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600 dark:text-gray-400">
+              You will be redirected to the login page.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="cursor-pointer border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmLogout}
+              className="cursor-pointer bg-red-600 hover:bg-red-700 text-white border-none"
+            >
+              Yes, Logout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Mobile sidebar */}
       {sidebarOpen && (

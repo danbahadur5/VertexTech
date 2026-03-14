@@ -6,6 +6,8 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<User>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithGithub: () => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   hasRole: (roles: UserRole[]) => boolean;
@@ -34,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    await (authClient as any).email.signIn({ email, password });
+    await (authClient as any).signIn.email({ email, password });
     const res = await fetch('/api/users/me', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load profile');
     const data = await res.json();
@@ -45,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const register = async (name: string, email: string, password: string) => {
-    await (authClient as any).email.signUp({ email, password, name });
+    await (authClient as any).signUp.email({ email, password, name });
     // After sign-up, email verification may be required depending on config.
     const res = await fetch('/api/users/me', { cache: 'no-store' });
     if (!res.ok) return;
@@ -53,6 +55,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const appUser = data.user as User;
     setUser(appUser);
     localStorage.setItem('vertextech_user', JSON.stringify(appUser));
+  };
+
+  const signInWithGoogle = async () => {
+    await (authClient as any).signIn.social({
+      provider: 'google',
+      callbackURL: window.location.origin + '/dashboard/client',
+    });
+  };
+
+  const signInWithGithub = async () => {
+    await (authClient as any).signIn.social({
+      provider: 'github',
+      callbackURL: window.location.origin + '/dashboard/client',
+    });
   };
 
   const logout = () => {
@@ -64,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const hasRole = (roles: UserRole[]) => (user ? roles.includes(user.role) : false);
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated: !!user, hasRole }}>
+    <AuthContext.Provider value={{ user, login, register, signInWithGoogle, signInWithGithub, logout, isAuthenticated: !!user, hasRole }}>
       {children}
     </AuthContext.Provider>
   );

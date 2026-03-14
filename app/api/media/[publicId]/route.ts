@@ -6,11 +6,12 @@ import { MediaFile } from "../../../models";
 
 export const runtime = "nodejs";
 
-export async function DELETE(_: Request, { params }: any) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ publicId: string }> }) {
+  const { publicId } = await params;
   const ctx = await requireRole(["admin", "editor"]);
   if (!ctx) return NextResponse.json({ error: "forbidden" }, { status: 403 });
-  await cloudinary.uploader.destroy(params.publicId);
+  await cloudinary.uploader.destroy(publicId);
   await connectDB();
-  await MediaFile.findOneAndDelete({ publicId: params.publicId } as any);
+  await MediaFile.findOneAndDelete({ publicId } as any);
   return NextResponse.json({ ok: true });
 }

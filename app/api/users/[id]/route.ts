@@ -5,11 +5,12 @@ import { requireRole } from "../../../lib/rbac";
 
 export const runtime = "nodejs";
 
-export async function DELETE(_: Request, { params }: any) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const ctx = await requireRole(["admin"]);
   if (!ctx) return NextResponse.json({ error: "forbidden" }, { status: 403 });
   await connectDB();
-  const updated = await AppUser.findByIdAndUpdate(params.id as any, { $set: { status: "inactive" } }, { new: true } as any);
+  const updated = await AppUser.findByIdAndUpdate(id as any, { $set: { status: "inactive" } }, { new: true } as any);
   if (!updated) return NextResponse.json({ error: "not_found" }, { status: 404 });
   return NextResponse.json({ user: updated });
 }

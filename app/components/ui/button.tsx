@@ -49,7 +49,13 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }), 'dark:bg-black dark:text-slate-100 cursor-pointer')}
+      className={cn(
+        buttonVariants({ variant, size, className }), 
+        'cursor-pointer transition-colors',
+        // Specific light mode styles if needed to make them "read" better
+        'light:bg-white light:text-slate-900 light:border-slate-200',
+        'dark:bg-black dark:text-slate-100'
+      )}
       {...props}
     />
   );

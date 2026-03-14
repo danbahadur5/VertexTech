@@ -15,8 +15,8 @@ export default function ClientBillingPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Billing</h1>
-          <p className="text-gray-600 mt-2">Invoices and subscription details</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-300">Billing</h1>
+          <p className="text-gray-600 mt-2 dark:text-gray-400">Invoices and subscription details</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -27,12 +27,12 @@ export default function ClientBillingPage() {
             </CardHeader>
             <CardContent className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Plan</span>
+                <span className="text-gray-600 dark:text-gray-400">Plan</span>
                 <Badge className="bg-emerald-100 text-emerald-800">Professional</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Next Invoice</span>
-                <span className="font-medium">$2,499 on 2026-04-01</span>
+                <span className="text-gray-600 dark:text-gray-400">Next Invoice</span>
+                <span className="font-medium dark:text-gray-300">$2,499 on 2026-04-01</span>  
               </div>
             </CardContent>
           </Card>

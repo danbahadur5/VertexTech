@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { connectDB } from "./lib/db";
+import { SiteSetting } from "./models";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,10 +14,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "VertexTech",
-  description: "Enterprise technology solutions by VertexTech",
-};
+export async function generateMetadata() {
+  await connectDB();
+  const res = await SiteSetting.findOne({ key: "system" }).lean();
+  const d = res?.data || {};
+  
+  return {
+    title: d.metaTitle || d.siteName || "VertexTech | AI-Powered Cybersecurity & Solutions",
+    description: d.metaDescription || "Next-generation digital defense and software development.",
+    keywords: d.keywords || "cybersecurity, ai, software development",
+    openGraph: {
+      images: [d.ogImage || "/og-image.png"],
+    },
+  };
+}
 
 export default function RootLayout({ children }) {
   return (

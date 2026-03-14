@@ -6,9 +6,21 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const clientId = searchParams.get('clientId');
+  const clientName = searchParams.get('clientName');
   await connectDB();
-  const items = await CaseStudy.find().sort({ createdAt: -1 }).lean();
+  
+  let query = {};
+  if (clientId || clientName) {
+    const conditions = [];
+    if (clientId) conditions.push({ clientId });
+    if (clientName) conditions.push({ client: clientName });
+    query = { $or: conditions };
+  }
+
+  const items = await CaseStudy.find(query).sort({ createdAt: -1 }).lean();
   return NextResponse.json({ items });
 }
 
@@ -16,11 +28,17 @@ const createSchema = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   client: z.string().min(1),
+  clientId: z.string().optional(),
   description: z.string().min(1),
   technologies: z.array(z.string()).optional(),
   gallery: z.array(z.string()).optional(),
   liveUrl: z.string().url().optional(),
   status: z.enum(["in-progress", "completed"]).optional(),
+  progress: z.number().min(0).max(100).optional(),
+  features: z.array(z.object({
+    label: z.string(),
+    status: z.enum(["pending", "in-progress", "completed"])
+  })).optional(),
   testimonial: z.object({ quote: z.string().optional(), author: z.string().optional(), position: z.string().optional() }).optional(),
   featured: z.boolean().optional(),
   completedAt: z.string().optional(),

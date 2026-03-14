@@ -81,8 +81,8 @@ export default function MediaPage() {
         {loading && <div className="text-sm text-gray-500">Loading media…</div>}
         {!loading && (
         <div className="grid md:grid-cols-4 gap-6">
-          {items.map((file) => (
-            <Card key={file.id} className="overflow-hidden">
+          {items.map((file, idx) => (
+            <Card key={file._id || file.id || file.publicId || idx} className="overflow-hidden">
               <div className="aspect-square overflow-hidden bg-gray-100">
                 <img src={file.url} alt={file.name || file.publicId} className="w-full h-full object-cover" />
               </div>

@@ -25,6 +25,7 @@ export default function CaseStudyPage() {
   const [deleting, setDeleting] = useState(false);
   const [current, setCurrent] = useState(null);
   const [originalSlug, setOriginalSlug] = useState('');
+  const [users, setUsers] = useState([]);
   const fileRefCreate = useRef(null);
   const fileRefEdit = useRef(null);
   const [dragActive, setDragActive] = useState(false);
@@ -32,11 +33,14 @@ export default function CaseStudyPage() {
     title: '',
     slug: '',
     client: '',
+    clientId: '',
     description: '',
     technologies: '',
     gallery: '',
     liveUrl: '',
     status: 'in-progress',
+    progress: 0,
+    features: [{ label: '', status: 'pending' }],
     featured: false,
     completedAt: '',
     testimonialQuote: '',
@@ -48,10 +52,17 @@ export default function CaseStudyPage() {
     const load = async () => {
       setLoading(true);
       try {
-        const res = await fetch('/api/case-studies', { cache: 'no-store' });
+        const [res, usersRes] = await Promise.all([
+          fetch('/api/case-studies', { cache: 'no-store' }),
+          fetch('/api/users', { cache: 'no-store' }),
+        ]);
         if (!res.ok) throw new Error('Failed');
         const data = await res.json();
         setItems(data.items || []);
+        if (usersRes.ok) {
+          const udata = await usersRes.json();
+          setUsers(udata.users || []);
+        }
       } catch {
         setError('Unable to fetch projects');
       } finally {
@@ -66,11 +77,14 @@ export default function CaseStudyPage() {
       title: '',
       slug: '',
       client: '',
+      clientId: '',
       description: '',
       technologies: '',
       gallery: '',
       liveUrl: '',
       status: 'in-progress',
+      progress: 0,
+      features: [{ label: '', status: 'pending' }],
       featured: false,
       completedAt: '',
       testimonialQuote: '',
@@ -86,6 +100,18 @@ export default function CaseStudyPage() {
     setOpen(true);
   };
 
+  const addFeature = () => {
+    setForm(prev => ({ ...prev, features: [...prev.features, { label: '', status: 'pending' }] }));
+  };
+  const updateFeature = (idx, field, val) => {
+    const f = [...form.features];
+    f[idx][field] = val;
+    setForm({ ...form, features: f });
+  };
+  const removeFeature = (idx) => {
+    setForm(prev => ({ ...prev, features: prev.features.filter((_, i) => i !== idx) }));
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!form.title.trim() || !form.slug.trim() || !form.client.trim() || !form.description.trim()) {
@@ -98,11 +124,14 @@ export default function CaseStudyPage() {
         title: form.title.trim(),
         slug: form.slug.trim().replace(/^\//, ''),
         client: form.client.trim(),
+        clientId: form.clientId || undefined,
         description: form.description.trim(),
         technologies: form.technologies.split(',').map(t => t.trim()).filter(Boolean),
         gallery: form.gallery.split(',').map(g => g.trim()).filter(Boolean),
         liveUrl: form.liveUrl?.trim() || undefined,
         status: form.status || 'in-progress',
+        progress: Number(form.progress) || 0,
+        features: form.features.filter(f => f.label.trim()),
         featured: !!form.featured,
         completedAt: form.completedAt ? form.completedAt : undefined,
         testimonial: (form.testimonialQuote?.trim() || form.testimonialAuthor?.trim() || form.testimonialPosition?.trim())
@@ -138,11 +167,14 @@ export default function CaseStudyPage() {
       title: p.title || '',
       slug: p.slug || '',
       client: p.client || '',
+      clientId: p.clientId || '',
       description: p.description || '',
       technologies: Array.isArray(p.technologies) ? p.technologies.join(', ') : '',
       gallery: Array.isArray(p.gallery) ? p.gallery.join(', ') : '',
       liveUrl: p.liveUrl || '',
       status: p.status || 'in-progress',
+      progress: p.progress || 0,
+      features: p.features?.length ? p.features : [{ label: '', status: 'pending' }],
       featured: !!p.featured,
       completedAt: p.completedAt ? String(p.completedAt).slice(0, 10) : '',
       testimonialQuote: p.testimonial?.quote || '',
@@ -163,11 +195,14 @@ export default function CaseStudyPage() {
       const payload = {
         title: form.title.trim(),
         client: form.client.trim(),
+        clientId: form.clientId || undefined,
         description: form.description.trim(),
         technologies: form.technologies.split(',').map(t => t.trim()).filter(Boolean),
         gallery: form.gallery.split(',').map(g => g.trim()).filter(Boolean),
         liveUrl: form.liveUrl?.trim() || undefined,
         status: form.status || 'in-progress',
+        progress: Number(form.progress) || 0,
+        features: form.features.filter(f => f.label.trim()),
         featured: !!form.featured,
         completedAt: form.completedAt ? form.completedAt : undefined,
         testimonial: (form.testimonialQuote?.trim() || form.testimonialAuthor?.trim() || form.testimonialPosition?.trim())
@@ -242,9 +277,71 @@ export default function CaseStudyPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
                   <Input placeholder="Slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-                  <Input placeholder="Client" value={form.client} onChange={(e) => setForm({ ...form, client: e.target.value })} />
+                  <div className="space-y-1">
+                    <Label className="text-xs">Client Name (Display)</Label>
+                    <Input placeholder="Client Name" value={form.client} onChange={(e) => setForm({ ...form, client: e.target.value })} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Assign to Client User</Label>
+                    <Select 
+                      value={form.clientId} 
+                      onValueChange={(v) => {
+                        const selectedUser = users.find(u => u.authUserId === v);
+                        setForm({ 
+                          ...form, 
+                          clientId: v,
+                          client: selectedUser ? selectedUser.name : form.client 
+                        });
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a user" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">No specific user</SelectItem>
+                        {users.map(u => (
+                          <SelectItem key={u.authUserId} value={u.authUserId}>{u.name} ({u.email})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <Input placeholder="Completed At (YYYY-MM-DD)" value={form.completedAt} onChange={(e) => setForm({ ...form, completedAt: e.target.value })} />
-                  <Textarea className="sm:col-span-2" rows={4} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                  <div className="space-y-1">
+                    <Label className="text-xs">Progress (%)</Label>
+                    <Input type="number" min="0" max="100" value={form.progress} onChange={(e) => setForm({ ...form, progress: e.target.value })} />
+                  </div>
+                  <Textarea className="sm:col-span-2" rows={3} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                  
+                  <div className="sm:col-span-2 space-y-3">
+                    <Label className="text-sm font-semibold">Project Features / Tasks</Label>
+                    <div className="space-y-2">
+                      {form.features.map((f, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                          <Input 
+                            placeholder="Feature name" 
+                            value={f.label} 
+                            onChange={(e) => updateFeature(idx, 'label', e.target.value)}
+                            className="flex-1"
+                          />
+                          <Select value={f.status} onValueChange={(v) => updateFeature(idx, 'status', v)}>
+                            <SelectTrigger className="w-[140px]">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="in-progress">In Progress</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button type="button" variant="ghost" size="sm" onClick={() => removeFeature(idx)} className="text-red-500">×</Button>
+                        </div>
+                      ))}
+                      <Button type="button" variant="outline" size="sm" onClick={addFeature} className="w-full">
+                        <Plus className="h-4 w-4 mr-2" /> Add Feature
+                      </Button>
+                    </div>
+                  </div>
+
                   <Input className="sm:col-span-2" placeholder="Technologies (comma separated)" value={form.technologies} onChange={(e) => setForm({ ...form, technologies: e.target.value })} />
                   <Input className="sm:col-span-2" placeholder="Gallery URLs (comma separated)" value={form.gallery} onChange={(e) => setForm({ ...form, gallery: e.target.value })} />
                   <div>
@@ -393,9 +490,71 @@ export default function CaseStudyPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
                   <Input placeholder="Slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-                  <Input placeholder="Client" value={form.client} onChange={(e) => setForm({ ...form, client: e.target.value })} />
+                  <div className="space-y-1">
+                    <Label className="text-xs">Client Name (Display)</Label>
+                    <Input placeholder="Client Name" value={form.client} onChange={(e) => setForm({ ...form, client: e.target.value })} />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Assign to Client User</Label>
+                    <Select 
+                      value={form.clientId} 
+                      onValueChange={(v) => {
+                        const selectedUser = users.find(u => u.authUserId === v);
+                        setForm({ 
+                          ...form, 
+                          clientId: v,
+                          client: selectedUser ? selectedUser.name : form.client 
+                        });
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a user" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">No specific user</SelectItem>
+                        {users.map(u => (
+                          <SelectItem key={u.authUserId} value={u.authUserId}>{u.name} ({u.email})</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <Input placeholder="Completed At (YYYY-MM-DD)" value={form.completedAt} onChange={(e) => setForm({ ...form, completedAt: e.target.value })} />
-                  <Textarea className="sm:col-span-2" rows={4} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                  <div className="space-y-1">
+                    <Label className="text-xs">Progress (%)</Label>
+                    <Input type="number" min="0" max="100" value={form.progress} onChange={(e) => setForm({ ...form, progress: e.target.value })} />
+                  </div>
+                  <Textarea className="sm:col-span-2" rows={3} placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                  
+                  <div className="sm:col-span-2 space-y-3">
+                    <Label className="text-sm font-semibold">Project Features / Tasks</Label>
+                    <div className="space-y-2">
+                      {form.features.map((f, idx) => (
+                        <div key={idx} className="flex gap-2 items-center">
+                          <Input 
+                            placeholder="Feature name" 
+                            value={f.label} 
+                            onChange={(e) => updateFeature(idx, 'label', e.target.value)}
+                            className="flex-1"
+                          />
+                          <Select value={f.status} onValueChange={(v) => updateFeature(idx, 'status', v)}>
+                            <SelectTrigger className="w-[140px]">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="in-progress">In Progress</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button type="button" variant="ghost" size="sm" onClick={() => removeFeature(idx)} className="text-red-500">×</Button>
+                        </div>
+                      ))}
+                      <Button type="button" variant="outline" size="sm" onClick={addFeature} className="w-full">
+                        <Plus className="h-4 w-4 mr-2" /> Add Feature
+                      </Button>
+                    </div>
+                  </div>
+
                   <Input className="sm:col-span-2" placeholder="Technologies (comma separated)" value={form.technologies} onChange={(e) => setForm({ ...form, technologies: e.target.value })} />
                   <Input className="sm:col-span-2" placeholder="Gallery URLs (comma separated)" value={form.gallery} onChange={(e) => setForm({ ...form, gallery: e.target.value })} />
                   <div>
@@ -509,6 +668,8 @@ export default function CaseStudyPage() {
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Client</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Progress</TableHead>
                   <TableHead>Featured</TableHead>
                   <TableHead>Completed</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -518,7 +679,25 @@ export default function CaseStudyPage() {
                 {items.map((project) => (
                   <TableRow key={project._id || project.id}>
                     <TableCell className="font-medium">{project.title}</TableCell>
-                    <TableCell>{project.client}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span>{project.client}</span>
+                        <span className="text-[10px] text-slate-400">{project.clientId || 'Unassigned'}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={project.status === 'completed' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}>
+                        {project.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-blue-500" style={{ width: `${project.progress || 0}%` }} />
+                        </div>
+                        <span className="text-xs font-medium">{project.progress || 0}%</span>
+                      </div>
+                    </TableCell>
                     <TableCell>
                       {project.featured && <Badge className="bg-yellow-100 text-yellow-800"><Star className="h-3 w-3 mr-1" /> Featured</Badge>}
                     </TableCell>

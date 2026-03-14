@@ -26,7 +26,9 @@ export async function GET() {
 
 const updateSchema = z.object({
   name: z.string().min(1).optional(),
-  avatar: z.string().url().optional(),
+  avatar: z.string().optional(),
+  company: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export async function PUT(req: Request) {

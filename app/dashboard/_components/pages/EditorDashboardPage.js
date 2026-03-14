@@ -75,7 +75,7 @@ export default function EditorDashboardPage() {
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-300">Editor Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage content across pages, blog, case studies, and media.</p>
+          <p className="text-gray-600 mt-2 dark:text-gray-400">Manage content across pages, blog, case studies, and media.</p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -83,30 +83,30 @@ export default function EditorDashboardPage() {
             const Icon = stat.icon;
             const isPositive = stat.trend === 'up';
             return (
-              <Card key={stat.name} className="hover:shadow-lg transition-shadow">
+              <Card key={stat.name} className="hover:shadow-lg transition-shadow dark:bg-gray-800 dark:hover:shadow-md">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     {stat.name}
                   </CardTitle>
                   <Icon className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                 </CardHeader>
-                <CardContent>
+                <CardContent className="dark:text-gray-300">
                   <div className="text-3xl font-bold text-gray-900 dark:text-gray-300">{stat.value}</div>
-                  <div className="flex items-center mt-2">
+                  <div className="flex items-center mt-2 dark:text-gray-400">
                     {isPositive ? (
                       <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
                     ) : (
                       <ArrowDownRight className="h-4 w-4 text-red-500 mr-1" />
                     )}
-                    <span className={`text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                    <span className={`text-sm font-medium ${isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                       {stat.change}
                     </span>
-                    <span className="text-sm text-gray-500 ml-2">from last month</span>
+                    <span className="text-sm text-gray-500 ml-2 dark:text-gray-400">from last month</span>
                   </div>
                   <Button variant="ghost" size="sm" className="mt-4 w-full" asChild>
                     <Link to={stat.href}>
                       View Details →
-                    </Link>
+                    </Link> 
                   </Button>
                 </CardContent>
               </Card>
@@ -141,14 +141,14 @@ export default function EditorDashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-gray-800 dark:hover:shadow-md">
             <CardHeader>
-              <CardTitle>Content Summary</CardTitle>
-              <CardDescription>Overview of your content</CardDescription>
+              <CardTitle className="dark:text-gray-300">Content Summary</CardTitle>
+              <CardDescription className="dark:text-gray-400">Overview of your content</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-3 dark:text-gray-300">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Published Pages</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Published Pages</span>
                 <Badge variant="secondary" className="dark:bg-gray-800 dark:text-gray-300">{statsData?.pagesByStatus?.published ?? statsData?.pages ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
@@ -156,8 +156,8 @@ export default function EditorDashboardPage() {
                 <Badge className="dark:bg-gray-800 dark:text-gray-300">{statsData?.postsByStatus?.published ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Case Studies</span>
-                <Badge variant="secondary">{statsData?.projects ?? 0}</Badge>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Case Studies</span>
+                <Badge variant="secondary" className="dark:bg-gray-800 dark:text-gray-300">{statsData?.projects ?? 0}</Badge>
               </div>
             </CardContent>
           </Card>
