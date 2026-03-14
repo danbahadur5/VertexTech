@@ -74,7 +74,7 @@ export default function EditorDashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Editor Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-300">Editor Dashboard</h1>
           <p className="text-gray-600 mt-2">Manage content across pages, blog, case studies, and media.</p>
         </div>
 
@@ -85,13 +85,13 @@ export default function EditorDashboardPage() {
             return (
               <Card key={stat.name} className="hover:shadow-lg transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     {stat.name}
                   </CardTitle>
-                  <Icon className="h-4 w-4 text-gray-400" />
+                  <Icon className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-gray-300">{stat.value}</div>
                   <div className="flex items-center mt-2">
                     {isPositive ? (
                       <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
@@ -117,21 +117,21 @@ export default function EditorDashboardPage() {
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>Frequently used editor tasks</CardDescription>
+              <CardTitle className="dark:text-gray-300">Quick Actions</CardTitle>
+              <CardDescription className="dark:text-gray-400">Frequently used editor tasks</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 {quickActions.map((action) => {
                   const Icon = action.icon;
                   return (
-                    <Link key={action.name} to={action.href}>
+                    <Link key={action.name} to={action.href} className="dark:text-gray-300">
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
-                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
-                            <Icon className="h-6 w-6 text-blue-600" />
+                          <div className="dark:bg-gradient-to-br from-blue-950 dark:bg-gray-900 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <Icon className="h-6 w-6 text-blue-600 dark:text-gray-300" />
                           </div>
-                          <p className="text-sm font-medium text-gray-900">{action.name}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{action.name}</p>
                         </CardContent>
                       </Card>
                     </Link>
@@ -149,11 +149,11 @@ export default function EditorDashboardPage() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Published Pages</span>
-                <Badge variant="secondary">{statsData?.pagesByStatus?.published ?? statsData?.pages ?? 0}</Badge>
+                <Badge variant="secondary" className="dark:bg-gray-800 dark:text-gray-300">{statsData?.pagesByStatus?.published ?? statsData?.pages ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Published Posts</span>
-                <Badge>{statsData?.postsByStatus?.published ?? 0}</Badge>
+                <span className="text-sm text-gray-600 dark:text-gray-400">Published Posts</span>
+                <Badge className="dark:bg-gray-800 dark:text-gray-300">{statsData?.postsByStatus?.published ?? 0}</Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Case Studies</span>
