@@ -26,7 +26,7 @@ export default function CTASection(){
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 border-white/50 text-white hover:bg-white/10 font-bold rounded-xl px-8 h-12"
+                  className="border-2 border-white/50 dark:bg-transparent bg-transparent text-white  font-bold rounded-xl px-8 h-12"
                 >
                   Contact Us
                 </Button>
