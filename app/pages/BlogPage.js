@@ -85,7 +85,7 @@ export default function BlogPage() {
           {loading && <ContentLoader variant="card" count={9} columns={3} aspect="video" className="mb-10" />}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {(loading ? [] : posts).map((post, idx) => (
-              <Card key={post.id} className="reveal overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-0 shadow-md bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
+              <Card key={post._id || post.id || post.slug || idx} className="reveal overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-0 shadow-md bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
                 <div className="aspect-video overflow-hidden">
                   <ImageWithFallback src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>

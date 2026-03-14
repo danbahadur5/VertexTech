@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
+import { Skeleton } from "../../components/ui/skeleton";
 
 const TrustedBy = () => {
-  const [logos, setLogos] = useState([
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/slack.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/framer.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/netflix.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/google.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/linkedin.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/instagram.svg",
-    "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/facebook.svg",
-  ]);
-  const [title, setTitle] = useState("Trusted by Leading Companies");
-  const [subtitle, setSubtitle] = useState("Powering Businesses Around the World");
+  const [logos, setLogos] = useState([]);
+  const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const res = await fetch("/api/settings/trusted-company", { cache: "no-store" });
         const json = await res.json();
         const d = json?.item?.data || {};
         const items = Array.isArray(d?.logos) ? d.logos : [];
         if (items.length) setLogos(items);
-        if (d?.title) setTitle(d.title);
-        if (d?.subtitle) setSubtitle(d.subtitle);
-      } catch {}
+        if (d?.title) setTitle(d.title || "Trusted by Leading Companies");
+        if (d?.subtitle) setSubtitle(d.subtitle || "Powering Businesses Around the World");
+      } catch {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -30,9 +29,17 @@ const TrustedBy = () => {
     <section className="relative py-20 bg-white dark:bg-gray-950 overflow-hidden">
       {/* Title */}
       <div className="text-center mb-12 px-6">
-        <p className="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">{title}</p>
-
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">{subtitle}</h2>
+        {loading ? (
+          <>
+            <Skeleton className="h-4 w-48 mx-auto mb-3" />
+            <Skeleton className="h-10 w-96 mx-auto" />
+          </>
+        ) : (
+          <>
+            <p className="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">{title}</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">{subtitle}</h2>
+          </>
+        )}
       </div>
 
       {/* Animation */}
@@ -62,19 +69,27 @@ const TrustedBy = () => {
           className="marquee-inner flex min-w-[200%] items-center"
           style={{ animationDuration: "20s" }}
         >
-          {[...logos, ...logos].map((url, index) => (
-            <div
-              key={index}
-              className="mx-8 flex items-center justify-center p-4 transition duration-300 hover:-translate-y-1"
-            >
-              <img
-                src={url}
-                alt={`logo-${index}`}
-                className="h-10 w-auto opacity-70 hover:opacity-100 transition duration-300"
-                draggable={false}
-              />
-            </div>
-          ))}
+          {loading ? (
+            [...Array(14)].map((_, i) => (
+              <div key={i} className="mx-8 p-4">
+                <Skeleton className="h-10 w-32" />
+              </div>
+            ))
+          ) : (
+            [...logos, ...logos].map((url, index) => (
+              <div
+                key={index}
+                className="mx-8 flex items-center justify-center p-4 transition duration-300 hover:-translate-y-1"
+              >
+                <img
+                  src={url}
+                  alt={`logo-${index}`}
+                  className="h-10 w-auto opacity-70 hover:opacity-100 transition duration-300"
+                  draggable={false}
+                />
+              </div>
+            ))
+          )}
         </div>
 
         {/* Right Fade */}

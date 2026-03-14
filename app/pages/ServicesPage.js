@@ -34,7 +34,7 @@ export default function ServicesPage() {
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] right-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <div className="animate-fade-in"><Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold">Security Solutions</Badge></div>
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100">Our Security <span className="theme-gradient-text">Platform</span></h1>
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100 dark:text-gray-300">Our Security <span className="theme-gradient-text">Platform</span></h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">Comprehensive cybersecurity solutions to protect your endpoints, cloud infrastructure, identities, and data from advanced threats.</p>
         </div>
       </section>

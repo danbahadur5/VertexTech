@@ -7,10 +7,15 @@ import {
   AccordionTrigger,
 } from "../../components/ui/accordion";
 import { Badge } from "../../components/ui/badge";
+import { Skeleton } from "../../components/ui/skeleton";
+
 export default function FAQSection(){
   const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const res = await fetch("/api/settings/faq", { cache: "no-store" });
         const json = await res.json();
@@ -27,7 +32,6 @@ export default function FAQSection(){
           ]);
         }
       } catch {
-        // fallback defaults
         setFaqs([
           { q: "How quickly can we deploy across our organization?", a: "Most customers are fully operational within one week. Our lightweight agent installs silently with no reboots required, and cloud integrations connect via API in minutes." },
           { q: "Does VertexTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
@@ -35,6 +39,8 @@ export default function FAQSection(){
           { q: "How do you detect zero‑day threats?", a: "We use behavioral analysis to identify anomalous activity across processes, memory, and network patterns, blocking novel exploits in real time." },
           { q: "Can we start with a pilot?", a: "Absolutely. We can begin with a scoped pilot and expand progressively to full coverage once success criteria are met." },
         ]);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
@@ -55,38 +61,51 @@ export default function FAQSection(){
         </div>
         <div className="reveal">
           <div className="grid gap-6 lg:grid-cols-2">
-            <Accordion type="single" collapsible className="space-y-3">
-              {left.map((item, i) => (
-                <AccordionItem
-                  key={`l-${i}`}
-                  value={`l-item-${i}`}
-                  className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
-                >
-                  <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
-                    {item.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
-                    {item.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-            <Accordion type="single" collapsible className="space-y-3">
-              {right.map((item, i) => (
-                <AccordionItem
-                  key={`r-${i}`}
-                  value={`r-item-${i}`}
-                  className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
-                >
-                  <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
-                    {item.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
-                    {item.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            {loading ? (
+              <>
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)}
+                </div>
+                <div className="space-y-4">
+                  {[...Array(2)].map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)}
+                </div>
+              </>
+            ) : (
+              <>
+                <Accordion type="single" collapsible className="space-y-3">
+                  {left.map((item, i) => (
+                    <AccordionItem
+                      key={`l-${i}`}
+                      value={`l-item-${i}`}
+                      className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
+                    >
+                      <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
+                        {item.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
+                        {item.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+                <Accordion type="single" collapsible className="space-y-3">
+                  {right.map((item, i) => (
+                    <AccordionItem
+                      key={`r-${i}`}
+                      value={`r-item-${i}`}
+                      className="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-6"
+                    >
+                      <AccordionTrigger className="font-semibold text-gray-900 dark:text-gray-100 hover:no-underline py-5">
+                        {item.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-600 dark:text-gray-300 pb-5 leading-relaxed">
+                        {item.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -315,8 +315,8 @@ export default function BlogPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {posts.map((post) => (
-                  <TableRow key={post._id || post.id}>
+                {posts.map((post, idx) => (
+                  <TableRow key={post._id || post.id || post.slug || idx}>
                     <TableCell className="font-medium">{post.title}</TableCell>
                     <TableCell>{post.author?.name || '-'}</TableCell>
                     <TableCell>

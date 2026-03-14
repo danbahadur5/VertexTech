@@ -36,8 +36,8 @@ export default function CaseStudyPage() {
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">Explore our Case Study of successful projects.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(loading ? [] : items).map((project) => (
-              <Card key={project.slug} className="overflow-hidden hover:shadow-2xl transition-shadow border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+            {(loading ? [] : items).map((project, idx) => (
+              <Card key={project._id || project.id || project.slug || idx} className="overflow-hidden hover:shadow-2xl transition-shadow border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                 <div className="aspect-video overflow-hidden">
                   <ImageWithFallback src={project.gallery?.[0]} alt={project.title} className="w-full h-full object-cover hover:scale-110 transition-transform duration-300" />
                 </div>

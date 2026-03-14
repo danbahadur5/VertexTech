@@ -1,21 +1,36 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { PublicHeader } from "../components/layout/PublicHeader";
 import { PublicFooter } from "../components/layout/PublicFooter";
 import { Badge } from "../components/ui/badge";
 import { useScrollReveal } from "../lib/use-scroll-reveal";
 import Hero_Section from "./components/Hero_Section";
 import Hero_Trusted_Count from "./components/Hero_Trusted_Count";
-import TrustedBy from "./components/TrustedBy";
-import Capabilities from "./components/Capabilities";
-import Services from "./components/Services";
-import FeatureProject from "./components/FeaturedProject";
-import FeatureBlog from "./components/FeaturedBlog";
-import Testimonials from "./components/Testimonials";
-import SecurityExportSection from "./components/SecurityExprotSection";
-import FAQSection from "./components/FAQSection";
-import CTASection from "./components/CTASection";
+import { useInView } from "../lib/use-in-view";
 
+// Lazy load components below the fold
+const TrustedBy = lazy(() => import("./components/TrustedBy"));
+const Capabilities = lazy(() => import("./components/Capabilities"));
+const Services = lazy(() => import("./components/Services"));
+const FeatureProject = lazy(() => import("./components/FeaturedProject"));
+const FeatureBlog = lazy(() => import("./components/FeaturedBlog"));
+const Testimonials = lazy(() => import("./components/Testimonials"));
+const FAQSection = lazy(() => import("./components/FAQSection"));
+const CTASection = lazy(() => import("./components/CTASection"));
 
+function LazySection({ children, fallback = null }) {
+  const [ref, isInView] = useInView({ rootMargin: '200px' });
+  return (
+    <div ref={ref}>
+      {isInView ? (
+        <Suspense fallback={fallback}>
+          {children}
+        </Suspense>
+      ) : (
+        fallback
+      )}
+    </div>
+  );
+}
 
 export default function HomePage() {
   useScrollReveal();
@@ -47,10 +62,22 @@ export default function HomePage() {
       <PublicHeader />
       <Hero_Section />
       <Hero_Trusted_Count />
-      <TrustedBy />
-      <Capabilities />
-      <Services />
-      <FeatureProject />
+      
+      <LazySection>
+        <TrustedBy />
+      </LazySection>
+
+      <LazySection>
+        <Capabilities />
+      </LazySection>
+
+      <LazySection>
+        <Services />
+      </LazySection>
+
+      <LazySection>
+        <FeatureProject />
+      </LazySection>
 
       <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -67,10 +94,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {howItWorks.map((item, idx) => (
               <div
-                key={item.step}
-                className="reveal text-center group"
-                style={{ transitionDelay: `${idx * 0.12}s` }}
-              >
+                  key={item.step}
+                  className="reveal text-center group"
+                  style={{ transitionDelay: `${idx * 0.12}s` }}
+                >
                 <div className="relative inline-flex mb-6">
                   <div className="w-16 h-16 rounded-2xl theme-gradient flex items-center justify-center text-white font-extrabold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                     {item.step}
@@ -95,19 +122,22 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <Testimonials />
 
-      <FeatureBlog />
+      <LazySection>
+        <Testimonials />
+      </LazySection>
 
-      <FAQSection />
+      <LazySection>
+        <FeatureBlog />
+      </LazySection>
 
+      <LazySection>
+        <FAQSection />
+      </LazySection>
 
-
-    
-      <SecurityExportSection />
-
-      <CTASection />
-
+      <LazySection>
+        <CTASection />
+      </LazySection>
 
       <PublicFooter />
     </div>
