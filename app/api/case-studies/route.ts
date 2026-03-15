@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     query = { $or: conditions };
   }
 
-  const items = await CaseStudy.find(query).sort({ createdAt: -1 }).lean();
+  const items = await CaseStudy.find(query as any).sort({ createdAt: -1 }).lean();
   return NextResponse.json({ items });
 }
 

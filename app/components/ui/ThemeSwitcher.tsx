@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Palette } from 'lucide-react';
-import { THEME_OPTIONS, useColorTheme, type ColorTheme } from '../../lib/theme-context';
+import { THEME_OPTIONS, useColorTheme } from '../../lib/theme-context';
 
 export function ThemeSwitcher() {
-  const { colorTheme, setColorTheme } = useColorTheme();
+  const { theme, setTheme } = useColorTheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,14 +40,14 @@ export function ThemeSwitcher() {
                 <button
                   key={opt.id}
                   id={`theme-option-${opt.id}`}
-                  onClick={() => { setColorTheme(opt.id as ColorTheme); setOpen(false); }}
+                  onClick={() => { setTheme(opt); setOpen(false); }}
                   className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                    colorTheme === opt.id
+                    theme.id === opt.id
                       ? 'border-gray-400 bg-gray-50 shadow-md scale-105'
                       : 'border-transparent hover:border-gray-200 hover:bg-gray-50'
                   }`}
                   title={opt.name}
-                  aria-pressed={colorTheme === opt.id}
+                  aria-pressed={theme.id === opt.id}
                 >
                   <div
                     className="w-8 h-8 rounded-full shadow-md"

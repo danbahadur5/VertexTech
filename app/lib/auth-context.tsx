@@ -36,23 +36,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    await (authClient as any).signIn.email({ email, password });
+    const { data: session, error } = await (authClient as any).signIn.email({ 
+      email, 
+      password 
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Invalid email or password');
+    }
+
     const res = await fetch('/api/users/me', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load profile');
+    
     const data = await res.json();
     const appUser = data.user as User;
+
+    if (appUser.status === 'inactive') {
+      await authClient.signOut();
+      throw new Error('Your account is inactive. Please contact support.');
+    }
+
     setUser(appUser);
     localStorage.setItem('vertextech_user', JSON.stringify(appUser));
     return appUser;
   };
 
   const register = async (name: string, email: string, password: string) => {
-    await (authClient as any).signUp.email({ email, password, name });
-    // After sign-up, email verification may be required depending on config.
+    const { data, error } = await (authClient as any).signUp.email({ 
+      email, 
+      password, 
+      name 
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to create account');
+    }
+
     const res = await fetch('/api/users/me', { cache: 'no-store' });
     if (!res.ok) return;
-    const data = await res.json();
-    const appUser = data.user as User;
+    
+    const resData = await res.json();
+    const appUser = resData.user as User;
     setUser(appUser);
     localStorage.setItem('vertextech_user', JSON.stringify(appUser));
   };

@@ -120,6 +120,8 @@ export function DashboardLayout({ children }) {
           name: 'Appearance',
           icon: Palette,
           children: [
+            { name: 'Theme Settings', href: '/dashboard/admin/theme' },
+            { name: 'Header', href: '/dashboard/admin/appearance/header' },
             { name: 'Hero Section', href: '/dashboard/admin/appearance/hero' },
             { name: 'Hero Trusted Count', href: '/dashboard/admin/appearance/hero-trusted-count' },
             { name: 'Trusted Company', href: '/dashboard/admin/appearance/trusted-company' },
@@ -152,7 +154,6 @@ export function DashboardLayout({ children }) {
         { name: 'Users', href: '/dashboard/admin/users', icon: Users },
         { name: 'Support', href: '/dashboard/admin/support', icon: MessageSquare },
         { name: 'Profile', href: '/dashboard/admin/profile', icon: UserCircle },
-        { name: 'Theme', href: '/dashboard/admin/theme', icon: Palette },
         { name: 'Settings', href: '/dashboard/admin/settings', icon: Settings },
       ];
     } else if (role === 'editor') {

@@ -11,18 +11,34 @@ const db = client ? client.db(process.env.MONGODB_DB || "vertextech") : (undefin
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60, // 1 hour
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: process.env.NODE_ENV === "production",
-    minPasswordLength: 8,
+    minPasswordLength: 10, // Increased for better security
     sendResetPassword: async ({ user, url }) => {
-      const html = `<p>Hello ${user.name || ""}</p><p>Reset your password:</p><p><a href="${url}">Reset Password</a></p>`;
-      await sendMail({ to: user.email, subject: "Reset your password", html });
+      const html = `
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2>Reset Your Password</h2>
+          <p>Hello ${user.name || "there"},</p>
+          <p>We received a request to reset your password. If you didn't make this request, you can safely ignore this email.</p>
+          <p><a href="${url}" style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
+          <p>This link will expire in 1 hour.</p>
+        </div>
+      `;
+      await sendMail({ to: user.email, subject: "Reset your password - VertexTech", html });
     },
     password: {
       hash: async (password) => {
         const bcrypt = await import("bcrypt");
-        const saltRounds = 10;
+        const saltRounds = 12; // Increased rounds for better security
         const hash = await bcrypt.hash(password, saltRounds);
         return hash;
       },
@@ -34,8 +50,15 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
-      const html = `<p>Hello ${user.name || ""}</p><p>Verify your email:</p><p><a href="${url}">Verify Email</a></p>`;
-      await sendMail({ to: user.email, subject: "Verify your email", html });
+      const html = `
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2>Verify Your Email</h2>
+          <p>Hello ${user.name || "there"},</p>
+          <p>Welcome to VertexTech! Please verify your email to complete your registration.</p>
+          <p><a href="${url}" style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a></p>
+        </div>
+      `;
+      await sendMail({ to: user.email, subject: "Verify your email - VertexTech", html });
     },
     autoSignInAfterVerification: true,
   },

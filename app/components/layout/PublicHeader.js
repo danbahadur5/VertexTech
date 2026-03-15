@@ -23,18 +23,13 @@ import { useAuth } from "../../lib/auth-context";
 import { useTheme } from "next-themes";
 import { ThemeSwitcher } from "../ui/ThemeSwitcher";
 import { siteSettings } from "../../lib/site-settings";
-
+import logo from "./assets/logo.png";
+import Image from "next/image";
 // --- Subcomponents ---
 
 const Logo = () => (
   <Link to="/" className="flex items-center gap-2 group">
-    <div className="w-9 h-9 rounded-lg flex items-center justify-center theme-gradient shadow-sm group-hover:shadow-md transition-shadow">
-      <Shield className="h-5 w-5 text-white" />
-    </div>
-    <span className="text-xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
-      {siteSettings.brand.name.split("Tech")[0]}
-      <span className="theme-gradient-text">Tech</span>
-    </span>
+    <Image src={logo} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
   </Link>
 );
 
