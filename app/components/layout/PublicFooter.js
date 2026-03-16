@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Shield } from 'lucide-react';
+import Image from 'next/image';
+import logo from "./assets/logo.png";
 export function PublicFooter() {
   const [blurb, setBlurb] = useState('AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
   const [contact, setContact] = useState({ email: 'contact@vertextech.com', phone: '+1 (555) 123-4567', address: '123 Tech Street, San Francisco, CA 94105' });
@@ -39,12 +41,7 @@ export function PublicFooter() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2.5 mb-5">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center theme-gradient shadow">
-                <Shield className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-extrabold text-white">
-                Vertex<span className="theme-gradient-text">Tech</span>
-              </span>
+                <Image src={logo} alt='site logo' className="object-contain" height={160} width={160} />
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">{blurb}</p>
             <div className="space-y-3 mb-6">

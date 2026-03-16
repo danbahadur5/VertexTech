@@ -317,13 +317,7 @@ export function PublicHeader() {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center theme-gradient">
-              <Shield className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-lg font-extrabold text-gray-900 dark:text-gray-100">
-              {siteSettings.brand.name.split("Tech")[0]}
-              <span className="theme-gradient-text">Tech</span>
-            </span>
+               <Image src={logo} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
           </Link>
 
           <div className="flex items-center gap-2">

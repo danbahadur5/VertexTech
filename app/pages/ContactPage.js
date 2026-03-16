@@ -213,10 +213,11 @@ export default function ContactPage() {
       <div className="bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto">
             <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl theme-gradient flex items-center justify-center mx-auto mb-4">
-                <MapPin className="h-8 w-8 text-white" />
-              </div>
-              <p className="font-semibold text-gray-700 dark:text-gray-300">Interactive Map</p>
+             <div className='flex jutify-center items-center text-center'>
+              
+                {/* <MapPin className="h-8 w-8 dark:text-white " /> */}
+             </div>
+              {/* <p className="font-semibold text-gray-700 dark:text-gray-300">Interactive Map</p> */}
               <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Google Maps integration</p>
             </div>
           
