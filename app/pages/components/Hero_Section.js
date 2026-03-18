@@ -255,8 +255,8 @@ export default function HeroSection() {
         >
           <div className="flex flex-wrap items-center justify-between">
             {/* LEFT SIDE */}
-            <div className="w-full lg:w-6/12 px-4">
-              <div className="max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+            <div className="w-full lg:w-7/12 px-4">
+              <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
                 {loading ? (
                   <div className="space-y-4">
                     <Skeleton className="h-4 w-32 mb-2" />
@@ -331,7 +331,7 @@ export default function HeroSection() {
             </div>
 
             {/* RIGHT SIDE (Visual) */}
-            <div className="w-full lg:w-6/12 px-4 mt-16 lg:mt-0 hidden lg:flex justify-center lg:justify-end">
+            <div className="w-full lg:w-5/12 px-4 mt-16 lg:mt-0 hidden lg:flex justify-center lg:justify-end">
               <div className="relative max-w-lg lg:max-w-none w-full flex justify-center pr-18 lg:justify-end">
                 {loading ? (
                   <Skeleton className="aspect-square w-full max-w-[420px] rounded-full" />
@@ -365,3 +365,7 @@ export default function HeroSection() {
     </section>
   );
 }
+
+
+
+
