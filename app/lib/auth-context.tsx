@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         const appUser = data.user as User;
         setUser(appUser);
-        localStorage.setItem('vertextech_user', JSON.stringify(appUser));
+        localStorage.setItem('Darbartech_user', JSON.stringify(appUser));
       } catch {
         // ignore
       }
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     setUser(appUser);
-    localStorage.setItem('vertextech_user', JSON.stringify(appUser));
+    localStorage.setItem('Darbartech_user', JSON.stringify(appUser));
     return appUser;
   };
 
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const resData = await res.json();
     const appUser = resData.user as User;
     setUser(appUser);
-    localStorage.setItem('vertextech_user', JSON.stringify(appUser));
+    localStorage.setItem('Darbartech_user', JSON.stringify(appUser));
   };
 
   const signInWithGoogle = async () => {
@@ -98,7 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     authClient.signOut();
     setUser(null);
-    try { localStorage.removeItem('vertextech_user'); } catch {}
+    try { localStorage.removeItem('Darbartech_user'); } catch {}
   };
 
   const hasRole = (roles: UserRole[]) => (user ? roles.includes(user.role) : false);

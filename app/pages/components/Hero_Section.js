@@ -247,7 +247,7 @@ export default function HeroSection() {
   const heroImg = cleanUrl(data?.heroImage) || HeroImage;
 
   return (
-    <section className="relative theme-bg-light  hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-16">
+    <section className="relative theme-bg-light  hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="bg-no-repeat bg-right-top lg:bg-right bg-contain"

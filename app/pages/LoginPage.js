@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '../components/ui/card';
 import { useAuth } from '../lib/auth-context';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { Shield, Lock, Mail, ArrowRight, Github } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Github } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -101,7 +101,7 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="you@vertext.com"
                     className="pl-10 h-12 bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 transition-all"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -140,7 +140,7 @@ export default function LoginPage() {
             <CardFooter className="flex flex-col gap-6 pb-8">
               <Button 
                 type="submit" 
-                className="w-full h-12 theme-gradient text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 cursor-pointer transform active:scale-95 transition-all" 
+                className="w-full h-12 mt-2 theme-gradient text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 cursor-pointer transform active:scale-95 transition-all" 
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -152,7 +152,7 @@ export default function LoginPage() {
                     Authenticating...
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
+                  <span className="flex  items-center gap-2">
                     Sign In <ArrowRight className="w-5 h-5" />
                   </span>
                 )}
@@ -171,7 +171,7 @@ export default function LoginPage() {
                 <Button 
                   variant="outline" 
                   type="button" 
-                  className="h-11 rounded-xl border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                  className="h-11 cursor-pointer rounded-xl border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
                   onClick={handleGithubSignIn}
                 >
                   <Github className="w-5 h-5 mr-2" /> GitHub
@@ -179,7 +179,7 @@ export default function LoginPage() {
                 <Button 
                   variant="outline" 
                   type="button" 
-                  className="h-11 rounded-xl border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                  className="h-11 rounded-xl cursor-pointer border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
                   onClick={handleGoogleSignIn}
                 >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -194,7 +194,7 @@ export default function LoginPage() {
 
               <p className="text-sm text-center text-gray-600 dark:text-gray-400">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:underline font-bold">
+                <Link to="/register" className="text-blue-600 cursor-pointer dark:text-blue-400 hover:underline font-bold">
                   Create one for free
                 </Link>
               </p>
@@ -208,7 +208,7 @@ export default function LoginPage() {
           transition={{ delay: 0.5 }}
           className="mt-8 text-center"
         >
-          <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+          <Link to="/" className="text-sm font-medium text-gray-500 cursor-pointer hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
             ← Back to website home
           </Link>
         </motion.div>

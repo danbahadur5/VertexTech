@@ -204,11 +204,11 @@ export function DashboardLayout({ children }) {
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
             <Link to="/" className="flex items-center gap-2">
               <span className={`font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${sidebarCollapsed ? 'text-xl' : 'text-2xl'}`}>
-                V
+                DT
               </span>
               {!sidebarCollapsed && (
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  ertexTech
+                  arbarTech
                 </span>
               )}
             </Link>
@@ -253,7 +253,7 @@ export function DashboardLayout({ children }) {
                           {item.children.map((child) => {
                             const active = isActive(child.href);
                             return (
-                              <li key={child.name}>
+                              <li key={child.name} className ="cursor-pointer">
                                 <Link
                                   to={child.href}
                                   className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
@@ -272,7 +272,7 @@ export function DashboardLayout({ children }) {
                   const Icon = item.icon;
                   const active = isActive(item.href);
                   return (
-                    <li key={item.name}>
+                    <li key={item.name} className="cursor-pointer">
                       <Link
                         to={item.href}
                         title={item.name}
@@ -308,7 +308,7 @@ export function DashboardLayout({ children }) {
                   className={`w-full cursor-pointer ${sidebarCollapsed ? 'justify-center' : 'justify-start'} text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20`}
                   onClick={() => setLogoutDialogOpen(true)}
                 >
-                  <LogOutIcon className="h-4 w-4 mr-2" />
+                  <LogOutIcon className="h-4 w-4 mr-2 cursor-pointer" />
                   {!sidebarCollapsed && 'Logout'}
                 </Button>
               </div>
@@ -332,7 +332,7 @@ export function DashboardLayout({ children }) {
               onClick={confirmLogout}
               className="cursor-pointer bg-red-600 hover:bg-red-700 text-white border-none"
             >
-              Yes, Logout
+              Yes, Logout   
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -346,7 +346,7 @@ export function DashboardLayout({ children }) {
             <div className="flex h-16 shrink-0 items-center justify-between">
               <Link to="/" className="flex items-center gap-2">
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  VertexTech
+                  DarbarTech
                 </span>
               </Link>
               <button onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">

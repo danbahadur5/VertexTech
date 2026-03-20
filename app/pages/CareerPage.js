@@ -14,7 +14,7 @@ export default function CareersPage() {
       department: 'Engineering',
       location: 'San Francisco, CA / Remote',
       type: 'Full-time',
-      salary: '$120k - $180k',
+      salary: '120k - 180k',
     },
     {
       id: '2',
@@ -22,7 +22,7 @@ export default function CareersPage() {
       department: 'Cloud Services',
       location: 'New York, NY / Hybrid',
       type: 'Full-time',
-      salary: '$140k - $200k',
+      salary: '140k - 200k',
     },
     {
       id: '3',
@@ -30,7 +30,7 @@ export default function CareersPage() {
       department: 'Security',
       location: 'Remote',
       type: 'Full-time',
-      salary: '$130k - $190k',
+      salary: '130k - 190k',
     },
     {
       id: '4',
@@ -54,7 +54,7 @@ export default function CareersPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 dark:text-gray-400">
       <PublicHeader />
 
       <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-purple-50">

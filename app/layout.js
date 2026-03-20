@@ -20,7 +20,7 @@ export async function generateMetadata() {
   const d = res?.data || {};
   
   return {
-    title: d.metaTitle || d.siteName || "VertexTech | AI-Powered Cybersecurity & Solutions",
+    title: d.metaTitle || d.siteName || "DarbarTech | AI-Powered Cybersecurity & Solutions",
     description: d.metaDescription || "Next-generation digital defense and software development.",
     keywords: d.keywords || "cybersecurity, ai, software development",
     openGraph: {

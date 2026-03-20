@@ -18,7 +18,7 @@ export function createTransport() {
 }
 
 export async function sendMail(opts: { to: string; subject: string; html: string }) {
-  const from = process.env.EMAIL_FROM || "no-reply@vertextech.com";
+  const from = process.env.EMAIL_FROM || "no-reply@darbartech.com";
   const transport = createTransport();
   const info = await transport.sendMail({ from, ...opts });
   return info.messageId;

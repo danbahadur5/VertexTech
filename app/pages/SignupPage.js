@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
+import { Card, CardContent} from '../components/ui/card';
 import { useAuth } from '../lib/auth-context';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { Shield, User, Mail, Lock, ArrowRight, Github } from 'lucide-react';
+import {User, Mail, Lock, Github } from 'lucide-react';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -74,16 +74,6 @@ export default function SignupPage() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-[480px]"
       >
-        {/* <div className="text-center mb-10">
-          <Link to="/" className="inline-flex items-center gap-2.5 group">
-            <div className="p-2.5 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-xl group-hover:scale-105 transition-transform duration-300">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <span className="text-3xl font-black tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              VertexTech
-            </span>
-          </Link>
-        </div> */}
 
         <Card className="border-none shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] dark:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl rounded-[2.5rem] overflow-hidden border border-white/20 dark:border-gray-800">
           <CardContent className="p-8 lg:p-10">
@@ -110,7 +100,7 @@ export default function SignupPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="name@vertext.com"
                     className="pl-12 h-13 bg-gray-50/50 dark:bg-gray-800/40 border-gray-200 dark:border-gray-700 rounded-2xl focus:ring-4 focus:ring-blue-500/10 transition-all text-base"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -195,7 +185,7 @@ export default function SignupPage() {
         </Card>
 
         <div className="mt-8 text-center">
-          <Link to="/" className="text-sm font-semibold text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <Link to="/" className="text-sm font-semibold cursor-pointer text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             ← Back to website home
           </Link>
         </div>

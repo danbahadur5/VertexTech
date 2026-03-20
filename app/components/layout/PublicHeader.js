@@ -107,7 +107,6 @@ const MobileMenu = ({
   isActive,
   isAuthenticated,
   user,
-  toggleTheme,
 }) => {
   const navigate = useNavigate();
 

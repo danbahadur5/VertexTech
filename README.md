@@ -1,4 +1,4 @@
-VertexTech is a Next.js 15 application with a full-stack content system for services, blog, case studies, pages, media, and a role-based dashboard (admin, editor, client). It uses MongoDB via Mongoose, Better Auth for authentication, and Cloudinary for media uploads. The frontend includes configurable content loaders to display skeletons until API data is ready.
+DarbarTech is a Next.js 15 application with a full-stack content system for services, blog, case studies, pages, media, and a role-based dashboard (admin, editor, client). It uses MongoDB via Mongoose, Better Auth for authentication, and Cloudinary for media uploads. The frontend includes configurable content loaders to display skeletons until API data is ready.
 
 ## Tech Stack
 - Next.js 15 (App Router)
