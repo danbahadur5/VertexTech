@@ -82,7 +82,7 @@ export default function Services() {
                   <Link href={`/services/${service.slug}`}>
                     <Button
                       variant="ghost"
-                      className="w-full theme-text hover:bg-gray-50 font-semibold"
+                      className="w-full theme-text hover:bg-gray-50  font-semibold"
                     >
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

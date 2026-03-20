@@ -139,7 +139,7 @@ export function DashboardLayout({ children }) {
             { name: 'How We Think', href: '/dashboard/admin/about/how-we-think' },
             { name: 'Milestones That Matter', href: '/dashboard/admin/about/milestones' },
             { name: 'Defending the Digital Frontier', href: '/dashboard/admin/about/hero' },
-            { name: 'Meet Our Team', href: '/dashboard/admin/about/team' },
+            { name: 'Our Team', href: '/dashboard/admin/about/team' },
           ],
         },
         {
@@ -204,11 +204,11 @@ export function DashboardLayout({ children }) {
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
             <Link to="/" className="flex items-center gap-2">
               <span className={`font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${sidebarCollapsed ? 'text-xl' : 'text-2xl'}`}>
-                DT
+                D
               </span>
               {!sidebarCollapsed && (
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  arbarTech
+                  DarbarTech
                 </span>
               )}
             </Link>

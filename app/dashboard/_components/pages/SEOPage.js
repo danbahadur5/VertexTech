@@ -17,53 +17,60 @@ export default function SEOPage() {
   const [pages, setPages] = useState([]);
   const [services, setServices] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [caseStudies, setCaseStudies] = useState([]);
   const [globalSEO, setGlobalSEO] = useState({
     metaTitle: '',
     metaDescription: '',
     keywords: '',
-    ogImage: ''
+    ogImage: '',
+    canonicalUrl: ''
   });
   
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [editOpen, setEditOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [current, setCurrent] = useState(null); // { type: 'page'|'service'|'post', data: obj }
+  const [current, setCurrent] = useState(null); // { type: 'page'|'service'|'post'|'caseStudy', data: obj }
   
   const [form, setForm] = useState({
     metaTitle: '',
     metaDescription: '',
     keywords: '',
-    ogImage: ''
+    ogImage: '',
+    canonicalUrl: ''
   });
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const [resPages, resServices, resPosts, resGlobal] = await Promise.all([
+      const [resPages, resServices, resPosts, resCaseStudies, resGlobal] = await Promise.all([
         fetch('/api/pages', { cache: 'no-store' }),
         fetch('/api/services', { cache: 'no-store' }),
         fetch('/api/blog', { cache: 'no-store' }),
+        fetch('/api/case-studies', { cache: 'no-store' }),
         fetch('/api/settings/system', { cache: 'no-store' })
       ]);
 
-      const [dPages, dServices, dPosts, dGlobal] = await Promise.all([
+      const [dPages, dServices, dPosts, dCaseStudies, dGlobal] = await Promise.all([
         resPages.ok ? resPages.json() : { items: [] },
         resServices.ok ? resServices.json() : { items: [] },
         resPosts.ok ? resPosts.json() : { items: [] },
+        resCaseStudies.ok ? resCaseStudies.json() : { items: [] },
         resGlobal.ok ? resGlobal.json() : { item: { data: {} } }
       ]);
 
       setPages(dPages.items || []);
       setServices(dServices.items || []);
       setPosts(dPosts.items || []);
+      setCaseStudies(dCaseStudies.items || []);
       
       const g = dGlobal?.item?.data || {};
       setGlobalSEO({
         metaTitle: g.metaTitle || '',
         metaDescription: g.metaDescription || '',
         keywords: g.keywords || '',
-        ogImage: g.ogImage || ''
+        ogImage: g.ogImage || '',
+        canonicalUrl: g.canonicalUrl || ''
       });
     } catch (err) {
       toast.error('Failed to load SEO data');
@@ -82,7 +89,8 @@ export default function SEOPage() {
       metaTitle: item.seo?.metaTitle || '',
       metaDescription: item.seo?.metaDescription || '',
       keywords: Array.isArray(item.seo?.keywords) ? item.seo.keywords.join(', ') : '',
-      ogImage: item.seo?.ogImage || ''
+      ogImage: item.seo?.ogImage || '',
+      canonicalUrl: item.seo?.canonicalUrl || ''
     });
     setEditOpen(true);
   };
@@ -95,7 +103,8 @@ export default function SEOPage() {
         metaTitle: form.metaTitle.trim(),
         metaDescription: form.metaDescription.trim(),
         keywords: form.keywords.split(',').map(k => k.trim()).filter(Boolean),
-        ogImage: form.ogImage.trim()
+        ogImage: form.ogImage.trim(),
+        canonicalUrl: form.canonicalUrl.trim()
       };
 
       let url = '';
@@ -110,7 +119,9 @@ export default function SEOPage() {
         body = { ...existing, ...seoPayload, keywords: form.keywords.trim() }; // Keep keywords as string for global settings
       } else {
         const slug = current.data.slug;
-        const endpoint = current.type === 'page' ? 'pages' : current.type === 'service' ? 'services' : 'blog';
+        const endpoint = current.type === 'page' ? 'pages' : 
+                         current.type === 'service' ? 'services' : 
+                         current.type === 'post' ? 'blog' : 'case-studies';
         url = `/api/${endpoint}/${encodeURIComponent(slug)}`;
         // For individual items, we just update the SEO field
         body = { seo: seoPayload };
@@ -162,10 +173,11 @@ export default function SEOPage() {
         </div>
 
         <Tabs defaultValue="pages" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[600px] bg-gray-100 dark:bg-gray-900">
+          <TabsList className="grid w-full grid-cols-5 lg:w-[750px] bg-gray-100 dark:bg-gray-900">
             <TabsTrigger value="pages" className="flex items-center gap-2"><FileText className="h-4 w-4" /> Pages</TabsTrigger>
             <TabsTrigger value="services" className="flex items-center gap-2"><Briefcase className="h-4 w-4" /> Services</TabsTrigger>
             <TabsTrigger value="blog" className="flex items-center gap-2"><Newspaper className="h-4 w-4" /> Blog</TabsTrigger>
+            <TabsTrigger value="case-studies" className="flex items-center gap-2"><FileText className="h-4 w-4" /> Case Studies</TabsTrigger>
             <TabsTrigger value="global" className="flex items-center gap-2"><Globe className="h-4 w-4" /> Global</TabsTrigger>
           </TabsList>
 
@@ -287,6 +299,46 @@ export default function SEOPage() {
             </Card>
           </TabsContent>
 
+          {/* CASE STUDIES TAB */}
+          <TabsContent value="case-studies" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Case Study SEO</CardTitle>
+                <CardDescription>Manage metadata for your success stories</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Slug</TableHead>
+                      <TableHead>Meta Title</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow><TableCell colSpan={5} className="text-center py-8">Loading case studies...</TableCell></TableRow>
+                    ) : filteredItems(caseStudies).map((cs) => (
+                      <TableRow key={cs._id || cs.slug}>
+                        <TableCell className="font-medium truncate max-w-[200px]">{cs.title}</TableCell>
+                        <TableCell className="font-mono text-xs">/case-studies/{cs.slug}</TableCell>
+                        <TableCell className="text-sm truncate max-w-[200px]">{cs.seo?.metaTitle || '-'}</TableCell>
+                        <TableCell><Badge variant={cs.status === 'completed' ? 'success' : 'secondary'}>{cs.status}</Badge></TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" onClick={() => startEdit('caseStudy', cs)} className="cursor-pointer">
+                            <Edit className="h-4 w-4 mr-2" /> Edit SEO
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* GLOBAL TAB */}
           <TabsContent value="global" className="mt-6">
             <Card>
@@ -336,6 +388,15 @@ export default function SEOPage() {
                         className="bg-white dark:bg-gray-900"
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label>Default Canonical URL</Label>
+                      <Input 
+                        value={globalSEO.canonicalUrl} 
+                        onChange={(e) => setGlobalSEO({...globalSEO, canonicalUrl: e.target.value})}
+                        placeholder="https://vertextech.com"
+                        className="bg-white dark:bg-gray-900"
+                      />
+                    </div>
                     <div className="pt-4">
                       <Button 
                         onClick={() => startEdit('global', { seo: globalSEO })} 
@@ -353,7 +414,7 @@ export default function SEOPage() {
 
         {/* Edit SEO Dialog */}
         <Dialog open={editOpen} onOpenChange={setEditOpen}>
-          <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+          <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
             <DialogHeader>
               <DialogTitle>
                 Edit SEO: {current?.type === 'global' ? 'Global Defaults' : current?.data?.title || current?.data?.name}
@@ -397,6 +458,15 @@ export default function SEOPage() {
                   value={form.ogImage} 
                   onChange={(e) => setForm({...form, ogImage: e.target.value})}
                   placeholder="URL to the preview image for social shares"
+                  className="bg-white dark:bg-gray-950"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Canonical URL</Label>
+                <Input 
+                  value={form.canonicalUrl} 
+                  onChange={(e) => setForm({...form, canonicalUrl: e.target.value})}
+                  placeholder="Preferred URL for this page"
                   className="bg-white dark:bg-gray-950"
                 />
               </div>

@@ -12,6 +12,7 @@ import { Input } from '../../../components/ui/input';
 import { Textarea } from '../../../components/ui/textarea';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { SEOFields } from '../SEOFields';
 
 export default function ServicesPage() {
 
@@ -42,6 +43,13 @@ export default function ServicesPage() {
     cap2Value: '',
     cap3Label: '',
     cap3Value: '',
+    seo: {
+      metaTitle: '',
+      metaDescription: '',
+      keywords: '',
+      ogImage: '',
+      canonicalUrl: '',
+    }
   });
 
   const iconOptions = [
@@ -99,6 +107,12 @@ export default function ServicesPage() {
           professional: form.professional ? Number(form.professional) : undefined,
           enterprise: form.enterprise ? Number(form.enterprise) : undefined,
         },
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
 
       const res = await fetch('/api/services', {
@@ -113,16 +127,7 @@ export default function ServicesPage() {
 
       setOpen(false);
 
-      setForm({
-        title: '',
-        slug: '',
-        description: '',
-        icon: 'Code',
-        basic: '',
-        professional: '',
-        enterprise: '',
-        features: '',
-      });
+      resetForm();
 
       setLoading(true);
       await load();
@@ -151,6 +156,13 @@ export default function ServicesPage() {
       cap2Value: '',
       cap3Label: '',
       cap3Value: '',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+        ogImage: '',
+        canonicalUrl: '',
+      }
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -181,6 +193,13 @@ export default function ServicesPage() {
       cap2Value: svc?.capabilities?.[1]?.value?.toString?.() || '',
       cap3Label: svc?.capabilities?.[2]?.label || '',
       cap3Value: svc?.capabilities?.[2]?.value?.toString?.() || '',
+      seo: {
+        metaTitle: svc.seo?.metaTitle || '',
+        metaDescription: svc.seo?.metaDescription || '',
+        keywords: Array.isArray(svc.seo?.keywords) ? svc.seo.keywords.join(', ') : svc.seo?.keywords || '',
+        ogImage: svc.seo?.ogImage || '',
+        canonicalUrl: svc.seo?.canonicalUrl || '',
+      }
     });
     setEditOpen(true);
   };
@@ -212,12 +231,18 @@ export default function ServicesPage() {
           professional: form.professional ? Number(form.professional) : undefined,
           enterprise: form.enterprise ? Number(form.enterprise) : undefined,
         },
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const newSlug = form.slug.trim().replace(/^\//, '');
       if (newSlug && newSlug !== originalSlug) {
         payload.slug = newSlug;
       }
-      const res = await fetch(`/api/services/${encodeURIComponent(originalSlug)}`, {
+      const res = await fetch(`/api/services/Rs.{encodeURIComponent(originalSlug)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -244,7 +269,7 @@ export default function ServicesPage() {
     if (!current) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/services/${encodeURIComponent(current.slug)}`, { method: 'DELETE' });
+      const res = await fetch(`/api/services/Rs.{encodeURIComponent(current.slug)}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete service');
       toast.success('Service deleted');
       setDeleteOpen(false);
@@ -277,7 +302,7 @@ export default function ServicesPage() {
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>Create New Service</DialogTitle>
               </DialogHeader>
@@ -361,7 +386,7 @@ export default function ServicesPage() {
                   </div>
 
                   <div className="space-y-2 sm:col-span-2">
-                    <Label>Features (comma separated)</Label>
+                    <Label>Key Features (comma separated)</Label>
                     <Input
                       value={form.features}
                       onChange={(e) => setForm({ ...form, features: e.target.value })}
@@ -417,6 +442,7 @@ export default function ServicesPage() {
                   </div>
 
                 </div>
+                <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
 
                 <DialogFooter>
                   <Button
@@ -442,7 +468,7 @@ export default function ServicesPage() {
 
           {/* Edit Service */}
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogContent className="sm:max-w-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>Edit Service</DialogTitle>
               </DialogHeader>
@@ -563,6 +589,7 @@ export default function ServicesPage() {
                     />
                   </div>
                 </div>
+                <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>
                     Cancel
@@ -642,19 +669,19 @@ export default function ServicesPage() {
 
                       <TableCell>
                         <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
-                          ${svc?.pricing?.basic ?? '-'}
+                          Rs.{svc?.pricing?.basic ?? '-'}
                         </Badge>
                       </TableCell>
 
                       <TableCell>
                         <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
-                          ${svc?.pricing?.professional ?? '-'}
+                          Rs.{svc?.pricing?.professional ?? '-'}
                         </Badge>
                       </TableCell>
 
                       <TableCell>
                         <Badge className="bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800">
-                          ${svc?.pricing?.enterprise ?? '-'}
+                          Rs.{svc?.pricing?.enterprise ?? '-'}
                         </Badge>
                       </TableCell>
 

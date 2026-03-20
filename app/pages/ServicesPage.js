@@ -99,7 +99,7 @@ export default function ServicesPage() {
                   {service.pricing && typeof service.pricing.basic === 'number' && (
                     <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
                       <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Starting from:</p>
-                      <div className="flex items-baseline gap-1"><span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">${service.pricing.basic.toLocaleString()}</span><span className="text-gray-400 text-sm">/month</span></div>
+                      <div className="flex items-baseline gap-1"><span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Rs.{service.pricing.basic.toLocaleString()}</span><span className="text-gray-400 text-sm">/month</span></div>
                     </div>
                   )}
                   <Link to={`/services/${service.slug}`}><Button className="theme-btn w-full rounded-xl h-11 font-semibold" size="lg">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>

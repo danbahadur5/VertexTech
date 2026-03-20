@@ -12,6 +12,7 @@ import { Switch } from '../../../components/ui/switch';
 import { Label } from '../../../components/ui/label';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '../../../components/ui/select';
 import { toast } from 'sonner';
+import { SEOFields } from '../SEOFields';
 
 export default function CaseStudyPage() {
   const [items, setItems] = useState([]);
@@ -46,6 +47,13 @@ export default function CaseStudyPage() {
     testimonialQuote: '',
     testimonialAuthor: '',
     testimonialPosition: '',
+    seo: {
+      metaTitle: '',
+      metaDescription: '',
+      keywords: '',
+      ogImage: '',
+      canonicalUrl: '',
+    }
   });
 
   useEffect(() => {
@@ -90,6 +98,13 @@ export default function CaseStudyPage() {
       testimonialQuote: '',
       testimonialAuthor: '',
       testimonialPosition: '',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+        ogImage: '',
+        canonicalUrl: '',
+      }
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -141,6 +156,12 @@ export default function CaseStudyPage() {
               position: form.testimonialPosition?.trim() || undefined,
             }
           : undefined,
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const res = await fetch('/api/case-studies', {
         method: 'POST',
@@ -180,6 +201,13 @@ export default function CaseStudyPage() {
       testimonialQuote: p.testimonial?.quote || '',
       testimonialAuthor: p.testimonial?.author || '',
       testimonialPosition: p.testimonial?.position || '',
+      seo: {
+        metaTitle: p.seo?.metaTitle || '',
+        metaDescription: p.seo?.metaDescription || '',
+        keywords: Array.isArray(p.seo?.keywords) ? p.seo.keywords.join(', ') : p.seo?.keywords || '',
+        ogImage: p.seo?.ogImage || '',
+        canonicalUrl: p.seo?.canonicalUrl || '',
+      }
     });
     setEditOpen(true);
   };
@@ -212,6 +240,12 @@ export default function CaseStudyPage() {
               position: form.testimonialPosition?.trim() || undefined,
             }
           : undefined,
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const newSlug = form.slug.trim().replace(/^\//, '');
       if (newSlug && newSlug !== originalSlug) payload.slug = newSlug;
@@ -269,7 +303,7 @@ export default function CaseStudyPage() {
                 New Project
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>Create New Project</DialogTitle>
               </DialogHeader>
@@ -472,6 +506,7 @@ export default function CaseStudyPage() {
                     <Switch id="featured" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
                     <Label htmlFor="featured">Featured</Label>
                   </div>
+                  <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
                 </div>
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
@@ -482,7 +517,7 @@ export default function CaseStudyPage() {
           </Dialog>
 
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>Edit Project</DialogTitle>
               </DialogHeader>
@@ -626,6 +661,7 @@ export default function CaseStudyPage() {
                     <Switch id="featured-edit" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
                     <Label htmlFor="featured-edit">Featured</Label>
                   </div>
+                  <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
                 </div>
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>

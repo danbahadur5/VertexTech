@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from '../../../components/ui/switch';
 import { Label } from '../../../components/ui/label';
 import { toast } from 'sonner';
+import { SEOFields } from '../SEOFields';
 
 export default function BlogPage() {
   const [posts, setPosts] = useState([]);
@@ -35,6 +36,13 @@ export default function BlogPage() {
     tags: '',
     status: 'draft',
     featured: false,
+    seo: {
+      metaTitle: '',
+      metaDescription: '',
+      keywords: '',
+      ogImage: '',
+      canonicalUrl: '',
+    }
   });
 
   useEffect(() => {
@@ -66,6 +74,13 @@ export default function BlogPage() {
       tags: '',
       status: 'draft',
       featured: false,
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+        ogImage: '',
+        canonicalUrl: '',
+      }
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -94,6 +109,12 @@ export default function BlogPage() {
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         status: form.status,
         featured: !!form.featured,
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const res = await fetch('/api/blog', {
         method: 'POST',
@@ -124,6 +145,13 @@ export default function BlogPage() {
       tags: Array.isArray(post.tags) ? post.tags.join(', ') : '',
       status: post.status || 'draft',
       featured: !!post.featured,
+      seo: {
+        metaTitle: post.seo?.metaTitle || '',
+        metaDescription: post.seo?.metaDescription || '',
+        keywords: Array.isArray(post.seo?.keywords) ? post.seo.keywords.join(', ') : post.seo?.keywords || '',
+        ogImage: post.seo?.ogImage || '',
+        canonicalUrl: post.seo?.canonicalUrl || '',
+      }
     });
     setEditOpen(true);
   };
@@ -145,6 +173,12 @@ export default function BlogPage() {
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         status: form.status,
         featured: !!form.featured,
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const newSlug = form.slug.trim().replace(/^\//, '');
       if (newSlug && newSlug !== originalSlug) {
@@ -203,7 +237,7 @@ export default function BlogPage() {
                 New Post
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>New Blog Post</DialogTitle>
               </DialogHeader>
@@ -231,6 +265,7 @@ export default function BlogPage() {
                     <Switch id="featured" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
                     <Label htmlFor="featured">Featured</Label>
                   </div>
+                  <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
                 </div>
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
@@ -241,7 +276,7 @@ export default function BlogPage() {
           </Dialog>
 
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogContent className="sm:max-w-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
+            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700">
               <DialogHeader>
                 <DialogTitle>Edit Blog Post</DialogTitle>
               </DialogHeader>
@@ -269,6 +304,7 @@ export default function BlogPage() {
                     <Switch id="featured-edit" checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
                     <Label htmlFor="featured-edit">Featured</Label>
                   </div>
+                  <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
                 </div>
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>

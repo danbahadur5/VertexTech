@@ -132,16 +132,31 @@ const MobileMenu = ({
           {navigation.map((item) => {
             const Icon = item.icon;
             return (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`flex items-center gap-3 rounded-lg px-4 py-3 text-base font-semibold transition-colors
-                  ${isActive(item.href) ? "theme-text" : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
-                onClick={onClose}
-              >
-                {Icon && <Icon className="h-5 w-5" />}
-                {item.name}
-              </Link>
+              <div key={item.name} className="space-y-1">
+                <Link
+                  to={item.href}
+                  className={`flex items-center gap-3 rounded-lg px-4 py-3 text-base font-semibold transition-colors
+                    ${isActive(item.href) ? "theme-text" : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                  onClick={onClose}
+                >
+                  {Icon && <Icon className="h-5 w-5" />}
+                  {item.name}
+                </Link>
+                {item.hasDropdown && (
+                  <div className="pl-12 space-y-1">
+                    {item.dropdown?.map((sub) => (
+                      <Link
+                        key={sub.name}
+                        to={sub.href}
+                        className="block py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                        onClick={onClose}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             );
           })}
           <div className="pt-4 border-t dark:border-gray-700 space-y-3">
@@ -190,6 +205,7 @@ const MobileMenu = ({
 export function PublicHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
@@ -201,6 +217,21 @@ export function PublicHeader() {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch("/api/services", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          setServices(data.items || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch services for nav:", err);
+      }
+    };
+    fetchServices();
   }, []);
 
   const isActive = (href) => {
@@ -220,12 +251,14 @@ export function PublicHeader() {
       href: "/services",
       icon: LayoutGrid,
       hasDropdown: true,
-      dropdown: [
-        { name: "Cloud Solutions", href: "/services/cloud-solutions" },
-        { name: "Cybersecurity", href: "/services/cybersecurity" },
-        { name: "Custom Software", href: "/services/custom-software" },
-        { name: "Data Analytics", href: "/services/data-analytics" },
-      ],
+      dropdown: services.length > 0 
+        ? services.map(s => ({ name: s.title, href: `/services/${s.slug}` }))
+        : [
+            { name: "Cloud Solutions", href: "/services/cloud-solutions" },
+            { name: "Cybersecurity", href: "/services/cybersecurity" },
+            { name: "Custom Software", href: "/services/custom-software" },
+            { name: "Data Analytics", href: "/services/data-analytics" },
+          ],
     },
     { name: "Pricing", href: "/pricing", icon: DollarSign },
     { name: "About", href: "/about", icon: Info },

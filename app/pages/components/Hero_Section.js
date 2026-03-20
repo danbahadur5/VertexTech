@@ -348,7 +348,7 @@ export default function HeroSection() {
                     <div className="absolute inset-0 z-10 overflow-hidden rounded-full">
                       <Image
                         src={heroImg}
-                        alt="VertexTech product showcase"
+                        alt="DarbarTech product showcase"
                         fill
                         className="object-cover object-bottom"
                       />

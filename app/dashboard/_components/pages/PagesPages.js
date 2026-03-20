@@ -13,6 +13,7 @@ import { Textarea } from '../../../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { toast } from 'sonner';
 import { useAuth } from '../../../lib/auth-context';
+import { SEOFields } from '../SEOFields';
 
 export default function AdminPagesManager() {
   const { user } = useAuth();
@@ -31,8 +32,13 @@ export default function AdminPagesManager() {
     status: 'draft',
     heroTitle: '',
     summary: '',
-    metaTitle: '',
-    metaDescription: '',
+    seo: {
+      metaTitle: '',
+      metaDescription: '',
+      keywords: '',
+      ogImage: '',
+      canonicalUrl: '',
+    }
   });
 
   const load = async () => {
@@ -54,8 +60,13 @@ export default function AdminPagesManager() {
       status: 'draft',
       heroTitle: '',
       summary: '',
-      metaTitle: '',
-      metaDescription: '',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+        ogImage: '',
+        canonicalUrl: '',
+      }
     });
     setCurrent(null);
     setOriginalSlug('');
@@ -76,7 +87,12 @@ export default function AdminPagesManager() {
         blocks: [
           { id: 'hero', type: 'hero', content: { title: form.heroTitle, summary: form.summary }, order: 0 },
         ],
-        seo: { metaTitle: form.metaTitle, metaDescription: form.metaDescription, keywords: [] },
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const res = await fetch('/api/pages', {
         method: 'POST',
@@ -105,8 +121,13 @@ export default function AdminPagesManager() {
       status: page.status || 'draft',
       heroTitle: heroBlock?.content?.title || '',
       summary: heroBlock?.content?.summary || '',
-      metaTitle: page?.seo?.metaTitle || '',
-      metaDescription: page?.seo?.metaDescription || '',
+      seo: {
+        metaTitle: page.seo?.metaTitle || '',
+        metaDescription: page.seo?.metaDescription || '',
+        keywords: Array.isArray(page.seo?.keywords) ? page.seo.keywords.join(', ') : page.seo?.keywords || '',
+        ogImage: page.seo?.ogImage || '',
+        canonicalUrl: page.seo?.canonicalUrl || '',
+      }
     });
     setEditOpen(true);
   };
@@ -126,7 +147,12 @@ export default function AdminPagesManager() {
         title: form.title.trim(),
         status: form.status,
         blocks: updatedBlocks,
-        seo: { metaTitle: form.metaTitle, metaDescription: form.metaDescription, keywords: [] },
+        seo: {
+          ...form.seo,
+          keywords: typeof form.seo.keywords === 'string' 
+            ? form.seo.keywords.split(',').map(k => k.trim()).filter(Boolean)
+            : form.seo.keywords
+        }
       };
       const newSlug = form.slug.trim();
       if (newSlug && newSlug !== originalSlug) {
@@ -186,7 +212,7 @@ export default function AdminPagesManager() {
                 New Page
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg dark:bg-black dark:text-gray-400">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto dark:bg-black dark:text-gray-400">
               <DialogHeader>
                 <DialogTitle>Create New Page</DialogTitle>
                 <DialogDescription className="dark:text-gray-400">Provide required details for each section.</DialogDescription>
@@ -224,16 +250,7 @@ export default function AdminPagesManager() {
                   <Textarea rows={3} placeholder="Short summary for the page" value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Meta Title</Label>
-                    <Input placeholder="SEO title" value={form.metaTitle} onChange={(e) => setForm({ ...form, metaTitle: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Meta Description</Label>
-                    <Textarea rows={3} placeholder="SEO description" value={form.metaDescription} onChange={(e) => setForm({ ...form, metaDescription: e.target.value })} />
-                  </div>
-                </div>
+                <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
 
                 <DialogFooter className="pt-2">
                   <Button className='cursor-pointer dark:text-gray-400' type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
@@ -243,7 +260,7 @@ export default function AdminPagesManager() {
             </DialogContent>
           </Dialog>
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogContent className="sm:max-w-lg dark:bg-black dark:text-gray-400">
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto dark:bg-black dark:text-gray-400">
               <DialogHeader>
                 <DialogTitle>Edit Page</DialogTitle>
                 <DialogDescription className="dark:text-gray-400">Update page content and metadata.</DialogDescription>
@@ -279,16 +296,9 @@ export default function AdminPagesManager() {
                   <Label>Summary</Label>
                   <Textarea rows={3} value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Meta Title</Label>
-                    <Input value={form.metaTitle} onChange={(e) => setForm({ ...form, metaTitle: e.target.value })} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Meta Description</Label>
-                    <Textarea rows={3} value={form.metaDescription} onChange={(e) => setForm({ ...form, metaDescription: e.target.value })} />
-                  </div>
-                </div>
+                
+                <SEOFields data={form.seo} onChange={(seo) => setForm({ ...form, seo })} />
+
                 <DialogFooter className="pt-2">
                   <Button className='cursor-pointer dark:text-gray-400' type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
                   <Button className='cursor-pointer dark:text-gray-900' type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save Changes'}</Button>
