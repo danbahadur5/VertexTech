@@ -4,23 +4,23 @@ export default function  HowItWork(){
       const howItWorks = [
     {
       step: "01",
-      title: "Deploy",
-      desc: "Install our lightweight agent or connect via API. No reboots, no downtime, full coverage in under 24 hours.",
+      title: " Consultation ",
+      desc: "We begin by understanding your business goals, challenges, and digital requirements through detailed consultation.",
     },
     {
       step: "02",
-      title: "Discover",
-      desc: "Automatic asset discovery maps your entire attack surface across endpoints, cloud, and identity systems.",
+      title: "Strategy & Planning ",
+      desc: "Our technology experts develop a strategic roadmap that outlines the most effective solution for your business. ",
     },
     {
       step: "03",
-      title: "Detect",
-      desc: "AI behavioral models analyze billions of events in real time, identifying threats with industry-leading accuracy.",
+      title: " Development & Implementation ",
+      desc: "Our engineers design and develop secure, scalable systems using modern technology stacks. ",
     },
     {
       step: "04",
-      title: "Defend",
-      desc: "Automated response playbooks contain threats instantly while our SOC team investigates and remediates.",
+      title: " Deployment & Optimization",
+      desc: "After deployment, we continuously monitor, optimize, and maintain your system to ensure long-term success.",
     },
   ];
     return(

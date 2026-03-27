@@ -22,7 +22,7 @@ export default function FeaturedProject() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/case-studies", { cache: "no-store" });
+        const res = await fetch("/api/case-studies", { cache: "force-cache", next: { revalidate: 3600 } });
         if (!res.ok) return;
         const js = await res.json();
         const featured = Array.isArray(js.items) ? js.items.filter((x) => x.featured) : [];
@@ -70,11 +70,13 @@ export default function FeaturedProject() {
               className="reveal overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md bg-white dark:bg-gray-900"
               style={{ transitionDelay: `${idx * 0.12}s` }}
             >
-              <div className="aspect-video overflow-hidden">
+              <div className="aspect-video overflow-hidden relative">
                 <ImageWithFallback
                   src={project.gallery?.[0]}
                   alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <CardHeader>

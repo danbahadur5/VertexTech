@@ -12,7 +12,7 @@ type ContentLoaderProps = {
 
 export function ContentLoader({
   variant = "card",
-  count = 6,
+  count = 3,
   columns = 3,
   aspect = "video",
   className,

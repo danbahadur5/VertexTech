@@ -1,5 +1,11 @@
 'use client'
-import AdminDashboardPage from "../_components/pages/AdminDashboarPage";
+import AdminDashboarPage from "../_components/pages/AdminDashboarPage";
+import ProtectedRoute from "../../components/auth/ProtectedRoute";
+
 export default function Page() {
-  return <AdminDashboardPage />;
+  return (
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminDashboarPage />
+    </ProtectedRoute>
+  );
 }

@@ -36,7 +36,7 @@ export default function Services() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch("/api/services", { cache: "no-store" });
+        const res = await fetch("/api/services", { cache: "force-cache", next: { revalidate: 3600 } });
         if (!res.ok) return;
         const data = await res.json();
         setItems(data.items || []);

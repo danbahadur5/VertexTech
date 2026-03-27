@@ -1,4 +1,6 @@
-import React, { Suspense, lazy } from "react";
+"use client";
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { PublicHeader } from "../components/layout/PublicHeader";
 import { PublicFooter } from "../components/layout/PublicFooter";
 import { useScrollReveal } from "../lib/use-scroll-reveal";
@@ -7,18 +9,18 @@ import Hero_Trusted_Count from "./components/Hero_Trusted_Count";
 import HowItWork from "./components/How_IT_Work";
 import { useInView } from "../lib/use-in-view";
 
-// Lazy load components below the fold
-const TrustedBy = lazy(() => import("./components/TrustedBy"));
-const Capabilities = lazy(() => import("./components/Capabilities"));
-const Services = lazy(() => import("./components/Services"));
-const FeatureProject = lazy(() => import("./components/FeaturedProject"));
-const FeatureBlog = lazy(() => import("./components/FeaturedBlog"));
-const Testimonials = lazy(() => import("./components/Testimonials"));
-const FAQSection = lazy(() => import("./components/FAQSection"));
-const CTASection = lazy(() => import("./components/CTASection"));
+// Use next/dynamic for better performance and smaller initial bundles
+const TrustedBy = dynamic(() => import("./components/TrustedBy"), { ssr: false });
+const Capabilities = dynamic(() => import("./components/Capabilities"), { ssr: false });
+const Services = dynamic(() => import("./components/Services"), { ssr: false });
+const FeatureProject = dynamic(() => import("./components/FeaturedProject"), { ssr: false });
+const FeatureBlog = dynamic(() => import("./components/FeaturedBlog"), { ssr: false });
+const Testimonials = dynamic(() => import("./components/Testimonials"), { ssr: false });
+const FAQSection = dynamic(() => import("./components/FAQSection"), { ssr: false });
+const CTASection = dynamic(() => import("./components/CTASection"), { ssr: false });
 
-function LazySection({ children, fallback = null }) {
-  const [ref, isInView] = useInView({ rootMargin: '200px' });
+function LazySection({ children, fallback = <div className="h-40" /> }) {
+  const [ref, isInView] = useInView({ rootMargin: '200px', triggerOnce: true });
   return (
     <div ref={ref}>
       {isInView ? (
@@ -41,7 +43,7 @@ export default function HomePage() {
       <Hero_Section />
       <Hero_Trusted_Count />
 
-{/* Truested sections */}
+      {/* Trusted sections */}
       <LazySection>
         <TrustedBy />
       </LazySection>
@@ -50,33 +52,31 @@ export default function HomePage() {
         <Capabilities />
       </LazySection>
 
-
-{/* Services Sections */}
+      {/* Services Sections */}
       <LazySection>
         <Services />
       </LazySection>
 
-
-{/* Featurs Sections */}
+      {/* Features Sections */}
       <LazySection>
         <FeatureProject />
       </LazySection>
+      
       <LazySection>
-
         <HowItWork />
       </LazySection>
 
-{/* Testimonials Sections */}
+      {/* Testimonials Sections */}
       <LazySection>
         <Testimonials />
       </LazySection>
 
-{/* Features Blog Section */}
+      {/* Features Blog Section */}
       <LazySection>
         <FeatureBlog />
       </LazySection>
 
-{/* FAQ section */}
+      {/* FAQ section */}
       <LazySection>
         <FAQSection />
       </LazySection>
@@ -85,8 +85,7 @@ export default function HomePage() {
         <CTASection />
       </LazySection>
 
-
-{/* Public Footer Section */}
+      {/* Public Footer Section */}
       <LazySection>
         <PublicFooter />
       </LazySection>

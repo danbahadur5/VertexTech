@@ -4,6 +4,7 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Quote } from "lucide-react";
 import { useScrollReveal } from "../../lib/use-scroll-reveal";
 import { Skeleton } from "../../components/ui/skeleton";
+import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 
 export default function Testimonials() {
   useScrollReveal();
@@ -16,7 +17,7 @@ export default function Testimonials() {
     (async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/settings/trusted-security-leader", { cache: "no-store" });
+        const res = await fetch("/api/settings/trusted-security-leader", { cache: "force-cache", next: { revalidate: 3600 } });
         if (!res.ok) return;
         const json = await res.json();
         const d = json?.item?.data || {};
@@ -90,18 +91,22 @@ export default function Testimonials() {
                       "{t.quote}"
                     </p>
                     <div className="flex items-center gap-3">
-                      {t.avatarUrl ? (
-                        <img
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-100 dark:ring-gray-800">
+                        <ImageWithFallback
                           src={t.avatarUrl}
                           alt={t.name || 'Leader'}
-                          className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100"
+                          fill
+                          className="object-cover"
+                          sizes="48px"
                         />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 ring-2 ring-gray-100 dark:ring-gray-700" />
-                      )}
+                      </div>
                       <div>
-                        <div className="font-bold text-gray-900 dark:text-gray-100">{t.name}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">{t.role} @ {t.company}</div>
+                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">
+                          {t.name}
+                        </h4>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {t.role}
+                        </p>
                       </div>
                     </div>
                   </CardContent>

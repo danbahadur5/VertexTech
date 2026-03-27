@@ -14,18 +14,28 @@ export async function GET() {
   return NextResponse.json({ users });
 }
 
-const roleSchema = z.object({
+const userUpdateSchema = z.object({
   userId: z.string(),
-  role: z.enum(["admin", "editor", "client"]),
+  role: z.enum(["admin", "editor", "client"]).optional(),
+  status: z.enum(["active", "inactive"]).optional(),
 });
 
 export async function PUT(req: Request) {
   const ctx = await requireRole(["admin"]);
   if (!ctx) return NextResponse.json({ error: "forbidden" }, { status: 403 });
   const json = await req.json();
-  const body = roleSchema.safeParse(json);
+  const body = userUpdateSchema.safeParse(json);
   if (!body.success) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
   await connectDB();
-  const updated = await AppUser.findByIdAndUpdate(body.data.userId as any, { $set: { role: body.data.role } }, { new: true } as any);
+  
+  const updateData: any = {};
+  if (body.data.role) updateData.role = body.data.role;
+  if (body.data.status) updateData.status = body.data.status;
+
+  const updated = await AppUser.findByIdAndUpdate(
+    body.data.userId as any, 
+    { $set: updateData }, 
+    { new: true } as any
+  );
   return NextResponse.json({ user: updated });
 }

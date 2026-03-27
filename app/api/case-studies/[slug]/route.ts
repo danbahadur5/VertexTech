@@ -1,16 +1,26 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../lib/db";
 import { CaseStudy } from "../../../models";
-import { requireRole } from "../../../lib/rbac";
+import { requireRole, requireSession } from "../../../lib/rbac";
 import { z } from "zod";
 
 export const runtime = "nodejs";
 
 export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  
+  const session = await requireSession();
+  const ctx = await requireRole(["admin", "editor", "client"]);
+  
   await connectDB();
   const item = await CaseStudy.findOne({ slug } as any).lean();
   if (!item) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  
+  // Security: If user is a client, they can only see their own projects
+  if (ctx && ctx.profile.role === 'client' && item.clientId !== ctx.profile.authUserId) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+  
   return NextResponse.json({ item });
 }
 

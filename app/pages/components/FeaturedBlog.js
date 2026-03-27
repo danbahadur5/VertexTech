@@ -22,7 +22,7 @@ export default function FeaturedBlog() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/blog", { cache: "no-store" });
+        const res = await fetch("/api/blog", { cache: "force-cache", next: { revalidate: 3600 } });
         if (!res.ok) return;
         const js = await res.json();
         const featured = Array.isArray(js.items) ? js.items.filter((x) => x.featured && x.status === "published") : [];
@@ -71,11 +71,13 @@ export default function FeaturedBlog() {
               className="reveal overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border-0 shadow-md bg-white dark:bg-gray-900"
               style={{ transitionDelay: `${idx * 0.12}s` }}
             >
-              <div className="aspect-video overflow-hidden">
+              <div className="aspect-video overflow-hidden relative">
                 <ImageWithFallback
                   src={post.featuredImage}
                   alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <CardHeader>
@@ -95,12 +97,16 @@ export default function FeaturedBlog() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <img
-                      src={post.author?.avatar}
-                      alt={post.author?.name}
-                      className="w-7 h-7 rounded-full object-cover"
-                    />
-                    <span className="text-xs text-muted-foreground">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                      <ImageWithFallback
+                        src={post.author?.avatar}
+                        alt={post.author?.name}
+                        fill
+                        className="object-cover"
+                        sizes="32px"
+                      />
+                    </div>
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                       {post.author?.name}
                     </span>
                   </div>

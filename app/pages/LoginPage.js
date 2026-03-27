@@ -25,7 +25,11 @@ export default function LoginPage() {
       toast.success('Login successful!');
       navigate(`/dashboard/${current.role}`);
     } catch (error) {
-      toast.error('Invalid email or password');
+      if (error.message === 'Your account is inactive. Please contact support.') {
+        toast.error('Your account is inactive. Please contact support.');
+      } else {
+        toast.error('Invalid email or password');
+      }
     } finally {
       setIsLoading(false);
     }

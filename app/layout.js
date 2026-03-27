@@ -7,17 +7,25 @@ import { SiteSetting } from "./models";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+});
+
+import { cache } from "react";
+
+const getSystemSettings = cache(async () => {
+  await connectDB();
+  const res = await SiteSetting.findOne({ key: "system" }).lean();
+  return res?.data || {};
 });
 
 export async function generateMetadata() {
-  await connectDB();
-  const res = await SiteSetting.findOne({ key: "system" }).lean();
-  const d = res?.data || {};
+  const d = await getSystemSettings();
   
   return {
     title: d.metaTitle || d.siteName || "DarbarTech | AI-Powered Cybersecurity & Solutions",
@@ -25,6 +33,13 @@ export async function generateMetadata() {
     keywords: d.keywords || "cybersecurity, ai, software development",
     openGraph: {
       images: [d.ogImage || "/og-image.png"],
+    },
+    alternates: {
+      canonical: './',
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }

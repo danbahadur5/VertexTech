@@ -215,3 +215,20 @@ export const SupportTicket = models.SupportTicket || model("SupportTicket", Supp
 export const VerificationToken = models.VerificationToken || model("VerificationToken", VerificationTokenSchema);
 export const SiteSetting = models.SiteSetting || model("SiteSetting", SiteSettingSchema);
 export const Enquiry = models.Enquiry || model("Enquiry", EnquirySchema);
+
+const ActivitySchema = new Schema(
+  {
+    userId: { type: String, required: true, index: true },
+    userName: { type: String, required: true },
+    userEmail: { type: String },
+    userAvatar: { type: String },
+    action: { type: String, required: true }, // e.g., "Published blog post", "Updated service"
+    type: { type: String, enum: ["user", "content", "support", "system"], default: "system", index: true },
+    targetId: { type: String }, // ID of the related object (blog post, user, etc.)
+    targetName: { type: String }, // Name/Title of the related object
+    metadata: { type: Schema.Types.Mixed, default: {} },
+  },
+  { timestamps: true }
+);
+
+export const Activity = models.Activity || model("Activity", ActivitySchema);

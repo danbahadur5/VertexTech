@@ -13,21 +13,52 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from '../../../components/ui/badge';
+import { Skeleton } from '../../../components/ui/skeleton';
 
 export default function AdminDashboard() {
   const [statsData, setStatsData] = useState({ users: 0, pages: 0, posts: 0, projects: 0, tickets: 0 });
+  const [activities, setActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch('/api/admin/stats', { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
+        const [statsRes, activitiesRes] = await Promise.all([
+          fetch('/api/admin/stats', { cache: 'no-store' }),
+          fetch('/api/admin/activities?limit=5', { cache: 'no-store' })
+        ]);
+
+        if (statsRes.ok) {
+          const data = await statsRes.json();
           setStatsData(data);
         }
-      } catch {}
+
+        if (activitiesRes.ok) {
+          const data = await activitiesRes.json();
+          setActivities(data.data?.activities || []);
+        }
+      } catch (err) {
+        console.error("Dashboard data load error:", err);
+      } finally {
+        setIsLoading(false);
+      }
     };
     load();
   }, []);
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now - date;
+    const diffInMins = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInMins < 1) return 'Just now';
+    if (diffInMins < 60) return `${diffInMins}m ago`;
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    return `${diffInDays}d ago`;
+  };
   const stats = [
     {
       name: 'Total Users',
@@ -61,14 +92,6 @@ export default function AdminDashboard() {
       icon: Briefcase,
       href: '/dashboard/admin/caseStudy',
     },  
-  ];
-
-  const recentActivity = [
-    { action: 'New user registered', user: 'John Smith', time: '2 hours ago', type: 'user' },
-    { action: 'Blog post published', user: 'Sarah Johnson', time: '5 hours ago', type: 'content' },
-    { action: 'Service page updated', user: 'Michael Chen', time: '1 day ago', type: 'content' },
-    { action: 'Support ticket resolved', user: 'Admin User', time: '1 day ago', type: 'support' },
-    { action: 'New Case Study added', user: 'Sarah Johnson', time: '2 days ago', type: 'content' },
   ];
 
   const quickActions = [
@@ -205,18 +228,41 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start gap-4 pb-4 border-b last:border-0">
-                    <div className="bg-blue-100 p-2 rounded-lg dark:bg-gray-700">
-                      <Activity className="h-4 w-4 text-blue-600" />
+                {isLoading ? (
+                  [...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-start gap-4 pb-4">
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-3 w-2/3" />
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{activity.action}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{activity.user}</p>
+                  ))
+                ) : activities.length > 0 ? (
+                  activities.map((activity, index) => (
+                    <div key={activity._id || index} className="flex items-start gap-4 pb-4 border-b last:border-0">
+                      <div className={`p-2 rounded-lg ${
+                        activity.type === 'content' ? 'bg-blue-100 text-blue-600' :
+                        activity.type === 'user' ? 'bg-green-100 text-green-600' :
+                        activity.type === 'support' ? 'bg-purple-100 text-purple-600' :
+                        'bg-gray-100 text-gray-600'
+                      }`}>
+                        <Activity className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-300 line-clamp-1">{activity.action}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{activity.userName}</p>
+                      </div>
+                      <span className="text-[10px] text-gray-500 whitespace-nowrap dark:text-gray-500 mt-1">
+                        {formatTime(activity.createdAt)}
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-500 whitespace-nowrap dark:text-gray-500">{activity.time}</span>
+                  ))
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-sm text-gray-500">No recent activity found</p>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>

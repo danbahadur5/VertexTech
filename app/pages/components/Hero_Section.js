@@ -1,4 +1,4 @@
-"user client"
+"use client"
 import HeroMap from "../assets/map.svg";
 import HeroImage from "../assets/images.jpg";
 import { Link } from "react-router";
@@ -48,12 +48,14 @@ const AvatarGroup = ({ avatars }) => {
       {list.map((src, index) => (
         <span
           key={index}
-          className="w-10 h-10 rounded-full overflow-hidden border-2 border-white"
+          className="w-10 h-10 rounded-full overflow-hidden border-2 border-white relative"
         >
-          <img
+          <Image
             src={src}
             alt={`User avatar ${index + 1}`}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="40px"
           />
         </span>
       ))}
@@ -77,7 +79,11 @@ const ServiceRing = ({ items }) => {
         ];
   const iconNode = (icon) => {
     if (typeof icon === "string" && /^https?:\/\//i.test(icon)) {
-      return <img src={icon} alt="" className="w-5 h-5 object-contain" />;
+      return (
+        <div className="relative w-5 h-5">
+          <Image src={icon} alt="" fill className="object-contain" sizes="20px" />
+        </div>
+      );
     }
     const key = String(icon || "").toLowerCase();
     const icons = {

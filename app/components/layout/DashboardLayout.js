@@ -47,7 +47,7 @@ import {
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { user, logout, hasRole } = useAuth();
+  const { user, logout, hasRole, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -56,6 +56,24 @@ export function DashboardLayout({ children }) {
   const [autoHideEnabled, setAutoHideEnabled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        navigate('/login');
+        return;
+      }
+
+      const path = location.pathname;
+      if (path.startsWith('/dashboard/admin') && user?.role !== 'admin') {
+        navigate(`/dashboard/${user?.role || 'client'}`);
+      } else if (path.startsWith('/dashboard/editor') && !['admin', 'editor'].includes(user?.role)) {
+        navigate(`/dashboard/${user?.role || 'client'}`);
+      } else if (path.startsWith('/dashboard/client') && !['admin', 'client'].includes(user?.role)) {
+        navigate(`/dashboard/${user?.role || 'client'}`);
+      }
+    }
+  }, [isLoading, isAuthenticated, user, location.pathname, navigate]);
 
   useEffect(() => {
     const p = location.pathname || "";
@@ -196,6 +214,31 @@ export function DashboardLayout({ children }) {
   const role = user?.role;
   const activeBg = role === 'admin' ? 'from-orange-900 to-red-500' : role === 'editor' ? 'from-blue-600 to-purple-600' : 'from-emerald-600 to-green-500';
   const sectionLabel = role === 'admin' ? 'Admin' : role === 'editor' ? 'Editor' : 'Client';
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-gray-600 dark:text-gray-400 font-medium">Loading Dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // Will be redirected by useEffect
+  }
+
+  const path = location.pathname;
+  const isAuthorized = 
+    (path.startsWith('/dashboard/admin') && user?.role === 'admin') ||
+    (path.startsWith('/dashboard/editor') && ['admin', 'editor'].includes(user?.role)) ||
+    (path.startsWith('/dashboard/client') && ['admin', 'client'].includes(user?.role));
+
+  if (!isAuthorized && path !== '/dashboard') {
+    return null; // Will be redirected by useEffect
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
