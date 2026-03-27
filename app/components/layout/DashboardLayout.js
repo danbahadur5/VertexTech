@@ -47,7 +47,7 @@ import {
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { user, logout, hasRole, isLoading, isAuthenticated } = useAuth();
+  const { user, logout, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
@@ -57,23 +57,13 @@ export function DashboardLayout({ children }) {
   const { theme, setTheme } = useTheme();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
+  // Authorization is now handled by ProtectedRoute wrapper in page.js files
+  // We only keep the basic authentication check here as a fallback
   useEffect(() => {
-    if (!isLoading) {
-      if (!isAuthenticated) {
-        navigate('/login');
-        return;
-      }
-
-      const path = location.pathname;
-      if (path.startsWith('/dashboard/admin') && user?.role !== 'admin') {
-        navigate(`/dashboard/${user?.role || 'client'}`);
-      } else if (path.startsWith('/dashboard/editor') && !['admin', 'editor'].includes(user?.role)) {
-        navigate(`/dashboard/${user?.role || 'client'}`);
-      } else if (path.startsWith('/dashboard/client') && !['admin', 'client'].includes(user?.role)) {
-        navigate(`/dashboard/${user?.role || 'client'}`);
-      }
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login');
     }
-  }, [isLoading, isAuthenticated, user, location.pathname, navigate]);
+  }, [isLoading, isAuthenticated, navigate]);
 
   useEffect(() => {
     const p = location.pathname || "";

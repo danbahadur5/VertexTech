@@ -20,8 +20,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'cdn.brandfetch.io' },
     ],
   },
-  // Optimize production builds
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
