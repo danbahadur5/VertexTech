@@ -7,7 +7,21 @@ export function ImageWithFallback(props: Omit<ImageProps, 'onError'>) {
   const [didError, setDidError] = useState(false)
   const { src, alt, className, ...rest } = props
 
-  if (didError || !src) {
+  let srcIsValid = false;
+  if (src && typeof src === 'string') {
+    if (src.startsWith('/')) {
+      srcIsValid = true;
+    } else {
+      try {
+        new URL(src);
+        srcIsValid = true;
+      } catch (e) {
+        srcIsValid = false;
+      }
+    }
+  }
+
+  if (didError || !srcIsValid) {
     return (
       <div className={`inline-block bg-gray-100 dark:bg-gray-800 text-center align-middle relative ${className ?? ''}`}>
         <div className="flex items-center justify-center w-full h-full">

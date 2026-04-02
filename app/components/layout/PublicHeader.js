@@ -21,16 +21,23 @@ import {
 import { Button } from "../ui/button";
 import { useAuth } from "../../lib/auth-context";
 import { useTheme } from "next-themes";
-import { ThemeSwitcher } from "../ui/ThemeSwitcher";
 import { siteSettings } from "../../lib/site-settings";
 import logo from "./assets/logo.png";
+import logoDark from "./assets/dark_logo.png";
+import logoLight from "./assets/light_logo.png";
 import Image from "next/image";
-// --- Subcomponents ---
 
-const Logo = () => (
-  <Link to="/" className="flex items-center gap-2 group">
-    <Image src={logo} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
-  </Link>
+
+const Logo = ({ theme }) => (
+  theme === "dark" ? (
+    <Link to="/" className="flex items-center gap-2 group">
+      <Image src={logoLight} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
+    </Link>
+  ) : (
+    <Link to="/" className="flex items-center gap-2 group">
+      <Image src={logoDark} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
+    </Link>
+  )
 );
 
 const NavLink = ({ item, isActive, onClick }) => {
@@ -78,21 +85,25 @@ const DropdownNav = ({ item, isActive }) => {
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-gray-900/5 dark:ring-gray-700 animate-slide-down">
-          <div className="p-1.5">
-            {item.dropdown?.map((sub) => (
-              <Link
-                key={sub.name}
-                to={sub.href}
-                className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "var(--theme-primary)" }}
-                />
-                {sub.name}
-              </Link>
-            ))}
+        <div className="absolute left-0 top-full mt-1 w-64 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-gray-900/5 dark:ring-gray-700 animate-slide-down">
+          <div className="p-2">
+            <div className="grid grid-cols-1 gap-1">
+              {item.dropdown?.map((sub) => (
+                <Link
+                  key={sub.name}
+                  to={sub.href}
+                  className="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 group-hover:bg-gray-200 dark:group-hover:bg-gray-600">
+                    <i className={`text-lg ${sub.icon} theme-text`}></i>
+                  </div>
+                  <div className="flex-grow">
+                    <p className="font-semibold">{sub.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{sub.description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -107,6 +118,7 @@ const MobileMenu = ({
   isActive,
   isAuthenticated,
   user,
+  theme,
 }) => {
   const navigate = useNavigate();
 
@@ -120,7 +132,7 @@ const MobileMenu = ({
       />
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-2xl rounded-t-2xl lg:hidden animate-slide-up">
         <div className="flex items-center justify-between px-6 py-4 border-b dark:border-gray-700">
-          <Logo />
+          <Logo theme={theme} />
           <button
             onClick={onClose}
             className="rounded-lg p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -206,14 +218,16 @@ export function PublicHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [services, setServices] = useState([]);
+  const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -283,7 +297,7 @@ export function PublicHeader() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <Logo />
+            <Logo theme={mounted ? resolvedTheme : "light"} />
           </div>
 
           <div className="hidden lg:flex items-center lg:gap-x-1">
@@ -348,9 +362,7 @@ export function PublicHeader() {
       {/* Mobile Top Bar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
-          <Link to="/" className="flex items-center gap-2">
-               <Image src={logo} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
-          </Link>
+          <Logo theme={mounted ? resolvedTheme : "light"} />
 
           <div className="flex items-center gap-2">
             <Button
@@ -443,6 +455,7 @@ export function PublicHeader() {
         isAuthenticated={isAuthenticated}
         user={user}
         toggleTheme={toggleTheme}
+        theme={mounted ? resolvedTheme : "light"}
       />
 
       {/* Spacers for fixed elements */}

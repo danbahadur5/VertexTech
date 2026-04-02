@@ -33,6 +33,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useAuth } from '../../lib/auth-context';
 import { Badge } from '../ui/badge';
 import { useTheme } from 'next-themes';
+
+import logoDark from "./assets/dark_logo.png";
+import logoLight from "./assets/light_logo.png";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,6 +46,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
+import Image from 'next/image';
 
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -235,14 +239,14 @@ export function DashboardLayout({ children }) {
       <aside className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
         <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
-            <Link to="/" className="flex items-center gap-2">
-              <span className={`font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${sidebarCollapsed ? 'text-xl' : 'text-2xl'}`}>
-                D
-              </span>
+            <Link to="#" className="flex items-center gap-2">
               {!sidebarCollapsed && (
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  DarbarTech
-                </span>
+               localStorage.getItem("theme") === "dark" ? 
+               (
+                <Image src={logoLight} alt="DarbarTech" className="object-contain" height={160} width={160} />
+               ) : (
+                <Image src={logoDark} alt="DarbarTech" className="object-contain" height={160} width={160} />
+               )
               )}
             </Link>
             <button
@@ -378,9 +382,12 @@ export function DashboardLayout({ children }) {
           <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white dark:bg-gray-900 px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-700/50">
             <div className="flex h-16 shrink-0 items-center justify-between">
               <Link to="/" className="flex items-center gap-2">
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  DarbarTech
-                </span>
+               localStorage.getItem("theme") === "dark" ? 
+               (
+                <Image src={logoDark} alt="DarbarTech" className="object-contain" height={160} width={160} />
+               ) : (
+                <Image src={logoLight} alt="DarbarTech" className="object-contain" height={160} width={160} />
+               )
               </Link>
               <button onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
                 <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />

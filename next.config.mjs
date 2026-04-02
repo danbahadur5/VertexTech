@@ -4,9 +4,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true, // Only if you want to skip TS errors during build for speed
   },
@@ -32,6 +29,11 @@ const nextConfig = {
       '@radix-ui/react-icons',
       'date-fns',
     ],
+  },
+  turbopack: {
+    resolveAlias: {
+      "react-router": "./app/shim/react-router.tsx",
+    },
   },
   webpack: (config) => {
     config.resolve.alias = {

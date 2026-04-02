@@ -23,7 +23,7 @@ const createSchema = z.object({
   slug: z.string().trim().min(1, 'Slug is required').max(200).regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens'),
   content: z.string().min(1, 'Content is required'),
   excerpt: z.string().trim().max(500).optional(),
-  featuredImage: z.string().url('Featured image must be a valid URL').optional().or(z.literal('')),
+  featuredImage: z.string().url('Featured image must be a valid URL').optional(),
   category: z.string().trim().max(50).optional(),
   tags: z.array(z.string().trim().max(30)).optional(),
   featured: z.boolean().default(false).optional(),
