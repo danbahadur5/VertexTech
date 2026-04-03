@@ -84,13 +84,15 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.0",
     "@types/node": "20.14.9",
-    "@types/react": "18.3.12",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "eslint-plugin-react-hooks": "^7.0.1",
     "jsdom": "^26.0.0",
     "tailwindcss": "^4",
     "typedoc": "^0.26.7",
+    "typescript": "6.0.2",
     "vitest": "^2.1.4"
   }
 }
