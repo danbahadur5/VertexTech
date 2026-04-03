@@ -4,13 +4,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  poweredByHeader: false,
   typescript: {
-    ignoreBuildErrors: true, 
+    ignoreBuildErrors: true, // Only if you want to skip TS errors during build for speed
   },
   images: {
-    minimumCacheTTL: 60,
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
@@ -31,8 +28,6 @@ const nextConfig = {
       'framer-motion',
       '@radix-ui/react-icons',
       'date-fns',
-      'clsx',
-      'tailwind-merge',
     ],
   },
   turbopack: {
