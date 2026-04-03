@@ -31,11 +31,11 @@ import Image from "next/image";
 const Logo = ({ theme }) => (
   theme === "dark" ? (
     <Link to="/" className="flex items-center gap-2 group">
-      <Image src={logoLight} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
+      <Image src={logoLight} alt={siteSettings.brand.name} className="h-8 cursor-pointer md:h-10 w-auto object-contain" height={40} width={160} priority />
     </Link>
   ) : (
     <Link to="/" className="flex items-center gap-2 group">
-      <Image src={logoDark} alt={siteSettings.brand.name} className="object-contain" height={160} width={160} />
+      <Image src={logoDark} alt={siteSettings.brand.name} className="h-8 md:h-10 w-auto object-contain" height={40} width={160} priority />
     </Link>
   )
 );

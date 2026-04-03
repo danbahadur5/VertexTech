@@ -26,18 +26,18 @@ const TrustedBy = () => {
   }, []);
 
   return (
-    <section className="relative py-20 bg-white dark:bg-gray-950 overflow-hidden">
+    <section className="relative py-12 md:py-20 bg-white dark:bg-gray-950 overflow-hidden">
       {/* Title */}
-      <div className="text-center mb-12 px-6">
+      <div className="text-center mb-8 md:mb-12 px-6">
         {loading ? (
-          <>
-            <Skeleton className="h-4 w-48 mx-auto mb-3" />
-            <Skeleton className="h-10 w-96 mx-auto" />
-          </>
+          <div className="space-y-3">
+            <Skeleton className="h-4 w-32 md:w-48 mx-auto" />
+            <Skeleton className="h-8 md:h-10 w-64 md:w-96 mx-auto" />
+          </div>
         ) : (
           <>
-            <p className="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">{title}</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">{subtitle}</h2>
+            <p className="text-xs md:text-sm uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 mb-2 md:mb-3 font-medium">{title || "TRUSTED BY"}</p>
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 leading-tight max-w-3xl mx-auto">{subtitle}</h2>
           </>
         )}
       </div>
@@ -60,31 +60,31 @@ const TrustedBy = () => {
       `}</style>
 
       {/* Logo Marquee */}
-      <div className="overflow-hidden w-full relative max-w-6xl mx-auto select-none">
+      <div className="overflow-hidden w-full relative select-none">
         {/* Left Fade */}
-        <div className="absolute left-0 top-0 h-full w-24 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-gray-950 to-transparent" />
+        <div className="absolute left-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-gray-950 to-transparent" />
 
         {/* Logos */}
         <div
           className="marquee-inner flex min-w-[200%] items-center"
-          style={{ animationDuration: "20s" }}
+          style={{ animationDuration: "25s" }}
         >
           {loading ? (
-            [...Array(14)].map((_, i) => (
-              <div key={i} className="mx-8 p-4">
-                <Skeleton className="h-10 w-32" />
+            [...Array(10)].map((_, i) => (
+              <div key={i} className="mx-6 md:mx-10 p-2 md:p-4">
+                <Skeleton className="h-6 md:h-8 w-24 md:w-32" />
               </div>
             ))
           ) : (
             [...logos, ...logos].map((url, index) => (
               <div
                 key={index}
-                className="mx-8 flex items-center justify-center p-4 transition duration-300 hover:-translate-y-1"
+                className="mx-6 md:mx-10 flex items-center justify-center p-2 md:p-4 transition duration-500 hover:scale-110"
               >
                 <img
                   src={url}
                   alt={`logo-${index}`}
-                  className="h-10 w-auto opacity-70 hover:opacity-100 transition duration-300"
+                  className="h-7 md:h-10 w-auto opacity-60 dark:opacity-40 hover:opacity-100 dark:hover:opacity-100 transition duration-300 grayscale hover:grayscale-0"
                   draggable={false}
                 />
               </div>
@@ -93,7 +93,7 @@ const TrustedBy = () => {
         </div>
 
         {/* Right Fade */}
-        <div className="absolute right-0 top-0 h-full w-24 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-gray-950 to-transparent" />
+        <div className="absolute right-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-gray-950 to-transparent" />
       </div>
     </section>
   );
