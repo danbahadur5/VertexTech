@@ -107,55 +107,73 @@ export default function Testimonials() {
           <div className="embla__container flex">
             {loading
               ? [...Array(3)].map((_, i) => (
-                  <div key={i} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-4">
-                    <Card className="p-8 h-full space-y-4">
-                      <Skeleton className="h-8 w-8 rounded-full mb-4" />
-                      <Skeleton className="h-20 w-full" />
-                      <div className="flex items-center gap-3 mt-auto">
-                        <Skeleton className="h-12 w-12 rounded-full" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-24" />
-                          <Skeleton className="h-3 w-32" />
+                  <div key={i} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-3 py-4">
+                    <Card className="p-6 h-auto space-y-4 rounded-2xl">
+                      <div className="flex justify-between items-center">
+                        <Skeleton className="h-6 w-6 rounded-md" />
+                        <Skeleton className="h-4 w-16 rounded-md" />
+                      </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-[90%]" />
+                        <Skeleton className="h-4 w-[80%]" />
+                      </div>
+                      <div className="flex items-center gap-3 pt-2 border-t border-gray-50 dark:border-gray-800/50">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div className="space-y-1.5">
+                          <Skeleton className="h-3 w-20" />
+                          <Skeleton className="h-2 w-24" />
                         </div>
                       </div>
                     </Card>
                   </div>
                 ))
               : items.map((t, idx) => (
-                  <div key={idx} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-4">
+                  <div key={idx} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-3 py-4">
                     <Card
-                      className="h-full hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative overflow-hidden group border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 backdrop-blur-sm"
+                      className="h-auto hover:shadow-xl transition-all duration-500 hover:-translate-y-1 relative overflow-hidden group border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/40 backdrop-blur-md rounded-2xl"
                     >
                       <div
-                        className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-5 group-hover:opacity-10 transition-opacity duration-500"
+                        className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-700"
                         style={{
                           background: "var(--theme-primary)",
                           transform: "translate(30%,-30%)",
                         }}
                       />
-                      <CardContent className="pt-10 flex flex-col h-full">
-                        <Quote
-                          className="h-10 w-10 mb-6 opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-                          style={{ color: "var(--theme-primary)" }}
-                        />
-                        <p className="text-gray-700 dark:text-gray-300 mb-8 italic leading-relaxed text-lg flex-grow">
+                      <CardContent className="p-6 flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                          <Quote
+                            className="h-6 w-6 opacity-20 group-hover:opacity-60 transition-all duration-500 transform group-hover:rotate-12"
+                            style={{ color: "var(--theme-primary)" }}
+                          />
+                          <div className="flex gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <svg key={i} className="w-3.5 h-3.5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <p className="text-gray-600 dark:text-gray-300 italic leading-relaxed text-base">
                           "{t.quote}"
                         </p>
-                        <div className="flex items-center gap-4 mt-auto">
-                          <div className="relative w-14 h-14 rounded-full overflow-hidden ring-4 ring-gray-50 dark:ring-gray-800 group-hover:ring-[var(--theme-primary)]/20 transition-all duration-500">
+                        
+                        <div className="flex items-center gap-3 pt-2 border-t border-gray-50 dark:border-gray-800/50">
+                          <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-50 dark:ring-gray-800 group-hover:ring-[var(--theme-primary)]/30 transition-all duration-500">
                             <ImageWithFallback
                               src={t.avatarUrl}
                               alt={t.name || 'Leader'}
                               fill
                               className="object-cover"
-                              sizes="56px"
+                              sizes="40px"
                             />
                           </div>
-                          <div>
-                            <h4 className="font-bold text-gray-900 dark:text-gray-100 text-base">
+                          <div className="flex flex-col">
+                            <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm leading-tight">
                               {t.name}
                             </h4>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                            <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">
                               {t.role}
                             </p>
                           </div>
