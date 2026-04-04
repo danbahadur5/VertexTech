@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
@@ -12,30 +14,31 @@ import { Mail, Phone, MapPin, Clock, Send, MessageSquare, Shield, CheckCircle2 }
 import { toast } from 'sonner';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
-export default function ContactPage() {
+export default function ContactPage({ initialData }) {
   useScrollReveal();
 
   const [hero, setHero] = useState({
-    badge: 'Get in Touch',
-    titleLeading: 'Talk to a',
-    titleGradient: 'Security Expert',
-    subtitle: 'Ready to strengthen your security posture? Our team of cybersecurity experts is available 24/7 to assess your needs and recommend the right protection.',
+    badge: initialData?.badge || 'Get in Touch',
+    titleLeading: initialData?.titleLeading || 'Talk to a',
+    titleGradient: initialData?.titleGradient || 'Security Expert',
+    subtitle: initialData?.subtitle || 'Ready to strengthen your security posture? Our team of cybersecurity experts is available 24/7 to assess your needs and recommend the right protection.',
   });
   const [contactData, setContactData] = useState({
-    email: 'contact@vertextech.com',
-    emailLink: 'mailto:contact@vertextech.com',
-    phone: '+1 (555) 123-4567',
-    phoneLink: 'tel:+15551234567',
-    hqAddress: '123 Tech Street, San Francisco, CA 94105',
-    hqLink: 'https://maps.google.com',
-    hours: 'Mon–Fri: 9:00 AM – 6:00 PM PST',
+    email: initialData?.contact?.email || 'contact@darbartech.com',
+    emailLink: initialData?.contact?.emailLink || 'mailto:contact@darbartech.com',
+    phone: initialData?.contact?.phone || '+1 (555) 123-4567',
+    phoneLink: initialData?.contact?.phoneLink || 'tel:+15551234567',
+    hqAddress: initialData?.contact?.hqAddress || '123 Tech Street, San Francisco, CA 94105',
+    hqLink: initialData?.contact?.hqLink || 'https://maps.google.com',
+    hours: initialData?.contact?.hours || 'Mon–Fri: 9:00 AM – 6:00 PM PST',
   });
-  const [offices, setOffices] = useState([
+  const [offices, setOffices] = useState(initialData?.offices || [
     { city: 'San Francisco', country: 'USA', address: '123 Tech Street, CA 94105', phone: '+1 (555) 123-4567' },
     { city: 'New York', country: 'USA', address: '456 Innovation Ave, NY 10001', phone: '+1 (555) 987-6543' },
     { city: 'London', country: 'UK', address: '789 Tech Hub, London EC1A 1BB', phone: '+44 20 1234 5678' },
   ]);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/settings/contact-page', { cache: 'no-store' });
@@ -52,7 +55,7 @@ export default function ContactPage() {
         if (Array.isArray(d.offices) && d.offices.length) setOffices(d.offices);
       } catch {}
     })();
-  }, []);
+  }, [initialData]);
 
   const [formData, setFormData] = useState({ name: '', email: '', company: '', subject: '', message: '' });
   const [submitting, setSubmitting] = useState(false);

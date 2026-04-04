@@ -1,5 +1,7 @@
-'use client'
 import CaseStudyPage from "../pages/CaseStudyPage";
-export default function Page() {
-  return <CaseStudyPage />;
+import { getCaseStudiesData } from "../lib/page-data";
+
+export default async function Page() {
+  const studies = await getCaseStudiesData();
+  return <CaseStudyPage initialData={studies} />;
 }

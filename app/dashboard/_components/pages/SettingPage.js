@@ -9,7 +9,7 @@ import { Textarea } from '../../../components/ui/textarea';
 import { toast } from 'sonner';
 
 export default function SettingPage() {
-  const [siteName, setSiteName] = useState('VertexTech');
+  const [siteName, setSiteName] = useState('DarbarTech');
   const [supportEmail, setSupportEmail] = useState('support@vertextech.com');
   const [maintenance, setMaintenance] = useState(false);
   const [metaTitle, setMetaTitle] = useState('');
@@ -19,7 +19,7 @@ export default function SettingPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [initial, setInitial] = useState({
-    siteName: 'VertexTech',
+    siteName: 'DarbarTech',
     supportEmail: 'support@vertextech.com',
     maintenance: false,
     metaTitle: '',
@@ -104,7 +104,7 @@ export default function SettingPage() {
       <div className="space-y-8 overflow-y-auto max-h-[75vh] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-100">Settings</h1>
-          <p className="text-gray-600 dark:text-slate-300 mt-2">Manage general application and SEO settings</p>
+          <p className="text-gray-600 dark:text-slate-300 mt-2">Configure site-wide system settings for DarbarTech</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -52,8 +53,8 @@ export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { user, logout, isLoading, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -65,16 +66,16 @@ export function DashboardLayout({ children }) {
   // We only keep the basic authentication check here as a fallback
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate('/login');
+      router.push('/login');
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, router]);
 
   useEffect(() => {
-    const p = location.pathname || "";
+    const p = pathname || "";
     const shouldEnable = /^\/dashboard\/(admin|editor)\/services(\/.*)?$/.test(p);
     setAutoHideEnabled(shouldEnable);
     setLastScrollY(0);
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     const items = getNavigationItems();
@@ -84,7 +85,7 @@ export function DashboardLayout({ children }) {
     const aboutActive = aboutChildren.some((c) => isActive(c.href));
     setAppearanceOpen(appearanceActive);
     setAboutOpen(aboutActive);
-  }, [location.pathname, user?.role]);
+  }, [pathname, user?.role]);
 
   useEffect(() => {
     if (!autoHideEnabled) return;
@@ -105,15 +106,15 @@ export function DashboardLayout({ children }) {
 
   const confirmLogout = () => {
     logout();
-    navigate('/login');
+    router.push('/login');
   };
 
   const isOverview = (p) => /^\/dashboard\/(admin|editor|client)$/.test(p);
   const isActive = (path) => {
     if (isOverview(path)) {
-      return location.pathname === path;
+      return pathname === path;
     }
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+    return pathname === path || pathname.startsWith(path + '/');
   };
 
   // Navigation items based on role
@@ -224,7 +225,7 @@ export function DashboardLayout({ children }) {
     return null; // Will be redirected by useEffect
   }
 
-  const path = location.pathname;
+  const path = pathname;
   const isAuthorized = 
     (path.startsWith('/dashboard/admin') && user?.role === 'admin') ||
     (path.startsWith('/dashboard/editor') && ['admin', 'editor'].includes(user?.role)) ||
@@ -239,7 +240,7 @@ export function DashboardLayout({ children }) {
       <aside className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
         <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
-            <Link to="#" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               {!sidebarCollapsed && (
                localStorage.getItem("theme") === "dark" ? 
                (
@@ -292,7 +293,7 @@ export function DashboardLayout({ children }) {
                             return (
                               <li key={child.name} className ="cursor-pointer">
                                 <Link
-                                  to={child.href}
+                                  href={child.href}
                                   className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                                   title={child.name}
                                 >
@@ -311,7 +312,7 @@ export function DashboardLayout({ children }) {
                   return (
                     <li key={item.name} className="cursor-pointer">
                       <Link
-                        to={item.href}
+                        href={item.href}
                         title={item.name}
                         className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                       >
@@ -381,7 +382,7 @@ export function DashboardLayout({ children }) {
           <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
           <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white dark:bg-gray-900 px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-700/50">
             <div className="flex h-16 shrink-0 items-center justify-between">
-              <Link to="/" className="flex items-center gap-2">
+              <Link href="/" className="flex items-center gap-2">
                localStorage.getItem("theme") === "dark" ? 
                (
                 <Image src={logoDark} alt="DarbarTech" className="object-contain" height={160} width={160} />
@@ -401,7 +402,7 @@ export function DashboardLayout({ children }) {
                   return (
                     <li key={item.name}>
                       <Link
-                        to={item.href}
+                        href={item.href}
                         onClick={() => setSidebarOpen(false)}
                         className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                       >
@@ -445,14 +446,14 @@ export function DashboardLayout({ children }) {
               </Button>
               {role === 'editor' && (
                 <Button size="sm" asChild className='dark:text-gray-200 cursor-pointer'>
-                  <Link to="/dashboard/editor/pages">
+                  <Link href="/dashboard/editor/pages">
                     <Plus className="h-4 w-4 mr-2" />
                     New Page
                   </Link>
                 </Button>
               )}
               <Button variant="outline" size="sm" asChild className='dark:text-gray-200 cursor-pointer'>
-                <Link to="/">
+                <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
                   View Site
                 </Link>

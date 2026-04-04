@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import {
   X,
   ChevronDown,
@@ -30,11 +33,11 @@ import Image from "next/image";
 
 const Logo = ({ theme }) => (
   theme === "dark" ? (
-    <Link to="/" className="flex items-center gap-2 group">
+    <Link href="/" className="flex items-center gap-2 group">
       <Image src={logoLight} alt={siteSettings.brand.name} className="h-8 cursor-pointer md:h-10 w-auto object-contain" height={40} width={160} priority />
     </Link>
   ) : (
-    <Link to="/" className="flex items-center gap-2 group">
+    <Link href="/" className="flex items-center gap-2 group">
       <Image src={logoDark} alt={siteSettings.brand.name} className="h-8 md:h-10 w-auto object-contain" height={40} width={160} priority />
     </Link>
   )
@@ -43,7 +46,7 @@ const Logo = ({ theme }) => (
 const NavLink = ({ item, isActive, onClick }) => {
   return (
     <Link
-      to={item.href}
+      href={item.href}
       className={`relative px-3 py-2 rounded-lg text-sm font-semibold transition-colors
         after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[2px] 
         after:bg-[var(--theme-primary)] after:rounded-full after:transition-transform after:duration-300
@@ -91,7 +94,7 @@ const DropdownNav = ({ item, isActive }) => {
               {item.dropdown?.map((sub) => (
                 <Link
                   key={sub.name}
-                  to={sub.href}
+                  href={sub.href}
                   className="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 group-hover:bg-gray-200 dark:group-hover:bg-gray-600">
@@ -120,7 +123,7 @@ const MobileMenu = ({
   user,
   theme,
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   if (!isOpen) return null;
 
@@ -146,7 +149,7 @@ const MobileMenu = ({
             return (
               <div key={item.name} className="space-y-1">
                 <Link
-                  to={item.href}
+                  href={item.href}
                   className={`flex items-center gap-3 rounded-lg px-4 py-3 text-base font-semibold transition-colors
                     ${isActive(item.href) ? "theme-text" : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
                   onClick={onClose}
@@ -159,7 +162,7 @@ const MobileMenu = ({
                     {item.dropdown?.map((sub) => (
                       <Link
                         key={sub.name}
-                        to={sub.href}
+                        href={sub.href}
                         className="block py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                         onClick={onClose}
                       >
@@ -176,7 +179,7 @@ const MobileMenu = ({
               <Button
                 className="theme-btn w-full flex items-center gap-2"
                 onClick={() => {
-                  navigate(`/dashboard/${user?.role}`);
+                  router.push(`/dashboard/${user?.role}`);
                   onClose();
                 }}
               >
@@ -188,7 +191,7 @@ const MobileMenu = ({
                   variant="outline"
                   className="w-full flex items-center gap-2"
                   onClick={() => {
-                    navigate("/login");
+                    router.push("/login");
                     onClose();
                   }}
                 >
@@ -197,7 +200,7 @@ const MobileMenu = ({
                 <Button
                   className="theme-btn w-full flex items-center gap-2"
                   onClick={() => {
-                    navigate("/contact");
+                    router.push("/contact");
                     onClose();
                   }}
                 >
@@ -219,8 +222,8 @@ export function PublicHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [services, setServices] = useState([]);
   const [mounted, setMounted] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const { isAuthenticated, user } = useAuth();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
@@ -249,13 +252,13 @@ export function PublicHeader() {
   }, []);
 
   const isActive = (href) => {
-    if (href === "/") return location.pathname === "/";
-    return location.pathname.startsWith(href);
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
   };
 
   const isUserActive = () => {
-    if (isAuthenticated) return location.pathname.startsWith("/dashboard");
-    return location.pathname === "/login" || location.pathname === "/register";
+    if (isAuthenticated) return pathname.startsWith("/dashboard");
+    return pathname === "/login" || pathname === "/register";
   };
 
   const navigation = [
@@ -328,7 +331,7 @@ export function PublicHeader() {
             {isAuthenticated ? (
               <Button
                 className="theme-btn rounded-lg px-5 h-9 cursor-pointer text-sm font-semibold"
-                onClick={() => navigate(`/dashboard/${user?.role}`)}
+                onClick={() => router.push(`/dashboard/${user?.role}`)}
               >
                 Dashboard
               </Button>
@@ -337,7 +340,7 @@ export function PublicHeader() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate("/login")}
+                  onClick={() => router.push("/login")}
                   className="font-semibold text-gray-900 dark:text-gray-100 cursor-pointer border px-5 py-2 hover:bg-transparent transition-all duration-300"
                 >
                   Log in
@@ -348,7 +351,7 @@ export function PublicHeader() {
                     size="sm"
                     variant={cta.variant}
                     className={`${cta.variant === "default" ? "theme-btn" : "theme-btn-outline cursor-pointer"} rounded-lg px-5 h-9 text-sm font-semibold cursor-pointer`}
-                    onClick={() => navigate(cta.href)}
+                    onClick={() => router.push(cta.href)}
                   >
                     {cta.name}
                   </Button>
@@ -377,7 +380,7 @@ export function PublicHeader() {
             </Button>
 
             <Link
-              to={isAuthenticated ? `/dashboard/${user?.role}` : "/login"}
+              href={isAuthenticated ? `/dashboard/${user?.role}` : "/login"}
               className={`flex items-center justify-center h-9 w-9 rounded-full transition-colors
                 ${isUserActive() ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
             >
@@ -398,7 +401,7 @@ export function PublicHeader() {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg">
         <nav className="flex items-center justify-around px-2 py-1">
           <Link
-            to="/services"
+            href="/services"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
               ${isActive("/services") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
@@ -406,7 +409,7 @@ export function PublicHeader() {
             <span className="text-[10px] mt-1 cursor-pointer font-medium">Services</span>
           </Link>
           <Link
-            to="/about"
+            href="/about"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
               ${isActive("/about") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
@@ -414,7 +417,7 @@ export function PublicHeader() {
             <span className="text-[10px] mt-1 font-medium">About</span>
           </Link>
           <Link
-            to="/"
+            href="/"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors relative
               ${isActive("/") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
@@ -428,7 +431,7 @@ export function PublicHeader() {
             <span className="text-[10px] mt-1 font-medium">Home</span>
           </Link>
           <Link
-            to="/caseStudy"
+            href="/caseStudy"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
               ${isActive("/caseStudy") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
@@ -436,7 +439,7 @@ export function PublicHeader() {
             <span className="text-[10px] mt-1 font-medium">Case Study</span>
           </Link>
           <Link
-            to="/contact"
+            href="/contact"
             className={`flex flex-col items-center justify-center py-2 px-1 flex-1 transition-colors
               ${isActive("/contact") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >

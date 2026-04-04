@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -10,11 +12,12 @@ import { useScrollReveal } from '../lib/use-scroll-reveal';
 
 const ICONS = { Shield, Cloud, Lock, Globe, Activity, Zap, Code, BarChart3 };
 
-export default function ServicesPage() {
+export default function ServicesPage({ initialData }) {
   useScrollReveal();
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [services, setServices] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/services', { cache: 'no-store' });
@@ -25,7 +28,7 @@ export default function ServicesPage() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
@@ -68,7 +71,7 @@ export default function ServicesPage() {
                   <ul className="space-y-2 mb-6">
                     {(svc.features || []).map((f) => (<li key={f} className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400"><CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--theme-primary)' }} />{f}</li>))}
                   </ul>
-                  <Link to={`/services/${svc.slug}`}><Button variant="ghost" className="w-full theme-text hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-semibold">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                  <Link href={`/services/${svc.slug}`}><Button variant="ghost" className="w-full theme-text hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-semibold">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
                 </div>
               );
             })}
@@ -102,7 +105,7 @@ export default function ServicesPage() {
                       <div className="flex items-baseline gap-1"><span className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Rs.{service.pricing.basic.toLocaleString()}</span><span className="text-gray-400 text-sm">/month</span></div>
                     </div>
                   )}
-                  <Link to={`/services/${service.slug}`}><Button className="theme-btn w-full rounded-xl h-11 font-semibold" size="lg">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                  <Link href={`/services/${service.slug}`}><Button className="theme-btn w-full rounded-xl h-11 font-semibold" size="lg">Learn More <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
                 </CardContent>
               </Card>
             ))}
@@ -114,8 +117,8 @@ export default function ServicesPage() {
           <h2 className="text-4xl font-bold text-white mb-5">Secure Your Organization Today</h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">Let's discuss how our security platform can protect your entire digital infrastructure.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/contact"><Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-bold rounded-xl px-8 h-12">Contact Our Team <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
-            <Link to="/pricing"><Button size="lg" variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 font-bold rounded-xl px-8 h-12">View Pricing</Button></Link>
+            <Link href="/contact"><Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-bold rounded-xl px-8 h-12">Contact Our Team <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+            <Link href="/pricing"><Button size="lg" variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 font-bold rounded-xl px-8 h-12">View Pricing</Button></Link>
           </div>
         </div>
       </section>

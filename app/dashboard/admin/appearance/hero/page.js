@@ -198,10 +198,13 @@ export default function Page() {
         ...current,
         badge: form.badge,
         titleLeading: form.titleLeading,
-      
+        titleGradient: form.titleGradient,
         subtitle: form.subtitle,
         heroImage: form.heroImage || undefined,
-       
+        theme: {
+          light: { gradientFrom: form.lightGradientFrom, gradientTo: form.lightGradientTo },
+          dark: { gradientFrom: form.darkGradientFrom, gradientTo: form.darkGradientTo },
+        },
         primaryCTA: { label: form.primaryCTALabel, href: form.primaryCTAHref },
         secondaryCTA: { label: form.secondaryCTALabel, href: form.secondaryCTAHref },
         features: form.features.split(',').map((t) => ({ label: t.trim() })).filter((x) => x.label),

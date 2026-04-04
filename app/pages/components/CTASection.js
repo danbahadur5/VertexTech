@@ -10,7 +10,7 @@ export default function CTASection(){
               Ready to Secure Your Organization?
             </h2>
             <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Join 2,000+ security teams that trust VertexTech to protect their
+              Join 2,000+ security teams that trust DarbarTech to protect their
               endpoints, cloud, and identities.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">

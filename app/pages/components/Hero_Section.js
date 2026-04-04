@@ -1,7 +1,7 @@
 "use client"
 import HeroMap from "../assets/map.svg";
 import HeroImage from "../assets/images.jpg";
-import { Link } from "react-router";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../../components/ui/skeleton";
@@ -196,9 +196,9 @@ const ServiceRing = ({ items }) => {
 
 // --- Main Component ---
 
-export default function HeroSection() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function HeroSection({ initialData }) {
+  const [data, setData] = useState(initialData || null);
+  const [loading, setLoading] = useState(!initialData);
   const [isDark, setIsDark] = useState(false);
   const cleanUrl = (u) => {
     if (typeof u !== "string") return u;
@@ -209,29 +209,31 @@ export default function HeroSection() {
     return s;
   };
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const resGroups = await fetch("/api/settings/hero-groups", { cache: "no-store" });
-        if (resGroups.ok) {
-          const jg = await resGroups.json();
-          const items = Array.isArray(jg?.item?.data?.items) ? jg.item.data.items : [];
-          const active = items.find((g) => g.active) || items[0];
-          if (active) {
-            setData(active);
-            setLoading(false);
-            return;
+    if (!initialData) {
+      (async () => {
+        setLoading(true);
+        try {
+          const resGroups = await fetch("/api/settings/hero-groups", { cache: "no-store" });
+          if (resGroups.ok) {
+            const jg = await resGroups.json();
+            const items = Array.isArray(jg?.item?.data?.items) ? jg.item.data.items : [];
+            const active = items.find((g) => g.active) || items[0];
+            if (active) {
+              setData(active);
+              setLoading(false);
+              return;
+            }
           }
+          const resSingle = await fetch("/api/settings/hero", { cache: "no-store" });
+          const js = await resSingle.json();
+          setData(js?.item?.data || null);
+        } catch {
+          setData(null);
+        } finally {
+          setLoading(false);
         }
-        const resSingle = await fetch("/api/settings/hero", { cache: "no-store" });
-        const js = await resSingle.json();
-        setData(js?.item?.data || null);
-      } catch {
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    })();
+      })();
+    }
     if (typeof window !== "undefined") {
       const mq = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
       const get = () => {
@@ -244,7 +246,7 @@ export default function HeroSection() {
         return () => mq.removeEventListener("change", get);
       }
     }
-  }, []);
+  }, [initialData]);
   const getImageSrc = (image) => {
     return typeof image === "string" ? image : image?.src || "";
   };
@@ -277,7 +279,7 @@ export default function HeroSection() {
                 ) : (
                   <>
                     <span className="theme-text font-semibold inline-block mb-2">
-                      {data?.badge || "Welcome to VertexTech"}
+                      {data?.badge || "Welcome to DarbarTech"}
                     </span>
 
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">
@@ -297,11 +299,19 @@ export default function HeroSection() {
 
                     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                       <Link
-                        to={"/contact"}
+                        href={data?.primaryCTA?.href || "/contact"}
                         className="inline-block theme-btn rounded-xl font-semibold py-3 px-10  text-lg whitespace-nowrap"
                       >
                         {data?.primaryCTA?.label || "Get Started"}
                       </Link>
+                      {data?.secondaryCTA?.label && (
+                        <Link
+                          href={data.secondaryCTA.href || "#"}
+                          className="inline-block px-8 py-3 text-lg font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors"
+                        >
+                          {data.secondaryCTA.label}
+                        </Link>
+                      )}
                     </div>
                   </>
                 )}
@@ -357,6 +367,8 @@ export default function HeroSection() {
                         alt="DarbarTech product showcase"
                         fill
                         className="object-cover object-bottom"
+                        priority
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </div>
 

@@ -1,13 +1,16 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Skeleton } from "../../components/ui/skeleton";
 
-const TrustedBy = () => {
-  const [logos, setLogos] = useState([]);
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [loading, setLoading] = useState(true);
+const TrustedBy = ({ initialData }) => {
+  const [logos, setLogos] = useState(initialData?.logos || []);
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [loading, setLoading] = useState(!initialData);
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       setLoading(true);
       try {
@@ -23,7 +26,7 @@ const TrustedBy = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
 
   return (
     <section className="relative py-12 md:py-20 bg-white dark:bg-gray-950 overflow-hidden">

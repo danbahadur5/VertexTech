@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import { PublicHeader } from './components/layout/PublicHeader';
@@ -10,7 +10,7 @@ export default function NotFoundPage() {
   return (
     <>
       <PublicHeader />
-      <div className="min-h-screen bg-white relative overflow-hidden">
+      <div className="min-h-screen bg-white dark:bg-gray-950 relative overflow-hidden">
         <div className="blob blob-primary w-96 h-96 top-[-120px] left-[-100px]" />
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] right-[-60px]" />
         <div className="mx-auto max-w-4xl px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen text-center">
@@ -20,24 +20,24 @@ export default function NotFoundPage() {
           <div className="text-7xl sm:text-8xl font-extrabold leading-none mb-4 theme-gradient-text">
             404
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Page Not Found
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mb-8 leading-relaxed">
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mb-8 leading-relaxed">
             The page you’re looking for doesn’t exist or may have been moved. Try returning to the homepage or explore one of our key sections.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link to="/">
+            <Link href="/">
               <Button size="lg" className="theme-btn rounded-xl px-8 h-12 font-bold">
                 Go Home
               </Button>
             </Link>
-            <Link to="/services">
+            <Link href="/services">
               <Button size="lg" variant="outline" className="theme-btn-outline rounded-xl px-8 h-12 font-bold">
                 View Services
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link href="/contact">
               <Button size="lg" variant="ghost" className="rounded-xl px-8 h-12 font-bold theme-text">
                 Contact Support
               </Button>

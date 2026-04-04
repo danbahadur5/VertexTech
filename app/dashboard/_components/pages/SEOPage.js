@@ -344,7 +344,7 @@ export default function SEOPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Global SEO Defaults</CardTitle>
-                <CardDescription>Default settings for pages that don't have custom SEO</CardDescription>
+                <CardDescription>Configure site-wide search engine optimization for DarbarTech</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-8">
@@ -354,7 +354,7 @@ export default function SEOPage() {
                       <Input 
                         value={globalSEO.metaTitle} 
                         onChange={(e) => setGlobalSEO({...globalSEO, metaTitle: e.target.value})}
-                        placeholder="VertexTech | Digital Solutions"
+                        placeholder="DarbarTech | Digital Solutions"
                         className="bg-white dark:bg-gray-900"
                       />
                     </div>
@@ -393,7 +393,7 @@ export default function SEOPage() {
                       <Input 
                         value={globalSEO.canonicalUrl} 
                         onChange={(e) => setGlobalSEO({...globalSEO, canonicalUrl: e.target.value})}
-                        placeholder="https://vertextech.com"
+                        placeholder="https://darbartech.com"
                         className="bg-white dark:bg-gray-900"
                       />
                     </div>
@@ -448,7 +448,7 @@ export default function SEOPage() {
                 <Input 
                   value={form.keywords} 
                   onChange={(e) => setForm({...form, keywords: e.target.value})}
-                  placeholder="tech, innovation, vertextech"
+                  placeholder="tech, innovation, darbartech"
                   className="bg-white dark:bg-gray-950"
                 />
               </div>

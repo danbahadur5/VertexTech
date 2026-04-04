@@ -14,13 +14,18 @@ import { toast } from 'sonner';
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [badge, setBadge] = useState('About VertexTech');
+  const [badge, setBadge] = useState('About DarbarTech');
   const [titleLeading, setTitleLeading] = useState('Defending the');
   const [titleGradient, setTitleGradient] = useState('Digital Frontier');
-  const [subtitle1, setSubtitle1] = useState('');
-  const [subtitle2, setSubtitle2] = useState('');
+  const [subtitle1, setSubtitle1] = useState('Founded by technology experts, DarbarTech builds the next generation of threat protection for modern enterprises.');
+  const [subtitle2, setSubtitle2] = useState('Today, we\'re proud to have delivered over 500 successful projects.');
   const [heroImage, setHeroImage] = useState('');
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState([
+    { num: '500+', label: 'Projects Completed' },
+    { num: '300+', label: 'Happy Clients' },
+    { num: '50+', label: 'Team Members' },
+    { num: '15+', label: 'Years Experience' },
+  ]);
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);

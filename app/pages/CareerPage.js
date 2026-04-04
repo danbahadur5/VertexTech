@@ -62,13 +62,14 @@ export default function CareersPage() {
           <div className="text-center mb-16">
             <Badge className="mb-4">Join Our Team</Badge>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Build Your Career at{' '}
+              Join the{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                VertexTech
-              </span>
+                DarbarTech
+              </span>{' '}
+              Team
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Join a team of passionate innovators working on cutting-edge technology solutions
+              We're on a mission to secure the digital world. Join our global team of cybersecurity experts, engineers, and visionaries.
             </p>
           </div>
 

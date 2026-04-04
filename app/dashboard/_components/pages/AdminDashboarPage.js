@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { DashboardLayout } from '../../../components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
@@ -122,10 +122,10 @@ export default function AdminDashboard() {
                     asChild
                     className="bg-blue-600 hover:bg-blue-700 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                   >
-                    <Link to="/dashboard/admin/appearance/hero">Edit Hero Content</Link>
+                    <Link href="/dashboard/admin/appearance/hero">Edit Hero Content</Link>
                   </Button>
                   <Link
-                    to="/dashboard/admin/media"
+                    href="/dashboard/admin/media"
                     className="text-blue-700 font-semibold underline underline-offset-4 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 rounded"
                   >
                     Manage Media
@@ -182,7 +182,7 @@ export default function AdminDashboard() {
                     <span className="text-sm text-gray-500 ml-2">from last month</span>
                   </div>
                   <Button variant="ghost" size="sm" className="mt-4 w-full" asChild>
-                    <Link to={stat.href}>
+                    <Link href={stat.href}>
                       View Details →
                     </Link>
                   </Button>
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
                 {quickActions.map((action) => {
                   const Icon = action.icon;
                   return (
-                    <Link key={action.name} to={action.href}>
+                    <Link key={action.name} href={action.href}>
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
                           <div className="bg-gradient-to-br from-blue-50 to-purple-50 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 dark:from-gray-800 dark:to-gray-700">
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
                 <Badge className="bg-green-100 text-green-800">{statsData?.ticketsByStatus?.resolved ?? 0}</Badge>
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4 dark:text-gray-300 dark:border-gray-600" asChild>
-                <Link to="/dashboard/admin/support">View All Tickets</Link>
+                <Link href="/dashboard/admin/support">View All Tickets</Link>
               </Button>
             </CardContent>
           </Card>
@@ -331,7 +331,7 @@ export default function AdminDashboard() {
                 <Badge variant="secondary">{statsData?.usersByRole?.client ?? 0}</Badge>
               </div>
               <Button variant="outline" size="sm" className="w-full mt-4 dark:text-gray-300 dark:border-gray-600" asChild>
-                <Link to="/dashboard/admin/users">Manage Users</Link>
+                <Link href="/dashboard/admin/users">Manage Users</Link>
               </Button>
             </CardContent>
           </Card>

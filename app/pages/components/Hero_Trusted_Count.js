@@ -1,12 +1,15 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Skeleton } from "../../components/ui/skeleton";
 
-export default function Hero_Trusted_Count() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState("");
+export default function Hero_Trusted_Count({ initialData }) {
+  const [items, setItems] = useState(initialData?.items || []);
+  const [loading, setLoading] = useState(!initialData && items.length === 0);
+  const [title, setTitle] = useState(initialData?.title || "");
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       setLoading(true);
       try {
@@ -20,7 +23,7 @@ export default function Hero_Trusted_Count() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
 
   return (
     <section className="py-15 theme-gradient">

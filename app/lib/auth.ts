@@ -33,7 +33,7 @@ export const auth = betterAuth({
           <p>This link will expire in 1 hour.</p>
         </div>
       `;
-      await sendMail({ to: user.email, subject: "Reset your password - VertexTech", html });
+      await sendMail({ to: user.email, subject: "Reset your password - DarbarTech", html });
     },
     password: {
       hash: async (password) => {
@@ -54,11 +54,11 @@ export const auth = betterAuth({
         <div style="font-family: sans-serif; padding: 20px; color: #333;">
           <h2>Verify Your Email</h2>
           <p>Hello ${user.name || "there"},</p>
-          <p>Welcome to VertexTech! Please verify your email to complete your registration.</p>
+          <p>Welcome to DarbarTech! Please verify your email to complete your registration.</p>
           <p><a href="${url}" style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a></p>
         </div>
       `;
-      await sendMail({ to: user.email, subject: "Verify your email - VertexTech", html });
+      await sendMail({ to: user.email, subject: "Verify your email - DarbarTech", html });
     },
     autoSignInAfterVerification: true,
   },

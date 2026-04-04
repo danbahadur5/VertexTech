@@ -28,8 +28,13 @@ const nextConfig = {
       'framer-motion',
       '@radix-ui/react-icons',
       'date-fns',
+      'clsx',
+      'tailwind-merge',
     ],
   },
+  bundlePagesRouterDependencies: true,
+  poweredByHeader: false,
+  reactStrictMode: true,
   turbopack: {
     resolveAlias: {
       "react-router": "./app/shim/react-router.tsx",

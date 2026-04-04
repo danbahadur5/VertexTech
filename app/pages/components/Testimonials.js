@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, useCallback } from "react";
 import { Badge } from "../../components/ui/badge";
 import { Card, CardContent } from "../../components/ui/card";
@@ -8,12 +10,11 @@ import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 
-export default function Testimonials() {
-  useScrollReveal();
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function Testimonials({ initialData }) {
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [items, setItems] = useState(initialData?.items || []);
+  const [loading, setLoading] = useState(!initialData && items.length === 0);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', skipSnaps: false },
@@ -41,6 +42,7 @@ export default function Testimonials() {
   }, [emblaApi, onSelect]);
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       setLoading(true);
       try {
@@ -60,7 +62,7 @@ export default function Testimonials() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
 
   return (
     <section className="py-24 bg-white dark:bg-gray-950 overflow-hidden">

@@ -1,5 +1,7 @@
-'use client'
 import ContactPage from "../pages/ContactPage";
-export default function Page() {
-  return <ContactPage />;
+import { getContactPageData } from "../lib/page-data";
+
+export default async function Page() {
+  const data = await getContactPageData();
+  return <ContactPage initialData={data} />;
 }

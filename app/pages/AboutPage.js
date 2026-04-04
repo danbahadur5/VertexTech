@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent } from '../components/ui/card';
@@ -9,20 +11,20 @@ import { CheckCircle2, Target, Users, Award, ArrowRight, Zap, Shield, Globe } fr
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
-export default function AboutPage() {
+export default function AboutPage({ initialData }) {
   useScrollReveal();
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState(initialData?.team || []);
   const [hero, setHero] = useState({
-    badge: 'About VertexTech',
-    titleLeading: 'Defending the',
-    titleGradient: 'Digital Frontier',
-    subtitle1:
-      "Founded by ex-NSA and military cyber operators, VertexTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
-    subtitle2:
+    badge: initialData?.hero?.badge || 'About DarbarTech',
+    titleLeading: initialData?.hero?.titleLeading || 'Defending the',
+    titleGradient: initialData?.hero?.titleGradient || 'Digital Frontier',
+    subtitle1: initialData?.hero?.subtitle1 ||
+      "Founded by technology experts, DarbarTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
+    subtitle2: initialData?.hero?.subtitle2 ||
       "Today, we're proud to have delivered over 500 successful projects, helping businesses across industries leverage cloud computing, cybersecurity, custom software, and data analytics to achieve their goals.",
-    heroImage:
+    heroImage: initialData?.hero?.heroImage ||
       'https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
-    stats: [
+    stats: Array.isArray(initialData?.hero?.stats) && initialData.hero.stats.length ? initialData.hero.stats : [
       { num: '500+', label: 'Projects Completed' },
       { num: '300+', label: 'Happy Clients' },
       { num: '50+', label: 'Team Members' },
@@ -35,10 +37,14 @@ export default function AboutPage() {
     { icon: CheckCircle2, title: 'Quality Assured', description: 'Enterprise-grade solutions and support.' },
     { icon: Award, title: 'Excellence', description: 'Award-winning team delivering results.' },
   ]);
-  const [milestones, setMilestones] = useState([]);
-  const [principles, setPrinciples] = useState([]);
+  const [milestones, setMilestones] = useState(initialData?.milestones || []);
+  const [principles, setPrinciples] = useState(initialData?.principles?.map((i) => {
+    const icons = { Shield, Zap, Globe };
+    return { icon: icons[i.icon] || Shield, title: i.title, desc: i.desc };
+  }) || []);
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const [hRes, pRes, mRes, tRes] = await Promise.all([
@@ -80,7 +86,7 @@ export default function AboutPage() {
         }
       } catch {}
     })();
-  }, []);
+  }, [initialData]);
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
@@ -201,7 +207,7 @@ export default function AboutPage() {
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Leadership Team</Badge>
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Meet Our Team</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The talented people behind VertexTech's success.</p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The talented people behind DarbarTech's success.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, idx) => (
@@ -234,12 +240,12 @@ export default function AboutPage() {
             We're always looking for talented people who are passionate about cybersecurity and making a real difference.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/careers">
+            <Link href="/careers">
               <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-bold rounded-xl px-8 h-12">
                 View Open Roles <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link href="/contact">
               <Button size="lg" variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 font-bold rounded-xl px-8 h-12">
                 Contact Us
               </Button>

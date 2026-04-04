@@ -1,6 +1,7 @@
-'use client'
 import AboutPage from "../pages/AboutPage";
+import { getAboutPageData } from "../lib/page-data";
 
-export default function Page() {
-  return <AboutPage />;
+export default async function Page() {
+  const data = await getAboutPageData();
+  return <AboutPage initialData={data} />;
 }

@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Button } from '../components/ui/button';
@@ -10,12 +12,13 @@ import { useScrollReveal } from '../lib/use-scroll-reveal';
 
 const ICONS = { Shield, Zap, Crown };
 
-export default function PricingPage() {
+export default function PricingPage({ initialData }) {
   useScrollReveal();
-  const [heroTitle, setHeroTitle] = useState('Protection That Scales');
-  const [heroSubtitle, setHeroSubtitle] = useState('Per-endpoint pricing that grows with your organization.');
-  const [plans, setPlans] = useState([]);
+  const [heroTitle, setHeroTitle] = useState(initialData?.hero?.heroTitle || 'Protection That Scales');
+  const [heroSubtitle, setHeroSubtitle] = useState(initialData?.hero?.heroSubtitle || 'Per-endpoint pricing that grows with your organization.');
+  const [plans, setPlans] = useState(initialData?.plans || []);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/settings/pricing', { cache: 'no-store' });
@@ -27,7 +30,7 @@ export default function PricingPage() {
         setPlans(Array.isArray(d.plans) ? d.plans : []);
       } catch {}
     })();
-  }, []);
+  }, [initialData]);
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
@@ -77,7 +80,7 @@ export default function PricingPage() {
                         </div>
                       ))}
                     </div>
-                    <Link to="/contact">
+                    <Link href="/contact">
                       <Button className="theme-btn w-full rounded-xl h-11 font-semibold">
                         {plan.price === 'Custom' ? 'Contact Sales' : 'Start Free Trial'} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -94,10 +97,10 @@ export default function PricingPage() {
           <h2 className="text-4xl font-bold text-white mb-6">Not Sure Which Plan?</h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">Talk to a security expert to pick the best fit.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/contact">
+            <Link href="/contact">
               <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-bold rounded-xl px-8 h-12">Talk to an Expert</Button>
             </Link>
-            <Link to="/services">
+            <Link href="/services">
               <Button size="lg" variant="outline" className="border-2 border-white/50 text-white hover:bg-white/10 font-bold rounded-xl px-8 h-12">View Solutions</Button>
             </Link>
           </div>

@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -8,11 +10,14 @@ import { Badge } from '../components/ui/badge';
 import { ArrowRight } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { ContentLoader } from '../components/ui/content-loader';
+import { useScrollReveal } from '../lib/use-scroll-reveal';
 
-export default function CaseStudyPage() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function CaseStudyPage({ initialData }) {
+  useScrollReveal();
+  const [items, setItems] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/case-studies', { cache: 'no-store' });
@@ -23,7 +28,7 @@ export default function CaseStudyPage() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <PublicHeader />
@@ -60,7 +65,7 @@ export default function CaseStudyPage() {
                       <Button className="w-full mb-2 bg-blue-600 hover:bg-blue-700 text-white">Visit Live</Button>
                     </a>
                   )}
-                  <Link to={`/caseStudy/${project.slug}`}>      
+                  <Link href={`/caseStudy/${project.slug}`}>      
                     <Button variant="ghost" className="w-full cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
                       View Case Study <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

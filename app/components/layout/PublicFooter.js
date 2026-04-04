@@ -1,20 +1,32 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Shield } from 'lucide-react';
 import Image from 'next/image';
 import logo from "./assets/logo.png";
-export function PublicFooter() {
-  const [blurb, setBlurb] = useState('AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
-  const [contact, setContact] = useState({ email: 'contact@vertextech.com', phone: '+1 (555) 123-4567', address: '123 Tech Street, San Francisco, CA 94105' });
-  const [columns, setColumns] = useState([
+export function PublicFooter({ initialData }) {
+  const [blurb, setBlurb] = useState(initialData?.blurb || 'AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
+  const [contact, setContact] = useState({ 
+    email: initialData?.contact?.email || 'contact@vertextech.com', 
+    phone: initialData?.contact?.phone || '+1 (555) 123-4567', 
+    address: initialData?.contact?.address || '123 Tech Street, San Francisco, CA 94105' 
+  });
+  const [columns, setColumns] = useState(initialData?.columns || [
     { title: 'Solutions', links: [{ name: 'Endpoint Detection', href: '/services/endpoint-detection' }, { name: 'Cloud Security', href: '/services/cloud-security' }, { name: 'Identity Protection', href: '/services/identity-protection' }, { name: 'Threat Intelligence', href: '/services/threat-intelligence' }] },
     { title: 'Resources', links: [{ name: 'Pricing', href: '/pricing' }, { name: 'Case Study', href: '/case-study' }, { name: 'Blog', href: '/blog' }, { name: 'Documentation', href: '#' }] },
     { title: 'Company', links: [{ name: 'About Us', href: '/about' }, { name: 'Careers', href: '/careers' }, { name: 'Contact', href: '/contact' }, { name: 'Support', href: '/contact' }] },
     { title: 'Legal', links: [{ name: 'Privacy Policy', href: '#' }, { name: 'Terms of Service', href: '#' }, { name: 'Cookie Policy', href: '#' }, { name: 'GDPR Compliance', href: '#' }] },
   ]);
-  const [socials, setSocials] = useState({ facebook: '#', twitter: '#', linkedin: '#', instagram: '#' });
+  const [socials, setSocials] = useState({ 
+    facebook: initialData?.socials?.facebook || '#', 
+    twitter: initialData?.socials?.twitter || '#', 
+    linkedin: initialData?.socials?.linkedin || '#', 
+    instagram: initialData?.socials?.instagram || '#' 
+  });
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/settings/footer', { cache: 'no-store' });
@@ -27,7 +39,7 @@ export function PublicFooter() {
         if (d.socials) setSocials({ facebook: d.socials.facebook || '#', twitter: d.socials.twitter || '#', linkedin: d.socials.linkedin || '#', instagram: d.socials.instagram || '#' });
       } catch {}
     })();
-  }, []);
+  }, [initialData]);
 
   const socialList = [
     { Icon: Facebook, href: socials.facebook || '#', label: 'Facebook' },
@@ -40,7 +52,7 @@ export function PublicFooter() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <Link to="/" className="inline-flex items-center gap-2.5 mb-5">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
                 <Image src={logo} alt='site logo' className="object-contain" height={160} width={160} />
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">{blurb}</p>
@@ -72,7 +84,7 @@ export function PublicFooter() {
               <ul className="space-y-3">
                 {(col.links || []).map((link, i) => (
                   <li key={`${link.name}-${i}`}>
-                    <Link to={link.href || '#'} className="text-gray-400 hover:text-white transition-colors text-sm">{link.name}</Link>
+                    <Link href={link.href || '#'} className="text-gray-400 hover:text-white transition-colors text-sm">{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -80,7 +92,7 @@ export function PublicFooter() {
           ))}
         </div>
         <div className="mt-14 border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} VertexTech. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} DarbarTech. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs text-gray-500">All systems operational</span>

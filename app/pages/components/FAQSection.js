@@ -1,4 +1,6 @@
 
+"use client";
+
 import { useEffect, useState } from "react";
 import {
   Accordion,
@@ -6,14 +8,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../../components/ui/accordion";
+
 import { Badge } from "../../components/ui/badge";
 import { Skeleton } from "../../components/ui/skeleton";
 
-export default function FAQSection(){
-  const [faqs, setFaqs] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function FAQSection({ initialData }) {
+  const [faqs, setFaqs] = useState(initialData?.items || []);
+  const [loading, setLoading] = useState(!initialData && faqs.length === 0);
 
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       setLoading(true);
       try {
@@ -25,7 +29,7 @@ export default function FAQSection(){
         } else {
           setFaqs([
             { q: "How quickly can we deploy across our organization?", a: "Most customers are fully operational within one week. Our lightweight agent installs silently with no reboots required, and cloud integrations connect via API in minutes." },
-            { q: "Does VertexTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
+            { q: "Does DarbarTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
             { q: "Do you provide 24/7 coverage?", a: "Yes, our team offers around-the-clock monitoring, triage, and response with defined SLAs on advanced plans." },
             { q: "How do you detect zero‑day threats?", a: "We use behavioral analysis to identify anomalous activity across processes, memory, and network patterns, blocking novel exploits in real time." },
             { q: "Can we start with a pilot?", a: "Absolutely. We can begin with a scoped pilot and expand progressively to full coverage once success criteria are met." },
@@ -34,7 +38,7 @@ export default function FAQSection(){
       } catch {
         setFaqs([
           { q: "How quickly can we deploy across our organization?", a: "Most customers are fully operational within one week. Our lightweight agent installs silently with no reboots required, and cloud integrations connect via API in minutes." },
-          { q: "Does VertexTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
+          { q: "Does DarbarTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
           { q: "Do you provide 24/7 coverage?", a: "Yes, our team offers around-the-clock monitoring, triage, and response with defined SLAs on advanced plans." },
           { q: "How do you detect zero‑day threats?", a: "We use behavioral analysis to identify anomalous activity across processes, memory, and network patterns, blocking novel exploits in real time." },
           { q: "Can we start with a pilot?", a: "Absolutely. We can begin with a scoped pilot and expand progressively to full coverage once success criteria are met." },
@@ -43,7 +47,7 @@ export default function FAQSection(){
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
   const left = faqs.filter((_, i) => i % 2 === 0);
   const right = faqs.filter((_, i) => i % 2 === 1);
 

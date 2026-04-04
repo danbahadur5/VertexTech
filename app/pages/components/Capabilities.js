@@ -1,7 +1,7 @@
 import { Activity, Cloud, Globe, Lock, Shield, Zap } from "lucide-react";
 import { Badge } from "../../components/ui/badge";
-export default function Capabilities() {
-  const capabilities = [
+export default function Capabilities({ initialData }) {
+  const capabilities = initialData?.capabilities || [
     { label: "Threat Detection Accuracy", value: 99, icon: Shield },
     { label: "Cloud Workload Coverage", value: 95, icon: Cloud },
     { label: "Incident Response Automation", value: 88, icon: Zap },
@@ -9,26 +9,49 @@ export default function Capabilities() {
     { label: "Global Threat Intelligence", value: 97, icon: Globe },
     { label: "SOC Analyst Efficiency Gain", value: 74, icon: Activity },
   ];
+  const title = initialData?.title || "Industry-Leading Security Metrics";
+  const subtitle = initialData?.subtitle || "Platform Capabilities";
+  const description = initialData?.description || "Our AI-driven platform consistently outperforms the competition across every key security measurement — because your protection depends on it.";
+  const features = initialData?.features || [
+    {
+      icon: Shield,
+      title: "Zero-Day Protection",
+      desc: "Behavioral AI stops novel threats before signatures exist.",
+    },
+    {
+      icon: Cloud,
+      title: "Cloud Native",
+      desc: "Seamless coverage across AWS, Azure, and GCP environments.",
+    },
+    {
+      icon: Zap,
+      title: "Auto Response",
+      desc: "Sub-second automated containment with full audit trails.",
+    },
+    {
+      icon: Lock,
+      title: "Zero Trust",
+      desc: "Never trust, always verify — enforced across every identity.",
+    },
+  ];
   return (
     <section className="py-24 bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="reveal">
-              <Badge className="mb-4 theme-badge">Platform Capabilities</Badge>
+              <Badge className="mb-4 theme-badge">{subtitle}</Badge>
               <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                Industry-Leading{" "}
-                <span className="theme-gradient-text">Security Metrics</span>
+                {title.split(' ').slice(0, -2).join(' ')}{" "}
+                <span className="theme-gradient-text">{title.split(' ').slice(-2).join(' ')}</span>
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
-                Our AI-driven platform consistently outperforms the competition
-                across every key security measurement — because your protection
-                depends on it.
+                {description}
               </p>
             </div>
             <div className="space-y-7">
               {capabilities.map((cap, i) => {
-                const Icon = cap.icon;
+                const Icon = typeof cap.icon === 'string' ? (cap.icon === 'Shield' ? Shield : cap.icon === 'Cloud' ? Cloud : cap.icon === 'Zap' ? Zap : cap.icon === 'Lock' ? Lock : cap.icon === 'Globe' ? Globe : Activity) : (cap.icon || Shield);
                 return (
                   <div
                     key={cap.label}
@@ -61,29 +84,8 @@ export default function Capabilities() {
             </div>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
-            {[
-              {
-                icon: Shield,
-                title: "Zero-Day Protection",
-                desc: "Behavioral AI stops novel threats before signatures exist.",
-              },
-              {
-                icon: Cloud,
-                title: "Cloud Native",
-                desc: "Seamless coverage across AWS, Azure, and GCP environments.",
-              },
-              {
-                icon: Zap,
-                title: "Auto Response",
-                desc: "Sub-second automated containment with full audit trails.",
-              },
-              {
-                icon: Lock,
-                title: "Zero Trust",
-                desc: "Never trust, always verify — enforced across every identity.",
-              },
-            ].map((feat, idx) => {
-              const Icon = feat.icon;
+            {features.map((feat, idx) => {
+              const Icon = typeof feat.icon === 'string' ? (feat.icon === 'Shield' ? Shield : feat.icon === 'Cloud' ? Cloud : feat.icon === 'Zap' ? Zap : Lock) : (feat.icon || Shield);
               return (
                 <div
                   key={feat.title}

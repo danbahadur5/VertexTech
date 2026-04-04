@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -12,11 +14,14 @@ import { ContentLoader } from '../components/ui/content-loader';
 
 const categories = ['All', 'Cloud Technology', 'Security', 'Development', 'AI & ML', 'Best Practices'];
 
-export default function BlogPage() {
+export default function BlogPage({ initialData }) {
   useScrollReveal();
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
+  const [searchTerm, setSearchTerm] = useState('');
+
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch('/api/blog', { cache: 'no-store' });
@@ -27,7 +32,7 @@ export default function BlogPage() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
   const featuredPost = posts.find((p) => p.status === 'published') || posts[0];
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
@@ -70,7 +75,7 @@ export default function BlogPage() {
                       <div className="text-xs text-gray-400">Author</div>
                     </div>
                   </div>
-                  <Link to={`/blog/${featuredPost.slug}`}>
+                  <Link href={`/blog/${featuredPost.slug}`}>
                     <Button className="theme-btn rounded-xl font-semibold">Read Article <ArrowRight className="ml-2 h-4 w-4" /></Button>
                   </Link>
                 </div>
@@ -107,7 +112,7 @@ export default function BlogPage() {
                       {[...Array(5)].map((_, i) => (<Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />))}
                     </div>
                   </div>
-                  <Link to={`/blog/${post.slug}`}>
+                  <Link href={`/blog/${post.slug}`}>
                     <Button variant="ghost" className="w-full mt-4 theme-text hover:bg-gray-50 dark:hover:bg-gray-800 text-sm font-semibold">Read More <ArrowRight className="ml-2 h-4 w-4" /></Button>
                   </Link>
                 </CardContent>

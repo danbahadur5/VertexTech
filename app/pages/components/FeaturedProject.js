@@ -1,4 +1,5 @@
- 'use client'
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
@@ -16,10 +17,11 @@ import Link from "next/link";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import { ContentLoader } from "../../components/ui/content-loader";
 
-export default function FeaturedProject() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function FeaturedProject({ initialData }) {
+  const [items, setItems] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch("/api/case-studies", { cache: "force-cache", next: { revalidate: 3600 } });
@@ -31,7 +33,7 @@ export default function FeaturedProject() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
 
   if (!loading && items.length === 0) {
     return (

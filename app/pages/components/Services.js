@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Card,
@@ -28,12 +31,12 @@ import {
 import Link from "next/link";
 import { ContentLoader } from "../../components/ui/content-loader";
 
-import { useEffect, useState } from "react";
-export default function Services() {
-  const serviceIcons = { Cloud, Shield, Code, BarChart3 };
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function Services({ initialData }) {
+  const serviceIcons = { Cloud, Shield, Code, BarChart3, Zap, Lock, Globe, Activity };
+  const [items, setItems] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     const load = async () => {
       try {
         const res = await fetch("/api/services", { cache: "force-cache", next: { revalidate: 3600 } });
@@ -45,7 +48,7 @@ export default function Services() {
       }
     };
     load();
-  }, []);
+  }, [initialData]);
   return (
     <section className="py-24 bg-white dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">

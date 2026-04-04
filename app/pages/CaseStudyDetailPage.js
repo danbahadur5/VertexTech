@@ -1,19 +1,23 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { PublicHeader } from '../components/layout/PublicHeader';
 import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { ArrowLeft, Quote } from 'lucide-react';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { ArrowLeft, ExternalLink, CheckCircle2, Target, TrendingUp, Shield } from 'lucide-react';
 import { Skeleton } from '../components/ui/skeleton';
 
-export default function CaseStudyDetailPage() {
+
+export default function CaseStudyDetailPage({ initialData }) {
   const { slug } = useParams();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [project, setProject] = useState(initialData || null);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     const load = async () => {
       setLoading(true);
       try {
@@ -27,7 +31,7 @@ export default function CaseStudyDetailPage() {
       }
     };
     if (slug) load();
-  }, [slug]);
+  }, [slug, initialData]);
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950">
@@ -61,7 +65,7 @@ export default function CaseStudyDetailPage() {
         <PublicHeader />
         <div className="mx-auto max-w-7xl px-6 py-24 text-center">
           <h1 className="text-4xl font-bold">Project Not Found</h1>
-          <Link to="/caseStudy"><Button className="mt-6">Back to Case Study</Button></Link>
+          <Link href="/caseStudy"><Button className="mt-6">Back to Case Study</Button></Link>
         </div>
         <PublicFooter />
       </div>
@@ -72,7 +76,7 @@ export default function CaseStudyDetailPage() {
       <PublicHeader />
       <section className="py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <Link to="/caseStudy"><Button variant="ghost" className="mb-6 text-gray-400 dark:text-gray-500"><ArrowLeft className="h-4 w-4 mr-2" />Back to Case Study</Button></Link>
+          <Link href="/caseStudy"><Button variant="ghost" className="mb-6 text-gray-400 dark:text-gray-500"><ArrowLeft className="h-4 w-4 mr-2" />Back to Case Study</Button></Link>
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
               <Badge variant="secondary">{project.client}</Badge>
@@ -130,7 +134,7 @@ export default function CaseStudyDetailPage() {
               <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
                 <CardContent className="pt-6">
                   <h3 className="font-bold mb-4">Interested in Similar Work?</h3>
-                  <Button variant="secondary" className="w-full" asChild><Link to="/contact">Start Your Project</Link></Button>
+                  <Button variant="secondary" className="w-full" asChild><Link href="/contact">Start Your Project</Link></Button>
                 </CardContent>
               </Card>
             </div>

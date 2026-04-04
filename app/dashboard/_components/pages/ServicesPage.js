@@ -242,7 +242,7 @@ export default function ServicesPage() {
       if (newSlug && newSlug !== originalSlug) {
         payload.slug = newSlug;
       }
-      const res = await fetch(`/api/services/Rs.{encodeURIComponent(originalSlug)}`, {
+      const res = await fetch(`/api/services/${encodeURIComponent(originalSlug)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -269,7 +269,7 @@ export default function ServicesPage() {
     if (!current) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/services/Rs.{encodeURIComponent(current.slug)}`, { method: 'DELETE' });
+      const res = await fetch(`/api/services/${encodeURIComponent(current.slug)}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete service');
       toast.success('Service deleted');
       setDeleteOpen(false);

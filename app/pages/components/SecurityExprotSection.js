@@ -11,7 +11,7 @@ export default function SecurityExportSection() {
     contact: {
       address: "123 Tech Street, San Francisco, CA 94105",
       phone: "+1 (555) 123-4567",
-      email: "contact@vertextech.com",
+      email: "contact@darbartech.com",
     },
     cta: { label: "Get In Touch", href: "/contact" },
     hours: [
@@ -48,7 +48,7 @@ export default function SecurityExportSection() {
   }, []);
 
   const rows = [
-    { Icon: MapPin, label: data.contact.address ? "VertexTech HQ" : "", sub: data.contact.address },
+    { Icon: MapPin, label: data.contact.address ? "DarbarTech HQ" : "", sub: data.contact.address },
     { Icon: Phone, label: data.contact.phone, sub: "" },
     { Icon: Mail, label: data.contact.email, sub: "" },
   ].filter((r) => r.label || r.sub);

@@ -1,5 +1,6 @@
- 'use client'
-import React, { useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Card,
@@ -16,10 +17,11 @@ import Link from "next/link";
 import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 import { ContentLoader } from "../../components/ui/content-loader";
 
-export default function FeaturedBlog() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function FeaturedBlog({ initialData }) {
+  const [items, setItems] = useState(initialData || []);
+  const [loading, setLoading] = useState(!initialData);
   useEffect(() => {
+    if (initialData) return;
     (async () => {
       try {
         const res = await fetch("/api/blog", { cache: "force-cache", next: { revalidate: 3600 } });
@@ -31,7 +33,7 @@ export default function FeaturedBlog() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [initialData]);
 
   if (!loading && items.length === 0) {
     return (
