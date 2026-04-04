@@ -93,8 +93,13 @@ export default function BlogPostPage({ initialData }) {
             </div>
           </div>
           {post.featuredImage && (
-            <div className="aspect-video overflow-hidden rounded-2xl mb-12">
-              <ImageWithFallback src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+            <div className="aspect-video overflow-hidden rounded-2xl mb-12 relative">
+              <ImageWithFallback 
+                src={post.featuredImage} 
+                alt={post.title} 
+                fill
+                className="object-cover" 
+              />
             </div>
           )}
           <div className="prose prose-lg prose-gray max-w-none text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{post.content}</div>

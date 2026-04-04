@@ -8,8 +8,9 @@ import { PublicFooter } from '../components/layout/PublicFooter';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { ArrowLeft, ExternalLink, CheckCircle2, Target, TrendingUp, Shield } from 'lucide-react';
+import { ArrowLeft, ExternalLink, CheckCircle2, Target, TrendingUp, Shield, Quote } from 'lucide-react';
 import { Skeleton } from '../components/ui/skeleton';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 
 export default function CaseStudyDetailPage({ initialData }) {
@@ -95,8 +96,13 @@ export default function CaseStudyDetailPage({ initialData }) {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
               {(project.gallery || []).map((image, index) => (
-                <div key={index} className="aspect-video overflow-hidden rounded-2xl">
-                  <ImageWithFallback src={image} alt={`${project.title} - ${index + 1}`} className="w-full h-full object-cover" />
+                <div key={index} className="aspect-video overflow-hidden rounded-2xl relative">
+                  <ImageWithFallback 
+                    src={image} 
+                    alt={`${project.title} - ${index + 1}`} 
+                    fill
+                    className="object-cover" 
+                  />
                 </div>
               ))}
               {project.testimonial && (
