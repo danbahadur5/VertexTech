@@ -105,8 +105,13 @@ export default function AboutPage({ initialData }) {
           </div>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-left delay-300">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl theme-glow-effect">
-                <ImageWithFallback src={hero.heroImage} alt="Our team working together" className="w-full h-auto" />
+              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl theme-glow-effect">
+                <ImageWithFallback 
+                  src={hero.heroImage} 
+                  alt="Our team working together" 
+                  fill
+                  className="object-cover" 
+                />
               </div>
             </div>
             <div className="animate-fade-in-right delay-300">

@@ -57,8 +57,13 @@ export default function BlogPage({ initialData }) {
           {!loading && featuredPost && (
           <Card className="overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 group bg-white dark:bg-gray-900">
             <div className="grid lg:grid-cols-2">
-              <div className="aspect-video lg:aspect-auto overflow-hidden">
-                <ImageWithFallback src={featuredPost.featuredImage} alt={featuredPost.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="aspect-video lg:aspect-auto overflow-hidden relative">
+                <ImageWithFallback 
+                  src={featuredPost.featuredImage} 
+                  alt={featuredPost.title} 
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                />
               </div>
               <div className="flex flex-col justify-center p-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -91,8 +96,13 @@ export default function BlogPage({ initialData }) {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {(loading ? [] : posts).map((post, idx) => (
               <Card key={post._id || post.id || post.slug || idx} className="reveal overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-0 shadow-md bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
-                <div className="aspect-video overflow-hidden">
-                  <ImageWithFallback src={post.featuredImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="aspect-video overflow-hidden relative">
+                  <ImageWithFallback 
+                    src={post.featuredImage} 
+                    alt={post.title} 
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500" 
+                  />
                 </div>
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 mb-2">
