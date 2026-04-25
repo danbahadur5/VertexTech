@@ -9,7 +9,18 @@ import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../../components/ui/table';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../../../components/ui/dialog';
 import { Input } from '../../../../components/ui/input';
-import { Plus, Trash2, Edit } from 'lucide-react';
+import { Plus, Trash2, Edit, RotateCcw } from 'lucide-react';
+
+const DEFAULT_LOGOS = [
+  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
+  "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg"
+];
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -39,6 +50,14 @@ export default function Page() {
     })();
   }, []);
 
+  const onReset = () => {
+    setTitle('TRUSTED BY');
+    setSubtitle('Powering Businesses Around the World');
+    setLogos(DEFAULT_LOGOS);
+    setLines(DEFAULT_LOGOS.join('\n'));
+    toast.info('Reset to defaults (click save to persist)');
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -62,8 +81,11 @@ export default function Page() {
     <DashboardLayout>
       <div className="space-y-6">
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Trusted Company</CardTitle>
+            <Button type="button" variant="outline" size="sm" onClick={onReset}>
+              <RotateCcw className="h-4 w-4 mr-2" /> Reset to Defaults
+            </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             {loading ? (
@@ -97,7 +119,15 @@ export default function Page() {
                       {logos.map((u, idx) => (
                         <TableRow key={`${u}-${idx}`}>
                           <TableCell>
-                            <img src={u} alt="" className="h-8 w-auto object-contain" />
+                            <img 
+                              src={u} 
+                              alt="" 
+                              className="h-8 w-auto object-contain bg-gray-50 dark:bg-gray-800 rounded" 
+                              onError={(e) => {
+                                e.target.src = "https://via.placeholder.com/150x50?text=Error";
+                                e.target.onerror = null;
+                              }}
+                            />
                           </TableCell>
                           <TableCell className="max-w-[420px]">
                             <Input

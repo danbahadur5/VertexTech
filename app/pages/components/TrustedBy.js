@@ -3,14 +3,25 @@
 import { useEffect, useState } from "react";
 import { Skeleton } from "../../components/ui/skeleton";
 
+const DEFAULT_LOGOS = [
+  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
+  "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg"
+];
+
 const TrustedBy = ({ initialData }) => {
-  const [logos, setLogos] = useState(initialData?.logos || []);
-  const [title, setTitle] = useState(initialData?.title || "");
-  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "");
+  const [logos, setLogos] = useState(initialData?.logos?.length ? initialData.logos : DEFAULT_LOGOS);
+  const [title, setTitle] = useState(initialData?.title || "TRUSTED BY");
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle || "Powering Businesses Around the World");
   const [loading, setLoading] = useState(!initialData);
 
   useEffect(() => {
-    if (initialData) return;
+    if (initialData && initialData.logos?.length) return;
     (async () => {
       setLoading(true);
       try {
@@ -18,10 +29,15 @@ const TrustedBy = ({ initialData }) => {
         const json = await res.json();
         const d = json?.item?.data || {};
         const items = Array.isArray(d?.logos) ? d.logos : [];
-        if (items.length) setLogos(items);
-        if (d?.title) setTitle(d.title || "Trusted by Leading Companies");
-        if (d?.subtitle) setSubtitle(d.subtitle || "Powering Businesses Around the World");
+        if (items.length) {
+          setLogos(items);
+        } else {
+          setLogos(DEFAULT_LOGOS);
+        }
+        if (d?.title) setTitle(d.title);
+        if (d?.subtitle) setSubtitle(d.subtitle);
       } catch {
+        setLogos(DEFAULT_LOGOS);
       } finally {
         setLoading(false);
       }
@@ -87,8 +103,13 @@ const TrustedBy = ({ initialData }) => {
                 <img
                   src={url}
                   alt={`logo-${index}`}
-                  className="h-7 md:h-10 w-auto opacity-60 dark:opacity-40 hover:opacity-100 dark:hover:opacity-100 transition duration-300 grayscale hover:grayscale-0"
+                  className="h-7 md:h-10 w-auto opacity-60 dark:opacity-40 hover:opacity-100 dark:hover:opacity-100 transition duration-300 grayscale hover:grayscale-0 object-contain"
                   draggable={false}
+                  onError={(e) => {
+                    // Fallback to a placeholder if the image fails to load
+                    e.target.src = "https://via.placeholder.com/150x50?text=Company";
+                    e.target.onerror = null; // Prevent infinite loop
+                  }}
                 />
               </div>
             ))

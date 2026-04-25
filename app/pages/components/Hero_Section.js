@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../components/ui/spinner";
 import { motion } from "framer-motion";
+import { ImageWithFallback } from "../../components/figma/ImageWithFallback";
 
 // --- Subcomponents ---
 
@@ -50,7 +51,7 @@ const AvatarGroup = ({ avatars }) => {
           key={index}
           className="w-10 h-10 rounded-full overflow-hidden border-2 border-white relative"
         >
-          <Image
+          <ImageWithFallback
             src={src}
             alt={`User avatar ${index + 1}`}
             fill
@@ -81,7 +82,7 @@ const ServiceRing = ({ items }) => {
     if (typeof icon === "string" && /^https?:\/\//i.test(icon)) {
       return (
         <div className="relative w-5 h-5">
-          <Image src={icon} alt="" fill className="object-contain" sizes="20px" />
+          <ImageWithFallback src={icon} alt="" fill className="object-contain" sizes="20px" />
         </div>
       );
     }
