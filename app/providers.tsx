@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { ColorThemeProvider } from "./lib/theme-context";
 import { AuthProvider } from "./lib/auth-context";
 import { Toaster } from "./components/ui/sonner";
+import { LoadingScreen } from "./components/ui/LoadingScreen";
 
 // Workaround for React 19 / Next.js 16 script tag warning in development
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
@@ -30,7 +31,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <ColorThemeProvider>
         <AuthProvider>
-          {mounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
+          <LoadingScreen />
+          {children}
           <Toaster />
         </AuthProvider>
       </ColorThemeProvider>

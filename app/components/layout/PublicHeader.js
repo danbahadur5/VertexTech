@@ -20,96 +20,152 @@ import {
   LayoutDashboard,
   User,
   Menu,
+  ArrowRight,
+  ExternalLink,
+  Code2,
+  Lock,
+  Cloud,
+  BarChart3,
+  LogOut,
+  Settings,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAuth } from "../../lib/auth-context";
 import { useTheme } from "next-themes";
 import { siteSettings } from "../../lib/site-settings";
-import logo from "./assets/logo.png";
 import logoDark from "./assets/dark_logo.png";
 import logoLight from "./assets/light_logo.png";
 import Image from "next/image";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "../ui/dropdown-menu";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Logo = ({ theme }) => (
-  theme === "dark" ? (
-    <Link href="/" className="flex items-center gap-2 group">
-      <Image src={logoLight} alt={siteSettings.brand.name} className="h-8 cursor-pointer md:h-10 w-auto object-contain" height={40} width={160} priority />
-    </Link>
-  ) : (
-    <Link href="/" className="flex items-center gap-2 group">
+  <Link href="/" className="flex items-center gap-2 group transition-transform hover:scale-105 active:scale-95">
+    {theme === "dark" ? (
+      <Image src={logoLight} alt={siteSettings.brand.name} className="h-8 md:h-10 w-auto object-contain" height={40} width={160} priority />
+    ) : (
       <Image src={logoDark} alt={siteSettings.brand.name} className="h-8 md:h-10 w-auto object-contain" height={40} width={160} priority />
-    </Link>
-  )
+    )}
+  </Link>
 );
 
 const NavLink = ({ item, isActive, onClick }) => {
   return (
     <Link
       href={item.href}
-      className={`relative px-3 py-2 rounded-lg text-sm font-semibold transition-colors
-        after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[2px] 
-        after:bg-[var(--theme-primary)] after:rounded-full after:transition-transform after:duration-300
+      className={`relative px-4 py-2 text-sm font-semibold transition-all duration-200 rounded-lg group cursor-pointer
         ${
           isActive
-            ? "theme-text after:scale-x-100"
-            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100"
+            ? "theme-text"
+            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
         }`}
       onClick={onClick}
     >
-      {item.name}
+      <span>{item.name}</span>
+      <span className={`absolute inset-x-4 bottom-1 h-0.5 bg-[var(--theme-primary)] rounded-full transition-transform duration-300 origin-left
+        ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`} 
+      />
     </Link>
   );
 };
 
 const DropdownNav = ({ item, isActive }) => {
-  const [open, setOpen] = useState(false);
+  const serviceIcons = {
+    "Cloud Solutions": Cloud,
+    "Cybersecurity": Lock,
+    "Custom Software": Code2,
+    "Data Analytics": BarChart3,
+  };
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button
-        className={`flex items-center gap-x-1 px-3 py-2 rounded-lg text-sm font-semibold transition-colors
-          relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-[2px] 
-          after:bg-[var(--theme-primary)] after:rounded-full after:transition-transform after:duration-300
-          ${
-            isActive
-              ? "theme-text after:scale-x-100"
-              : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white after:scale-x-0 hover:after:scale-x-100"
-          }`}
-      >
-        <span>{item.name}</span>
-        <ChevronDown
-          className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
-        />
-      </button>
+    <div className="relative h-full flex items-center">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-all duration-200 rounded-lg outline-none group cursor-pointer
+              ${
+                isActive
+                  ? "theme-text"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              }`}
+          >
+            <span>{item.name}</span>
+            <ChevronDown className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-all group-data-[state=open]:rotate-180" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          align="center" 
+          sideOffset={8}
+          collisionPadding={20}
+          className="w-[640px] max-w-[calc(100vw-2rem)] p-6 rounded-3xl shadow-2xl border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+        >
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 px-3">
+                Core Services
+              </p>
+              <div className="grid grid-cols-1 gap-1">
+                {item.dropdown?.map((sub) => {
+                  const Icon = serviceIcons[sub.name] || LayoutGrid;
+                  return (
+                    <DropdownMenuItem key={sub.name} asChild className="p-0 focus:bg-transparent">
+                      <Link
+                        href={sub.href}
+                        className="group flex items-start gap-4 rounded-2xl px-3 py-3 transition-all duration-200 hover:bg-blue-50/50 dark:hover:bg-blue-900/10"
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 group-hover:bg-white dark:group-hover:bg-gray-700 shadow-sm transition-all border border-transparent group-hover:border-blue-100 dark:group-hover:border-blue-900/30">
+                          <Icon className="h-5 w-5 theme-text" />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-bold text-gray-900 dark:text-white leading-tight flex items-center gap-1.5">
+                            {sub.name}
+                            <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all theme-text" />
+                          </span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1 leading-relaxed">
+                            {sub.description || "Expert " + sub.name.toLowerCase() + " for your business growth."}
+                          </span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </div>
+            </div>
 
-      {open && (
-        <div className="absolute left-0 top-full mt-1 w-64 rounded-xl bg-white dark:bg-gray-800 shadow-xl ring-1 ring-gray-900/5 dark:ring-gray-700 animate-slide-down">
-          <div className="p-2">
-            <div className="grid grid-cols-1 gap-1">
-              {item.dropdown?.map((sub) => (
-                <Link
-                  key={sub.name}
-                  href={sub.href}
-                  className="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors"
+            <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-2xl p-6 flex flex-col justify-between border border-gray-100/50 dark:border-gray-700/30">
+              <div className="space-y-3">
+                <h4 className="font-bold text-gray-900 dark:text-white">Need custom solution?</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                  We design and build bespoke software tailored to your specific business requirements and goals.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <Button asChild className="w-full theme-btn rounded-xl h-11 shadow-lg shadow-blue-500/10">
+                  <Link 
+                    href="/contact" 
+                    className="flex items-center justify-center gap-2" 
+                  >
+                    Get Started <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Link 
+                  href="/services" 
+                  className="flex items-center justify-center gap-2 text-sm font-bold theme-text hover:underline"
                 >
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700 group-hover:bg-gray-200 dark:group-hover:bg-gray-600">
-                    <i className={`text-lg ${sub.icon} theme-text`}></i>
-                  </div>
-                  <div className="flex-grow">
-                    <p className="font-semibold">{sub.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{sub.description}</p>
-                  </div>
+                  Explore all services <ExternalLink className="h-3.5 w-3.5" />
                 </Link>
-              ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
@@ -222,9 +278,10 @@ export function PublicHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [services, setServices] = useState([]);
   const [mounted, setMounted] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
@@ -235,6 +292,13 @@ export function PublicHeader() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Sync auth state to avoid skeleton flickers
+  useEffect(() => {
+    if (!loading) {
+      setAuthReady(true);
+    }
+  }, [loading]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -315,48 +379,82 @@ export function PublicHeader() {
             ))}
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3 items-center">
-            {/* <ThemeSwitcher /> */}
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4 items-center">
+            {/* Theme Toggle */}
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
               aria-label="Toggle theme"
               onClick={toggleTheme}
-              className="bg-transparent dark:bg-gray-800 border-none cursor-pointer text-gray-900 dark:text-gray-100 h-9 w-9"
+              className="rounded-full bg-gray-50/50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 h-10 w-10 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm transition-all duration-300"
             >
-              <Sun className="h-4 w-4 hidden dark:block" />
-              <Moon className="h-4 w-4 dark:hidden" />
+              <Sun className="h-5 w-5 hidden dark:block" />
+              <Moon className="h-5 w-5 dark:hidden" />
             </Button>
 
-            {isAuthenticated ? (
-              <Button
-                className="theme-btn rounded-lg px-5 h-9 cursor-pointer text-sm font-semibold"
-                onClick={() => router.push(`/dashboard/${user?.role}`)}
-              >
-                Dashboard
-              </Button>
-            ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.push("/login")}
-                  className="font-semibold text-gray-900 dark:text-gray-100 cursor-pointer border px-5 py-2 hover:bg-transparent transition-all duration-300"
-                >
-                  Log in
-                </Button>
-                {siteSettings.nav.ctas.map((cta) => (
-                  <Button
-                    key={cta.name}
-                    size="sm"
-                    variant={cta.variant}
-                    className={`${cta.variant === "default" ? "theme-btn" : "theme-btn-outline cursor-pointer"} rounded-lg px-5 h-9 text-sm font-semibold cursor-pointer`}
-                    onClick={() => router.push(cta.href)}
+            {/* Auth Actions */}
+            <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800 mx-1" />
+
+            {authReady && (
+              isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="relative group outline-none cursor-pointer">
+                      <div className="h-10 w-10 rounded-full theme-bg p-[2px] transition-transform duration-300 group-hover:scale-105 group-active:scale-95">
+                        <div className="h-full w-full rounded-full bg-white dark:bg-gray-950 flex items-center justify-center overflow-hidden">
+                          {user?.image ? (
+                            <Image src={user.image} alt={user.name} width={40} height={40} className="h-full w-full object-cover" />
+                          ) : (
+                            <span className="theme-text font-bold text-sm">
+                              {user?.name?.[0]?.toUpperCase() || "U"}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-64 p-2 rounded-2xl shadow-2xl border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl">
+                    <DropdownMenuLabel className="px-3 py-3">
+                      <div className="flex flex-col gap-0.5">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate font-medium">{user?.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-gray-100 dark:bg-gray-800" />
+                    <div className="p-1">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/dashboard/${user?.role}`} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20">
+                          <LayoutDashboard className="h-4 w-4 theme-text" /> Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/settings" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20">
+                          <Settings className="h-4 w-4 theme-text" /> Settings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="my-1 bg-gray-100 dark:bg-gray-800" />
+                      <DropdownMenuItem className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer">
+                        <LogOut className="h-4 w-4" /> Log out
+                      </DropdownMenuItem>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <Link
+                    href="/login"
+                    className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:theme-text transition-colors"
                   >
-                    {cta.name}
+                    Log in
+                  </Link>
+                  <Button
+                    onClick={() => router.push("/contact")}
+                    className="theme-btn rounded-xl px-6 h-11 text-sm font-bold shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all"
+                  >
+                    Start Project
                   </Button>
-                ))}
-              </>
+                </div>
+              )
             )}
           </div>
         </nav>
@@ -381,8 +479,8 @@ export function PublicHeader() {
 
             <Link
               href={isAuthenticated ? `/dashboard/${user?.role}` : "/login"}
-              className={`flex items-center justify-center h-9 w-9 rounded-full transition-colors
-                ${isUserActive() ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
+              className={`flex items-center justify-center h-10 w-10 rounded-full transition-all duration-300
+                ${isUserActive() ? "theme-bg text-white shadow-lg shadow-blue-500/20 scale-110" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:shadow-md"}`}
             >
               <User className="h-5 w-5" />
             </Link>

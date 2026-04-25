@@ -4,8 +4,18 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Shield } from 'lucide-react';
 import Image from 'next/image';
-import logo from "./assets/logo.png";
+import logoDark from "./assets/dark_logo.png";
+import logoLight from "./assets/light_logo.png";
+import { useTheme } from 'next-themes';
+
 export function PublicFooter({ initialData }) {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [blurb, setBlurb] = useState(initialData?.blurb || 'AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
   const [contact, setContact] = useState({ 
     email: initialData?.contact?.email || 'contact@vertextech.com', 
@@ -53,7 +63,13 @@ export function PublicFooter({ initialData }) {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
-                <Image src={logo} alt='site logo' className="object-contain" height={160} width={160} />
+                {mounted && (
+                  theme === 'dark' ? (
+                    <Image src={logoLight} alt='VertexTech' className="h-10 w-auto object-contain" height={40} width={160} />
+                  ) : (
+                    <Image src={logoDark} alt='VertexTech' className="h-10 w-auto object-contain" height={40} width={160} />
+                  )
+                )}
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">{blurb}</p>
             <div className="space-y-3 mb-6">
@@ -92,7 +108,7 @@ export function PublicFooter({ initialData }) {
           ))}
         </div>
         <div className="mt-14 border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} DarbarTech. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} VertexTech. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs text-gray-500">All systems operational</span>

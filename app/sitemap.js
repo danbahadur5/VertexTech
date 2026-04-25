@@ -2,7 +2,7 @@ import { connectDB } from "./lib/db";
 import { Service, BlogPost, CaseStudy, Page } from "./models";
 
 export default async function sitemap() {
-  const siteUrl = process.env.NEXTAUTH_URL || 'https://darbartech.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vertextech.vercel.app';
   
   await connectDB();
 

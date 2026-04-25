@@ -57,10 +57,16 @@ export function DashboardLayout({ children }) {
   const pathname = usePathname();
   const [appearanceOpen, setAppearanceOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [autoHideEnabled, setAutoHideEnabled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Authorization is now handled by ProtectedRoute wrapper in page.js files
   // We only keep the basic authentication check here as a fallback
@@ -81,10 +87,13 @@ export function DashboardLayout({ children }) {
     const items = getNavigationItems();
     const appearanceChildren = items.find((i) => i.name === 'Appearance')?.children || [];
     const aboutChildren = items.find((i) => i.name === 'About')?.children || [];
+    const contactChildren = items.find((i) => i.name === 'Contact')?.children || [];
     const appearanceActive = appearanceChildren.some((c) => isActive(c.href));
     const aboutActive = aboutChildren.some((c) => isActive(c.href));
+    const contactActive = contactChildren.some((c) => isActive(c.href));
     setAppearanceOpen(appearanceActive);
     setAboutOpen(aboutActive);
+    setContactOpen(contactActive);
   }, [pathname, user?.role]);
 
   useEffect(() => {
@@ -241,12 +250,12 @@ export function DashboardLayout({ children }) {
         <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
             <Link href="/" className="flex items-center gap-2">
-              {!sidebarCollapsed && (
-               localStorage.getItem("theme") === "dark" ? 
+              {!sidebarCollapsed && mounted && (
+               theme === "dark" ? 
                (
-                <Image src={logoLight} alt="DarbarTech" className="object-contain" height={160} width={160} />
+                <Image src={logoLight} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                ) : (
-                <Image src={logoDark} alt="DarbarTech" className="object-contain" height={160} width={160} />
+                <Image src={logoDark} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                )
               )}
             </Link>
@@ -267,15 +276,26 @@ export function DashboardLayout({ children }) {
             <ul role="list" className="flex flex-1 flex-col gap-y-2">
               {navigationItems.map((item) => {
                 if (item.children && item.children.length) {
-                  const open = item.name === 'Appearance' ? appearanceOpen : item.name === 'About' ? aboutOpen : false;
+                  const open = 
+                    item.name === 'Appearance' ? appearanceOpen : 
+                    item.name === 'About' ? aboutOpen : 
+                    item.name === 'Contact' ? contactOpen : false;
                   const Icon = item.icon;
                   return (
                     <li key={item.name} className="space-y-1">
                       <button
                         type="button"
                         onClick={() => {
-                          if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
-                          if (item.name === 'About') setAboutOpen(!aboutOpen);
+                          if (sidebarCollapsed) {
+                            setSidebarCollapsed(false);
+                            if (item.name === 'Appearance') setAppearanceOpen(true);
+                            if (item.name === 'About') setAboutOpen(true);
+                            if (item.name === 'Contact') setContactOpen(true);
+                          } else {
+                            if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
+                            if (item.name === 'About') setAboutOpen(!aboutOpen);
+                            if (item.name === 'Contact') setContactOpen(!contactOpen);
+                          }
                         }}
                         className={`w-full cursor-pointer flex items-center justify-between gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                         title={item.name}
@@ -383,12 +403,14 @@ export function DashboardLayout({ children }) {
           <div className="fixed inset-y-0 left-0 z-50 w-full overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-white dark:bg-gray-900 px-6 pb-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-700/50">
             <div className="flex h-16 shrink-0 items-center justify-between">
               <Link href="/" className="flex items-center gap-2">
-               localStorage.getItem("theme") === "dark" ? 
-               (
-                <Image src={logoDark} alt="DarbarTech" className="object-contain" height={160} width={160} />
-               ) : (
-                <Image src={logoLight} alt="DarbarTech" className="object-contain" height={160} width={160} />
-               )
+               {mounted && (
+                 theme === "dark" ? 
+                 (
+                  <Image src={logoLight} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                 ) : (
+                  <Image src={logoDark} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                 )
+               )}
               </Link>
               <button onClick={() => setSidebarOpen(false)} className="-m-2.5 p-2.5">
                 <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
@@ -397,20 +419,65 @@ export function DashboardLayout({ children }) {
             <nav className="mt-6">
               <ul role="list" className="space-y-1">
                 {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.href);
-                  return (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        onClick={() => setSidebarOpen(false)}
-                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
-                      >
-                        <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600'}`} />
-                        {item.name}
-                      </Link>
-                    </li>
-                  );
+                  if (item.children && item.children.length) {
+                    const open = 
+                      item.name === 'Appearance' ? appearanceOpen : 
+                      item.name === 'About' ? aboutOpen : 
+                      item.name === 'Contact' ? contactOpen : false;
+                    const Icon = item.icon;
+                    return (
+                      <li key={item.name} className="space-y-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (item.name === 'Appearance') setAppearanceOpen(!appearanceOpen);
+                            if (item.name === 'About') setAboutOpen(!aboutOpen);
+                            if (item.name === 'Contact') setContactOpen(!contactOpen);
+                          }}
+                          className="w-full flex items-center justify-between gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600"
+                        >
+                          <div className="flex items-center gap-x-3">
+                            <Icon className="h-5 w-5 shrink-0 text-gray-400 dark:text-gray-500" />
+                            {item.name}
+                          </div>
+                          {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                        </button>
+                        {open && (
+                          <ul className="ml-8 space-y-1">
+                            {item.children.map((child) => {
+                              const active = isActive(child.href);
+                              return (
+                                <li key={child.name}>
+                                  <Link
+                                    href={child.href}
+                                    onClick={() => setSidebarOpen(false)}
+                                    className={`flex items-center rounded-md p-2 text-sm font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                                  >
+                                    {child.name}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  } else {
+                    const Icon = item.icon;
+                    const active = isActive(item.href);
+                    return (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setSidebarOpen(false)}
+                          className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                        >
+                          <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600'}`} />
+                          {item.name}
+                        </Link>
+                      </li>
+                    );
+                  }
                 })}
               </ul>
             </nav>

@@ -1,5 +1,5 @@
 export const siteSettings = {
-  brand: { name: 'DarbarTech', tagline: 'Build. Secure. Scale.' },
+  brand: { name: 'VertexTech', tagline: 'Build. Secure. Scale.' },
   theme: { default: 'light' },
   nav: {
     primary: [

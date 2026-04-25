@@ -279,7 +279,7 @@ export default function HeroSection({ initialData }) {
                 ) : (
                   <>
                     <span className="theme-text font-semibold inline-block mb-2">
-                      {data?.badge || "Welcome to DarbarTech"}
+                      {data?.badge || "Welcome to VertexTech"}
                     </span>
 
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">

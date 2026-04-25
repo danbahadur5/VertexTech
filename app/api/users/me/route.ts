@@ -37,7 +37,18 @@ export async function GET() {
       return apiResponse.error("Account inactive", 403, "ACCOUNT_INACTIVE");
     }
     
-    return apiResponse.success({ user });
+    const safeUser = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+      status: user.status,
+      company: user.company,
+      phone: user.phone,
+    };
+    
+    return apiResponse.success({ user: safeUser });
   } catch (error) {
     return apiResponse.handleError(error);
   }

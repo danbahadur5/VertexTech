@@ -29,7 +29,7 @@ export default function FAQSection({ initialData }) {
         } else {
           setFaqs([
             { q: "How quickly can we deploy across our organization?", a: "Most customers are fully operational within one week. Our lightweight agent installs silently with no reboots required, and cloud integrations connect via API in minutes." },
-            { q: "Does DarbarTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
+            { q: "Does VertexTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
             { q: "Do you provide 24/7 coverage?", a: "Yes, our team offers around-the-clock monitoring, triage, and response with defined SLAs on advanced plans." },
             { q: "How do you detect zero‑day threats?", a: "We use behavioral analysis to identify anomalous activity across processes, memory, and network patterns, blocking novel exploits in real time." },
             { q: "Can we start with a pilot?", a: "Absolutely. We can begin with a scoped pilot and expand progressively to full coverage once success criteria are met." },
@@ -38,7 +38,7 @@ export default function FAQSection({ initialData }) {
       } catch {
         setFaqs([
           { q: "How quickly can we deploy across our organization?", a: "Most customers are fully operational within one week. Our lightweight agent installs silently with no reboots required, and cloud integrations connect via API in minutes." },
-          { q: "Does DarbarTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
+          { q: "Does VertexTech replace our existing SIEM?", a: "We complement your SIEM by integrating seamlessly with major platforms and enriching data with detection context and insights." },
           { q: "Do you provide 24/7 coverage?", a: "Yes, our team offers around-the-clock monitoring, triage, and response with defined SLAs on advanced plans." },
           { q: "How do you detect zero‑day threats?", a: "We use behavioral analysis to identify anomalous activity across processes, memory, and network patterns, blocking novel exploits in real time." },
           { q: "Can we start with a pilot?", a: "Absolutely. We can begin with a scoped pilot and expand progressively to full coverage once success criteria are met." },

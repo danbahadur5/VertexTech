@@ -29,7 +29,11 @@ export async function middleware(request: NextRequest) {
     });
 
     // Rate limiting for auth and sensitive endpoints
-    if (path.startsWith("/api/auth") || path.startsWith("/api/enquiries") || path.startsWith("/api/users")) {
+    if (path.startsWith("/api/auth") || 
+        path.startsWith("/api/enquiries") || 
+        path.startsWith("/api/users") ||
+        path.startsWith("/api/settings") ||
+        path.startsWith("/api/media/upload")) {
       const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || request.headers.get("x-real-ip") || "anonymous";
       try {
         await limiter.check(10, ip); 

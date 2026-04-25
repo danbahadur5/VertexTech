@@ -21,18 +21,18 @@ describe("IconServiceSelect", () => {
 
   it("filters via search input", async () => {
     const onChange = vi.fn();
-    const { container } = render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
-    fireEvent.click(within(container).getAllByLabelText(/services/i)[0]);
-    const input = within(container).getByPlaceholderText("Search services…");
+    render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
+    fireEvent.click(screen.getAllByLabelText(/services/i)[0]);
+    const input = screen.getByPlaceholderText("Search services…");
     fireEvent.change(input, { target: { value: "Web" } });
-    expect(within(container).getByText("Web Development")).toBeInTheDocument();
+    expect(screen.getByText("Web Development")).toBeInTheDocument();
   });
 
   it("supports multi-select", async () => {
     const onChange = vi.fn();
-    const { container } = render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
-    fireEvent.click(within(container).getAllByLabelText(/services/i)[0]);
-    const option = within(container).getByRole("option", { name: /Cyber Security/ });
+    render(<IconServiceSelect value={[]} onChange={onChange} options={opts} name="svc" label="Services" />);
+    fireEvent.click(screen.getAllByLabelText(/services/i)[0]);
+    const option = screen.getByRole("option", { name: /Cyber Security/ });
     fireEvent.click(option);
     expect(onChange).toHaveBeenCalled();
   });
