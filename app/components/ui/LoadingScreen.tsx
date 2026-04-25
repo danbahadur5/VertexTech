@@ -6,28 +6,15 @@ import Image from 'next/image';
 import logoLight from '../layout/assets/light_logo.png';
 import logoDark from '../layout/assets/dark_logo.png';
 import { useTheme } from 'next-themes';
+import { useColorTheme } from '../../lib/theme-context';
 
 export const LoadingScreen = () => {
-  const [loading, setLoading] = useState(true);
+  const { loading: themeLoading } = useColorTheme();
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Check if it's the first visit in this session
-    const hasVisited = sessionStorage.getItem('hasVisited');
-    if (hasVisited) {
-      setLoading(false);
-      return;
-    }
-
-    // Set a minimum loading time for the animation
-    const timer = setTimeout(() => {
-      setLoading(false);
-      sessionStorage.setItem('hasVisited', 'true');
-    }, 2800);
-
-    return () => clearTimeout(timer);
   }, []);
 
   // Avoid hydration mismatch
@@ -35,7 +22,7 @@ export const LoadingScreen = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {loading && (
+      {themeLoading && (
         <motion.div
           key="loader"
           initial={{ opacity: 1 }}

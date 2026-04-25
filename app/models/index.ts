@@ -184,10 +184,21 @@ const VerificationTokenSchema = new Schema(
   { timestamps: true }
 );
 
+const RevisionSchema = new Schema(
+  {
+    data: { type: Schema.Types.Mixed, required: true },
+    updatedBy: { type: String },
+    updatedAt: { type: Date, default: Date.now },
+    comment: { type: String },
+  },
+  { _id: true }
+);
+
 const SiteSettingSchema = new Schema(
   {
     key: { type: String, required: true, unique: true, index: true },
     data: { type: Schema.Types.Mixed, default: {} },
+    revisions: { type: [RevisionSchema], default: [] },
     updatedAtISO: { type: String },
   },
   { timestamps: true }

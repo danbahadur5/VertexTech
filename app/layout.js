@@ -24,7 +24,7 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600', '700', '800'],
   preload: true,
 });
 
@@ -38,19 +38,19 @@ const getSystemSettings = cache(async () => {
 
 export async function generateMetadata() {
   const d = await getSystemSettings();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vertextech.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://darbartech.vercel.app';
   
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: d.metaTitle || d.siteName || "VertexTech | AI-Powered Cybersecurity & Software Solutions",
-      template: `%s | ${d.siteName || 'VertexTech'}`
+      default: d.metaTitle || d.siteName || "DarbarTech | AI-Powered Cybersecurity & Software Solutions",
+      template: `%s | ${d.siteName || 'DarbarTech'}`
     },
-    description: d.metaDescription || "VertexTech provides next-generation AI-powered cybersecurity, bespoke software development, and digital defense solutions for modern enterprises.",
+    description: d.metaDescription || "DarbarTech provides next-generation AI-powered cybersecurity, bespoke software development, and digital defense solutions for modern enterprises.",
     keywords: d.keywords || "cybersecurity, artificial intelligence, software development, digital defense, IT solutions, cloud security",
-    authors: [{ name: "VertexTech Team" }],
-    creator: "VertexTech",
-    publisher: "VertexTech",
+    authors: [{ name: "DarbarTech Team" }],
+    creator: "DarbarTech",
+    publisher: "DarbarTech",
     formatDetection: {
       email: false,
       address: false,
@@ -60,24 +60,24 @@ export async function generateMetadata() {
       type: 'website',
       locale: 'en_US',
       url: siteUrl,
-      siteName: d.siteName || 'VertexTech',
-      title: d.metaTitle || d.siteName || "VertexTech | AI-Powered Cybersecurity & Software Solutions",
+      siteName: d.siteName || 'DarbarTech',
+      title: d.metaTitle || d.siteName || "DarbarTech | AI-Powered Cybersecurity & Software Solutions",
       description: d.metaDescription || "Empowering businesses with cutting-edge AI security and custom software development.",
       images: [
         {
           url: d.ogImage || "/og-image.png",
           width: 1200,
           height: 630,
-          alt: d.siteName || 'VertexTech Logo',
+          alt: d.siteName || 'DarbarTech Logo',
         }
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: d.metaTitle || d.siteName || "VertexTech | AI-Powered Cybersecurity & Solutions",
+      title: d.metaTitle || d.siteName || "DarbarTech | AI-Powered Cybersecurity & Solutions",
       description: d.metaDescription || "Next-generation digital defense and software development.",
       images: [d.ogImage || "/og-image.png"],
-      creator: "@vertextech",
+      creator: "@darbartech",
     },
     alternates: {
       canonical: '/',

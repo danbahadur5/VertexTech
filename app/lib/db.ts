@@ -4,69 +4,76 @@ import { logger } from "./logger";
 const MONGODB_URI = process.env.MONGODB_URI || "";
 
 if (!MONGODB_URI && process.env.NODE_ENV === 'production') {
-  logger.error("MONGODB_URI is not set in production!");
+  logger.error("Wait, the MONGODB_URI is missing in production! We need this to talk to our database.");
 }
 
-type Cached = {
+// We're caching the connection so we don't keep opening new ones every time
+// a serverless function runs. It's a bit of a pattern, but it's essential for performance.
+type MongoConnectionCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 };
 
 declare global {
+  // Using 'var' here because it's the only way to attach something to 'global' in TS
+  // that survives hot reloads during development.
   // eslint-disable-next-line no-var
-  var _mongoose: Cached | undefined;
+  var _mongoose: MongoConnectionCache | undefined;
 }
 
-const globalWithMongoose = global as unknown as { _mongoose?: Cached };
+const globalWithMongoose = global as unknown as { _mongoose?: MongoConnectionCache };
 
-let cached = globalWithMongoose._mongoose;
-if (!cached) {
-  cached = { conn: null, promise: null };
-  globalWithMongoose._mongoose = cached;
+let connectionCache = globalWithMongoose._mongoose;
+
+if (!connectionCache) {
+  connectionCache = { conn: null, promise: null };
+  globalWithMongoose._mongoose = connectionCache;
 }
 
 export async function connectDB() {
   if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI is not set");
+    throw new Error("I can't connect to the database without a URI. Check your .env file!");
   }
 
-  if (cached?.conn) {
-    return cached.conn;
+  // If we already have a connection, let's just use it. No need to overcomplicate things.
+  if (connectionCache?.conn) {
+    return connectionCache.conn;
   }
 
-  if (!cached?.promise) {
-    const opts = {
-      dbName: process.env.MONGODB_DB || "vertextech",
-      bufferCommands: false, // For faster error detection
+  // If a connection is already in the works, we'll wait for that one instead of starting a new one.
+  if (!connectionCache?.promise) {
+    const connectionOptions = {
+      dbName: process.env.MONGODB_DB || "darbartech",
+      bufferCommands: false, // We want to know immediately if something goes wrong.
     };
 
-    logger.info("Establishing new MongoDB connection...");
+    logger.info("Starting a fresh connection to MongoDB...");
     
-    cached!.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      logger.info("Successfully connected to MongoDB");
-      return mongoose;
-    }).catch((err) => {
-      logger.error("MongoDB connection error:", err);
-      cached!.promise = null; // Clear promise on error to retry next time
-      throw err;
+    connectionCache!.promise = mongoose.connect(MONGODB_URI, connectionOptions).then((mongooseInstance) => {
+      logger.info("We're in! Successfully connected to MongoDB.");
+      return mongooseInstance;
+    }).catch((error) => {
+      logger.error("Ouch, something went wrong while connecting to MongoDB:", error);
+      connectionCache!.promise = null; // Reset so we can try again later.
+      throw error;
     });
   }
 
   try {
-    cached!.conn = await cached!.promise;
-  } catch (e) {
-    cached!.promise = null;
-    throw e;
+    connectionCache!.conn = await connectionCache!.promise;
+  } catch (err) {
+    connectionCache!.promise = null;
+    throw err;
   }
 
-  return cached!.conn;
+  return connectionCache!.conn;
 }
 
-// Connection events
+// Keeping an eye on the connection lifecycle.
 mongoose.connection.on('disconnected', () => {
-  logger.warn('MongoDB disconnected');
+  logger.warn('The MongoDB connection just dropped. Hopefully it reconnects soon.');
 });
 
 mongoose.connection.on('error', (err) => {
-  logger.error('MongoDB error event:', err);
+  logger.error('The database is throwing an error:', err);
 });

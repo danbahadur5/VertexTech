@@ -11,122 +11,168 @@ import { CheckCircle2, Target, Users, Award, ArrowRight, Zap, Shield, Globe } fr
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
+/**
+ * AboutPage - The story behind VertexTech
+ * 
+ * I wanted this page to feel personal, not just a list of stats.
+ * We're moving away from the "DarbarTech" legacy name and fully 
+ * embracing the "Vertex" brand. 
+ * 
+ * The layout uses a mix of static defaults and dynamic data 
+ * from our CMS/Settings API to keep it flexible but resilient.
+ */
 export default function AboutPage({ initialData }) {
   useScrollReveal();
-  const [team, setTeam] = useState(initialData?.team || []);
-  const [hero, setHero] = useState({
-    badge: initialData?.hero?.badge || 'About DarbarTech',
+
+  // We're keeping the state names descriptive. 
+  // 'teamMembers' is much better than just 'team'.
+  const [teamMembers, setTeamMembers] = useState(initialData?.team || []);
+  
+  const [heroContent, setHeroContent] = useState({
+    badge: initialData?.hero?.badge || 'About VertexTech',
     titleLeading: initialData?.hero?.titleLeading || 'Defending the',
     titleGradient: initialData?.hero?.titleGradient || 'Digital Frontier',
-    subtitle1: initialData?.hero?.subtitle1 ||
-      "Founded by technology experts, DarbarTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
-    subtitle2: initialData?.hero?.subtitle2 ||
+    // Subtitles should be more than just marketing fluff.
+    // I've kept the defaults grounded in our actual history.
+    historyBrief: initialData?.hero?.subtitle1 ||
+      "Founded by technology experts, VertexTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
+    missionStatement: initialData?.hero?.subtitle2 ||
       "Today, we're proud to have delivered over 500 successful projects, helping businesses across industries leverage cloud computing, cybersecurity, custom software, and data analytics to achieve their goals.",
     heroImage: initialData?.hero?.heroImage ||
       'https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
-    stats: Array.isArray(initialData?.hero?.stats) && initialData.hero.stats.length ? initialData.hero.stats : [
+    performanceStats: Array.isArray(initialData?.hero?.stats) && initialData.hero.stats.length ? initialData.hero.stats : [
       { num: '500+', label: 'Projects Completed' },
       { num: '300+', label: 'Happy Clients' },
       { num: '50+', label: 'Team Members' },
       { num: '15+', label: 'Years Experience' },
     ],
   });
-  const [values, setValues] = useState([
+
+  const [coreValues, setCoreValues] = useState([
     { icon: Target, title: 'Innovation First', description: 'We stay ahead with cutting-edge technology solutions.' },
     { icon: Users, title: 'Client-Centric', description: 'Your success is our priority.' },
     { icon: CheckCircle2, title: 'Quality Assured', description: 'Enterprise-grade solutions and support.' },
     { icon: Award, title: 'Excellence', description: 'Award-winning team delivering results.' },
   ]);
-  const [milestones, setMilestones] = useState(initialData?.milestones || []);
-  const [principles, setPrinciples] = useState(initialData?.principles?.map((i) => {
-    const icons = { Shield, Zap, Globe };
-    return { icon: icons[i.icon] || Shield, title: i.title, desc: i.desc };
+
+  const [companyMilestones, setCompanyMilestones] = useState(initialData?.milestones || []);
+  
+  const [guidingPrinciples, setGuidingPrinciples] = useState(initialData?.principles?.map((principle) => {
+    const iconMap = { Shield, Zap, Globe };
+    return { icon: iconMap[principle.icon] || Shield, title: principle.title, desc: principle.desc };
   }) || []);
 
   useEffect(() => {
+    // If we have initialData (e.g. from SSR), we don't need to fetch again.
     if (initialData) return;
-    (async () => {
+
+    const fetchAboutData = async () => {
       try {
-        const [hRes, pRes, mRes, tRes] = await Promise.all([
+        // Fetching all the content pieces in parallel to keep things snappy.
+        const [heroRes, principlesRes, milestonesRes, teamRes] = await Promise.all([
           fetch('/api/settings/about-hero', { cache: 'no-store' }),
           fetch('/api/settings/about-principles', { cache: 'no-store' }),
           fetch('/api/settings/about-milestones', { cache: 'no-store' }),
           fetch('/api/settings/about-team', { cache: 'no-store' }),
         ]);
-        if (hRes.ok) {
-          const hj = await hRes.json();
-          const d = hj?.item?.data || {};
-          setHero((prev) => ({
+
+        if (heroRes.ok) {
+          const { item } = await heroRes.json();
+          const d = item?.data || {};
+          setHeroContent((prev) => ({
             badge: d.badge || prev.badge,
             titleLeading: d.titleLeading || prev.titleLeading,
             titleGradient: d.titleGradient || prev.titleGradient,
-            subtitle1: d.subtitle1 || prev.subtitle1,
-            subtitle2: d.subtitle2 || prev.subtitle2,
+            historyBrief: d.subtitle1 || prev.historyBrief,
+            missionStatement: d.subtitle2 || prev.missionStatement,
             heroImage: d.heroImage || prev.heroImage,
-            stats: Array.isArray(d.stats) && d.stats.length ? d.stats : prev.stats,
+            performanceStats: Array.isArray(d.stats) && d.stats.length ? d.stats : prev.performanceStats,
           }));
         }
-        if (pRes.ok) {
-          const pj = await pRes.json();
-          const items = Array.isArray(pj?.item?.data?.items) ? pj.item.data.items : [];
-          setPrinciples(items.map((i) => {
-            const icons = { Shield, Zap, Globe };
-            return { icon: icons[i.icon] || Shield, title: i.title, desc: i.desc };
+
+        if (principlesRes.ok) {
+          const { item } = await principlesRes.json();
+          const items = Array.isArray(item?.data?.items) ? item.data.items : [];
+          setGuidingPrinciples(items.map((i) => {
+            const iconMap = { Shield, Zap, Globe };
+            return { icon: iconMap[i.icon] || Shield, title: i.title, desc: i.desc };
           }));
         }
-        if (mRes.ok) {
-          const mj = await mRes.json();
-          const items = Array.isArray(mj?.item?.data?.items) ? mj.item.data.items : [];
-          setMilestones(items);
+
+        if (milestonesRes.ok) {
+          const { item } = await milestonesRes.json();
+          const items = Array.isArray(item?.data?.items) ? item.data.items : [];
+          setCompanyMilestones(items);
         }
-        if (tRes.ok) {
-          const tj = await tRes.json();
-          const items = Array.isArray(tj?.item?.data?.items) ? tj.item.data.items : [];
-          setTeam(items.map((m) => ({ name: m.name, position: m.position, avatar: m.avatarUrl, bio: m.bio })));
+
+        if (teamRes.ok) {
+          const { item } = await teamRes.json();
+          const items = Array.isArray(item?.data?.items) ? item.data.items : [];
+          setTeamMembers(items.map((m) => ({ 
+            name: m.name, 
+            position: m.position, 
+            avatar: m.avatarUrl, 
+            bio: m.bio 
+          })));
         }
-      } catch {}
-    })();
+      } catch (err) {
+        // We're failing silently here to prevent the page from crashing,
+        // but we'll log it for our own sanity during development.
+        console.error("Failed to load about page data:", err);
+      }
+    };
+
+    fetchAboutData();
   }, [initialData]);
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-white dark:bg-gray-950 selection:bg-blue-100">
       <PublicHeader />
+      
+      {/* Hero Section - The big "Who we are" introduction */}
       <section className="relative py-28 overflow-hidden theme-bg-light hero-grid-bg">
         <div className="blob blob-primary w-96 h-96 top-[-120px] right-[-100px]" />
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] left-[-60px]" />
+        
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
-            <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
+            <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">
+              {heroContent.badge}
+            </Badge>
             <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6 animate-fade-in-up delay-100">
-              {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
+              {heroContent.titleLeading} <span className="theme-gradient-text">{heroContent.titleGradient}</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-              {hero.subtitle1}
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed font-medium">
+              {heroContent.historyBrief}
             </p>
           </div>
+
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-left delay-300">
-              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl theme-glow-effect">
+              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl theme-glow-effect group">
                 <ImageWithFallback 
-                  src={hero.heroImage} 
+                  src={heroContent.heroImage} 
                   alt="Our team working together" 
                   fill
-                  className="object-cover" 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105" 
                 />
               </div>
             </div>
+            
             <div className="animate-fade-in-right delay-300">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-5">Our Story</h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                {hero.subtitle1}
+                {heroContent.historyBrief}
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                {hero.subtitle2}
+                {heroContent.missionStatement}
               </p>
+              
               <div className="grid grid-cols-2 gap-6">
-                {hero.stats.map(({ num, label }) => (
-                  <div key={label} className="text-center bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:shadow-md transition-shadow">
+                {heroContent.performanceStats.map(({ num, label }) => (
+                  <div key={label} className="text-center bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                     <div className="text-3xl font-extrabold theme-gradient-text mb-1">{num}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">{label}</div>
                   </div>
                 ))}
               </div>
@@ -134,6 +180,8 @@ export default function AboutPage({ initialData }) {
           </div>
         </div>
       </section>
+
+      {/* Principles Section - The "How we think" part */}
       <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
@@ -141,40 +189,50 @@ export default function AboutPage({ initialData }) {
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">How We Think</h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The guiding principles that shape every solution we build.</p>
           </div>
+          
           <div className="grid md:grid-cols-3 gap-8">
-            {principles.map((p, idx) => {
-              const Icon = p.icon;
+            {guidingPrinciples.map((principle, idx) => {
+              const PrincipleIcon = principle.icon;
               return (
-                <div key={p.title} className="reveal-scale text-center p-8 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.15}s` }}>
-                  <div className="w-16 h-16 theme-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                    <Icon className="h-8 w-8 text-white" />
+                <div 
+                  key={principle.title} 
+                  className="reveal-scale text-center p-8 rounded-3xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group" 
+                  style={{ transitionDelay: `${idx * 0.15}s` }}
+                >
+                  <div className="w-16 h-16 theme-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform shadow-lg shadow-blue-500/20">
+                    <PrincipleIcon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{p.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{p.desc}</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{principle.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{principle.desc}</p>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
-      <section className="py-24 bg-gray-50 dark:bg-gray-900">
+
+      {/* Timeline Section - Milestones that matter */}
+      <section className="py-24 bg-gray-50/50 dark:bg-gray-900/50">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
             <Badge className="mb-4 theme-badge">Our Journey</Badge>
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Milestones That Matter</h2>
           </div>
+          
           <div className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-0.5" style={{ background: 'linear-gradient(to bottom, var(--theme-gradient-from), var(--theme-gradient-to))' }} />
-            <div className="space-y-10">
-              {milestones.map((m, i) => (
-                <div key={m.year} className="reveal flex gap-8 items-start pl-4" style={{ transitionDelay: `${i * 0.1}s` }}>
-                  <div className="relative z-10 w-10 h-10 rounded-full theme-gradient flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg">{i + 1}</div>
-                  <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex-1 hover:shadow-md transition-shadow">
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 opacity-20" style={{ background: 'linear-gradient(to bottom, var(--theme-gradient-from), var(--theme-gradient-to))' }} />
+            <div className="space-y-12">
+              {companyMilestones.map((milestone, i) => (
+                <div key={milestone.year} className="reveal flex gap-8 items-start pl-4" style={{ transitionDelay: `${i * 0.1}s` }}>
+                  <div className="relative z-10 w-10 h-10 rounded-full theme-gradient flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg ring-4 ring-white dark:ring-gray-900">
+                    {i + 1}
+                  </div>
+                  <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex-1 hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-3 mb-2">
-                      <Badge className="theme-badge text-xs">{m.year}</Badge>
-                      <span className="font-bold text-gray-900 dark:text-gray-100">{m.event}</span>
+                      <Badge className="theme-badge text-xs">{milestone.year}</Badge>
+                      <span className="font-bold text-gray-900 dark:text-gray-100">{milestone.event}</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{m.desc}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{milestone.desc}</p>
                   </div>
                 </div>
               ))}
@@ -182,6 +240,8 @@ export default function AboutPage({ initialData }) {
           </div>
         </div>
       </section>
+
+      {/* Values Section - What we stand for */}
       <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16 reveal">
@@ -189,14 +249,19 @@ export default function AboutPage({ initialData }) {
             <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">The Principles That Guide Us</h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">What we stand for, every single day.</p>
           </div>
+          
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((v, idx) => {
-              const Icon = v.icon;
+            {coreValues.map((value, idx) => {
+              const ValueIcon = value.icon;
               return (
-                <Card key={v.title} className="reveal text-center hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
-                  <CardContent className="pt-8 pb-6">
-                    <div className="w-16 h-16 rounded-full theme-gradient flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform">
-                      <Icon className="h-8 w-8 text-white" />
+                <Card 
+                  key={value.title} 
+                  className="reveal text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-3xl overflow-hidden" 
+                  style={{ transitionDelay: `${idx * 0.12}s` }}
+                >
+                  <CardContent className="pt-10 pb-8">
+                    <div className="w-16 h-16 rounded-full theme-gradient flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
+                      <ValueIcon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-lg">{v.title}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{v.description}</p>

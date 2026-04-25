@@ -60,7 +60,7 @@ const NavLink = ({ item, isActive, onClick }) => {
   return (
     <Link
       href={item.href}
-      className={`relative px-4 py-2 text-sm font-semibold transition-all duration-200 rounded-lg group cursor-pointer
+      className={`relative px-4 py-2 text-sm font-semibold tracking-tight transition-all duration-200 rounded-lg group cursor-pointer font-sans
         ${
           isActive
             ? "theme-text"
@@ -89,7 +89,7 @@ const DropdownNav = ({ item, isActive }) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-all duration-200 rounded-lg outline-none group cursor-pointer
+            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-semibold tracking-tight transition-all duration-200 rounded-lg outline-none group cursor-pointer font-sans
               ${
                 isActive
                   ? "theme-text"
@@ -124,14 +124,14 @@ const DropdownNav = ({ item, isActive }) => {
                           <Icon className="h-5 w-5 theme-text" />
                         </div>
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-gray-900 dark:text-white leading-tight flex items-center gap-1.5">
-                            {sub.name}
-                            <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all theme-text" />
-                          </span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1 leading-relaxed">
-                            {sub.description || "Expert " + sub.name.toLowerCase() + " for your business growth."}
-                          </span>
-                        </div>
+                  <span className="font-bold text-gray-900 dark:text-white leading-tight flex items-center gap-1.5 tracking-tight">
+                    {sub.name}
+                    <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all theme-text" />
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1 leading-relaxed font-medium">
+                    {sub.description || "Expert " + sub.name.toLowerCase() + " for your business growth."}
+                  </span>
+                </div>
                       </Link>
                     </DropdownMenuItem>
                   );
@@ -178,6 +178,7 @@ const MobileMenu = ({
   isAuthenticated,
   user,
   theme,
+  onLogout,
 }) => {
   const router = useRouter();
 
@@ -232,15 +233,37 @@ const MobileMenu = ({
           })}
           <div className="pt-4 border-t dark:border-gray-700 space-y-3">
             {isAuthenticated ? (
-              <Button
-                className="theme-btn w-full flex items-center gap-2"
-                onClick={() => {
-                  router.push(`/dashboard/${user?.role}`);
-                  onClose();
-                }}
-              >
-                <LayoutDashboard className="h-4 w-4" /> Dashboard
-              </Button>
+              <div className="space-y-3">
+                <Button
+                  className="theme-btn w-full flex items-center gap-2"
+                  onClick={() => {
+                    router.push(`/dashboard/${user?.role}`);
+                    onClose();
+                  }}
+                >
+                  <LayoutDashboard className="h-4 w-4" /> Dashboard
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full flex items-center gap-2"
+                  onClick={() => {
+                    router.push(user?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${user?.role}/profile`);
+                    onClose();
+                  }}
+                >
+                  <Settings className="h-4 w-4" /> Settings
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  onClick={() => {
+                    onLogout();
+                    onClose();
+                  }}
+                >
+                  <LogOut className="h-4 w-4" /> Log out
+                </Button>
+              </div>
             ) : (
               <>
                 <Button
@@ -281,10 +304,19 @@ export function PublicHeader() {
   const [authReady, setAuthReady] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, user, loading } = useAuth();
+  const { isAuthenticated, user, loading, logout } = useAuth();
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -428,12 +460,18 @@ export function PublicHeader() {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/settings" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20">
+                        <Link 
+                          href={user?.role === 'admin' ? '/dashboard/admin/settings' : `/dashboard/${user?.role}/profile`} 
+                          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-blue-50/50 dark:hover:bg-blue-900/20"
+                        >
                           <Settings className="h-4 w-4 theme-text" /> Settings
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator className="my-1 bg-gray-100 dark:bg-gray-800" />
-                      <DropdownMenuItem className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer">
+                      <DropdownMenuItem 
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer"
+                      >
                         <LogOut className="h-4 w-4" /> Log out
                       </DropdownMenuItem>
                     </div>
@@ -557,6 +595,7 @@ export function PublicHeader() {
         user={user}
         toggleTheme={toggleTheme}
         theme={mounted ? resolvedTheme : "light"}
+        onLogout={handleLogout}
       />
 
       {/* Spacers for fixed elements */}

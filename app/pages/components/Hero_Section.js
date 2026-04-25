@@ -4,7 +4,7 @@ import HeroImage from "../assets/images.jpg";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Skeleton } from "../../components/ui/skeleton";
+import { Spinner } from "../../components/ui/spinner";
 import { motion } from "framer-motion";
 
 // --- Subcomponents ---
@@ -255,79 +255,58 @@ export default function HeroSection({ initialData }) {
   const heroImg = cleanUrl(data?.heroImage) || HeroImage;
 
   return (
-    <section className="relative theme-bg-light  hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-12">
+    <section className="relative theme-bg-light  hero-grid-bg overflow-hidden py-16 md:py-20 lg:py-12 min-h-[600px] flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className="bg-no-repeat bg-right-top lg:bg-right bg-contain"
-          style={{ backgroundImage: `url(${getImageSrc(HeroMap)})` }}
-        >
-          <div className="flex flex-wrap items-center justify-between">
-            {/* LEFT SIDE */}
-            <div className="w-full lg:w-7/12 px-4">
-              <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
-                {loading ? (
-                  <div className="space-y-4">
-                    <Skeleton className="h-4 w-32 mb-2" />
-                    <Skeleton className="h-12 w-full mb-4" />
-                    <Skeleton className="h-12 w-3/4 mb-4" />
-                    <Skeleton className="h-20 w-full mb-6" />
-                    <div className="flex gap-4">
-                      <Skeleton className="h-12 w-32 rounded-xl" />
-                      <Skeleton className="h-12 w-32 rounded-xl" />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <span className="theme-text font-semibold inline-block mb-2">
-                      {data?.badge || "Welcome to VertexTech"}
+        {loading ? (
+          <div className="flex justify-center items-center w-full py-24">
+            <Spinner />
+          </div>
+        ) : (
+          <div
+            className="bg-no-repeat bg-right-top lg:bg-right bg-contain"
+            style={{ backgroundImage: `url(${getImageSrc(HeroMap)})` }}
+          >
+            <div className="flex flex-wrap items-center justify-between">
+              {/* LEFT SIDE */}
+              <div className="w-full lg:w-7/12 px-4">
+                <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
+                  <span className="theme-text font-semibold inline-block mb-2">
+                    {data?.badge || "Welcome to DarbarTech"}
+                  </span>
+
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">
+                    {(data?.titleLeading || "Powering Your") + " "}
+                    <span
+                      className="theme-gradient-text"
+                      style={{ backgroundImage: `linear-gradient(90deg, ${gradFrom}, ${gradTo})` }}
+                    >
+                      {data?.titleGradient || "Digital Transformation"}
                     </span>
+                  </h1>
 
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">
-                      {(data?.titleLeading || "Powering Your") + " "}
-                      <span
-                        className="theme-gradient-text"
-                        style={{ backgroundImage: `linear-gradient(90deg, ${gradFrom}, ${gradTo})` }}
-                      >
-                        {data?.titleGradient || "Digital Transformation"}
-                      </span>
-                    </h1>
+                  <p className="mb-6 text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {data?.subtitle ||
+                      "Cloud, cybersecurity, and software that scale with your ambition."}
+                  </p>
 
-                    <p className="mb-6 text-lg sm:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-                      {data?.subtitle ||
-                        "Cloud, cybersecurity, and software that scale with your ambition."}
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                    <Link
+                      href={data?.primaryCTA?.href || "/contact"}
+                      className="inline-block theme-btn rounded-xl font-semibold py-3 px-10  text-lg whitespace-nowrap"
+                    >
+                      {data?.primaryCTA?.label || "Get Started"}
+                    </Link>
+                    {data?.secondaryCTA?.label && (
                       <Link
-                        href={data?.primaryCTA?.href || "/contact"}
-                        className="inline-block theme-btn rounded-xl font-semibold py-3 px-10  text-lg whitespace-nowrap"
+                        href={data.secondaryCTA.href || "#"}
+                        className="inline-block px-8 py-3 text-lg font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors"
                       >
-                        {data?.primaryCTA?.label || "Get Started"}
+                        {data.secondaryCTA.label}
                       </Link>
-                      {data?.secondaryCTA?.label && (
-                        <Link
-                          href={data.secondaryCTA.href || "#"}
-                          className="inline-block px-8 py-3 text-lg font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors"
-                        >
-                          {data.secondaryCTA.label}
-                        </Link>
-                      )}
-                    </div>
-                  </>
-                )}
+                    )}
+                  </div>
 
-                <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                  {loading ? (
-                    <div className="flex items-center gap-4">
-                      <div className="flex -space-x-2">
-                        {[...Array(4)].map((_, i) => <Skeleton key={i} className="w-10 h-10 rounded-full" />)}
-                      </div>
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-24" />
-                        <Skeleton className="h-3 w-32" />
-                      </div>
-                    </div>
-                  ) : (
+                  <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                     <div className="flex flex-col items-center sm:items-start">
                       <div className="flex items-center gap-3">
                         <AvatarGroup avatars={data?.avatars} />
@@ -341,17 +320,13 @@ export default function HeroSection({ initialData }) {
                           : "Trusted by teams worldwide"}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* RIGHT SIDE (Visual) */}
-            <div className="w-full lg:w-5/12 px-4 mt-16 lg:mt-0 hidden lg:flex justify-center lg:justify-end">
-              <div className="relative max-w-lg lg:max-w-none w-full flex justify-center pr-18 lg:justify-end">
-                {loading ? (
-                  <Skeleton className="aspect-square w-full max-w-[420px] rounded-full" />
-                ) : (
+              {/* RIGHT SIDE (Visual) */}
+              <div className="w-full lg:w-5/12 px-4 mt-16 lg:mt-0 hidden lg:flex justify-center lg:justify-end">
+                <div className="relative max-w-lg lg:max-w-none w-full flex justify-center pr-18 lg:justify-end">
                   <div className="relative w-64 h-64 sm:w-80 sm:h-80">
                     {/* background circle */}
                     <div className="absolute inset-0 z-0">
@@ -374,11 +349,11 @@ export default function HeroSection({ initialData }) {
 
                     <ServiceRing items={data?.services} />
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

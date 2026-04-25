@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from '../../../components/ui/badge';
-import { Skeleton } from '../../../components/ui/skeleton';
+import { Spinner } from '../../../components/ui/spinner';
 
 export default function AdminDashboard() {
   const [statsData, setStatsData] = useState({ users: 0, pages: 0, posts: 0, projects: 0, tickets: 0 });
@@ -229,15 +229,9 @@ export default function AdminDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {isLoading ? (
-                  [...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-start gap-4 pb-4">
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <div className="flex-1 space-y-2">
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-3 w-2/3" />
-                      </div>
-                    </div>
-                  ))
+                  <div className="flex justify-center py-8">
+                    <Spinner />
+                  </div>
                 ) : activities.length > 0 ? (
                   activities.map((activity, index) => (
                     <div key={activity._id || index} className="flex items-start gap-4 pb-4 border-b last:border-0">

@@ -10,7 +10,7 @@ import {
 } from "../../components/ui/accordion";
 
 import { Badge } from "../../components/ui/badge";
-import { Skeleton } from "../../components/ui/skeleton";
+import { Spinner } from "../../components/ui/spinner";
 
 export default function FAQSection({ initialData }) {
   const [faqs, setFaqs] = useState(initialData?.items || []);
@@ -64,18 +64,11 @@ export default function FAQSection({ initialData }) {
           </p>
         </div>
         <div className="reveal">
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="flex justify-center items-center py-12">
             {loading ? (
-              <>
-                <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)}
-                </div>
-                <div className="space-y-4">
-                  {[...Array(2)].map((_, i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)}
-                </div>
-              </>
+              <Spinner />
             ) : (
-              <>
+              <div className="grid gap-6 lg:grid-cols-2 w-full">
                 <Accordion type="single" collapsible className="space-y-3">
                   {left.map((item, i) => (
                     <AccordionItem
@@ -108,7 +101,7 @@ export default function FAQSection({ initialData }) {
                     </AccordionItem>
                   ))}
                 </Accordion>
-              </>
+              </div>
             )}
           </div>
         </div>

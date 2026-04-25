@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Skeleton } from "../../components/ui/skeleton";
+import { Spinner } from "../../components/ui/spinner";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
 
 /**
@@ -88,8 +88,8 @@ export default function Hero_Trusted_Count({ initialData }) {
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {loading ? (
-          <div className="text-center mb-12">
-            <Skeleton className="h-10 w-64 mx-auto bg-gray-300 dark:bg-gray-800 rounded-xl" />
+          <div className="flex justify-center py-12">
+            <Spinner />
           </div>
         ) : title ? (
           <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -118,14 +118,7 @@ export default function Hero_Trusted_Count({ initialData }) {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
-          {loading
-            ? [...Array(4)].map((_, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-white dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 shadow-sm">
-                  <Skeleton className="h-10 w-20 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mb-3" />
-                  <Skeleton className="h-4 w-28 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg" />
-                </div>
-              ))
-            : items.map((s, i) => (
+          {items.map((s, i) => (
                 <motion.div
                   key={`${s.label}-${i}`}
                   variants={itemVariants}

@@ -9,7 +9,8 @@ import Hero_Trusted_Count from "./components/Hero_Trusted_Count";
 import HowItWork from "./components/How_IT_Work";
 import { useInView } from "../lib/use-in-view";
 
-// Use next/dynamic for better performance and smaller initial bundles
+// We're using next/dynamic for these sections to keep the initial page load snappy.
+// It's a bit of a performance win, especially for users on slower connections.
 const TrustedBy = dynamic(() => import("./components/TrustedBy"), { ssr: false });
 const Capabilities = dynamic(() => import("./components/Capabilities"), { ssr: false });
 const Services = dynamic(() => import("./components/Services"), { ssr: false });
@@ -19,76 +20,80 @@ const Testimonials = dynamic(() => import("./components/Testimonials"), { ssr: f
 const FAQSection = dynamic(() => import("./components/FAQSection"), { ssr: false });
 const CTASection = dynamic(() => import("./components/CTASection"), { ssr: false });
 
-function LazySection({ children, fallback = <div className="h-40" /> }) {
-  const [ref, isInView] = useInView({ rootMargin: '200px', triggerOnce: true });
+/**
+ * SectionWrapper helps us only load and render components when they're actually
+ * about to scroll into view. This keeps the browser from doing unnecessary work.
+ */
+function SectionWrapper({ children, placeholder = <div className="h-40" /> }) {
+  const [observeRef, isVisible] = useInView({ 
+    rootMargin: '200px', // Start loading a bit before the user gets there
+    triggerOnce: true     // Once it's loaded, keep it loaded
+  });
+
   return (
-    <div ref={ref}>
-      {isInView ? (
-        <Suspense fallback={fallback}>
+    <div ref={observeRef}>
+      {isVisible ? (
+        <Suspense fallback={placeholder}>
           {children}
         </Suspense>
       ) : (
-        fallback
+        placeholder
       )}
     </div>
   );
 }
 
 export default function HomePage() {
+  // This hook adds some nice entry animations as the user scrolls.
   useScrollReveal();
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Public Header */}
+    <div className="min-h-screen bg-background selection:bg-blue-100">
+      {/* Navigation & Hero - these are the first things people see, so they load instantly */}
       <PublicHeader />
       <Hero_Section />
       <Hero_Trusted_Count />
 
-      {/* Trusted sections */}
-      <LazySection>
+      {/* The rest of the page is loaded lazily to keep things smooth */}
+      <SectionWrapper>
         <TrustedBy />
-      </LazySection>
+      </SectionWrapper>
 
-      <LazySection>
+      <SectionWrapper>
         <Capabilities />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* Services Sections */}
-      <LazySection>
+      <SectionWrapper>
         <Services />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* Features Sections */}
-      <LazySection>
+      <SectionWrapper>
         <FeatureProject />
-      </LazySection>
+      </SectionWrapper>
       
-      <LazySection>
+      <SectionWrapper>
         <HowItWork />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* Testimonials Sections */}
-      <LazySection>
+      <SectionWrapper>
         <Testimonials />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* Features Blog Section */}
-      <LazySection>
+      <SectionWrapper>
         <FeatureBlog />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* FAQ section */}
-      <LazySection>
+      <SectionWrapper>
         <FAQSection />
-      </LazySection>
+      </SectionWrapper>
 
-      <LazySection>
+      <SectionWrapper>
         <CTASection />
-      </LazySection>
+      </SectionWrapper>
 
-      {/* Public Footer Section */}
-      <LazySection>
+      <SectionWrapper>
         <PublicFooter />
-      </LazySection>
+      </SectionWrapper>
     </div>
   );
 }

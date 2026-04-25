@@ -86,12 +86,13 @@ interface ColorThemeContextType {
 }
 
 const DEFAULT_THEME = THEME_OPTIONS[0];
+const MIN_LOADING_TIME = 1500; // Minimum duration in ms to prevent flickering
 
 const ColorThemeContext = createContext<ColorThemeContextType>({
   theme: DEFAULT_THEME,
   setTheme: () => {},
   updateTheme: () => {},
-  loading: false,
+  loading: true,
 });
 
 export function ColorThemeProvider({ children }: { children: React.ReactNode }) {
@@ -99,7 +100,10 @@ export function ColorThemeProvider({ children }: { children: React.ReactNode }) 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const loadTheme = async () => {
+      const startTime = Date.now();
       try {
         const res = await fetch('/api/settings/theme', { cache: 'no-store' });
         if (res.ok) {
@@ -111,10 +115,20 @@ export function ColorThemeProvider({ children }: { children: React.ReactNode }) 
       } catch (err) {
         console.error("Failed to load theme:", err);
       } finally {
-        setLoading(false);
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, MIN_LOADING_TIME - elapsedTime);
+        
+        timeoutId = setTimeout(() => {
+          setLoading(false);
+        }, remainingTime);
       }
     };
+
     loadTheme();
+    
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   useEffect(() => {

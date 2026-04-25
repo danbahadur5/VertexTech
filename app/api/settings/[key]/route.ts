@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
-const settingsSchema = z.record(z.any());
+const settingsSchema = z.record(z.string(), z.any());
 
 // Sensitive keys that should only be visible to admins
 const SENSITIVE_KEYS = ["smtp_password", "cloudinary_api_secret", "mongodb_uri"];
@@ -39,27 +39,76 @@ export async function GET(_: Request, ctx: { params: Promise<{ key: string }> })
 }
 
 export async function PUT(req: Request, ctx: { params: Promise<{ key: string }> }) {
-  const auth = await requireRole(["admin", "editor"]);
-  if (!auth) return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  const authCtx = await requireRole(["admin", "editor"]);
+  if (!authCtx) return NextResponse.json({ error: "forbidden" }, { status: 403 });
   
   const { key } = await ctx.params;
   
   try {
     const json = await req.json();
-    const validated = settingsSchema.safeParse(json);
+    await connectDB();
+    const existing = await SiteSetting.findOne({ key } as any);
+
+    // Handle revert functionality
+    if (json.revertToRevisionId) {
+      if (!existing) return NextResponse.json({ error: "not_found" }, { status: 404 });
+      
+      const revision = (existing.revisions as any[]).find(r => r._id.toString() === json.revertToRevisionId);
+      if (!revision) return NextResponse.json({ error: "revision_not_found" }, { status: 404 });
+      
+      // Push current data to revisions before reverting
+      existing.revisions.unshift({
+        data: existing.data,
+        updatedBy: authCtx.profile.authUserId,
+        updatedAt: new Date(),
+        comment: `Before reverting to revision ${json.revertToRevisionId}`
+      });
+      
+      existing.data = revision.data;
+      existing.updatedAtISO = new Date().toISOString();
+      
+      // Keep revisions manageable (max 20)
+      if (existing.revisions.length > 20) existing.revisions.pop();
+      
+      await existing.save();
+      return NextResponse.json({ item: existing });
+    }
+
+    // Normal update
+    const updateData = json.data || json;
+    const validated = settingsSchema.safeParse(updateData);
     
     if (!validated.success) {
       return NextResponse.json({ error: "invalid_input", details: validated.error.format() }, { status: 400 });
     }
 
-    await connectDB();
-    const updated = await SiteSetting.findOneAndUpdate(
-      { key } as any,
-      { $set: { data: validated.data, updatedAtISO: new Date().toISOString() } },
-      { returnDocument: "after", upsert: true } as any
-    );
-    return NextResponse.json({ item: updated });
+    if (existing) {
+      // Add current state to revisions
+      existing.revisions.unshift({
+        data: existing.data,
+        updatedBy: authCtx.profile.authUserId,
+        updatedAt: new Date(),
+        comment: json.comment || "Updated setting"
+      });
+      
+      // Limit to 20 revisions
+      if (existing.revisions.length > 20) existing.revisions.pop();
+      
+      existing.data = validated.data;
+      existing.updatedAtISO = new Date().toISOString();
+      await existing.save();
+      return NextResponse.json({ item: existing });
+    } else {
+      const newItem = await SiteSetting.create({
+        key,
+        data: validated.data,
+        updatedAtISO: new Date().toISOString(),
+        revisions: []
+      });
+      return NextResponse.json({ item: newItem });
+    }
   } catch (error) {
+    console.error("PUT settings error:", error);
     return NextResponse.json({ error: "server_error" }, { status: 500 });
   }
 }
