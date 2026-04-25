@@ -133,7 +133,7 @@ export default function AboutPage({ initialData }) {
               {heroContent.badge}
             </Badge>
             <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6 animate-fade-in-up delay-100">
-              {heroContent.titleLeading} <span className="theme-gradient-text">{heroContent.titleGradient}</span>
+              {heroContent.titleLeading} <span className="theme-text">{heroContent.titleGradient}</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed font-medium">
               {heroContent.historyBrief}
@@ -164,7 +164,7 @@ export default function AboutPage({ initialData }) {
               <div className="grid grid-cols-2 gap-6">
                 {heroContent.performanceStats.map(({ num, label }) => (
                   <div key={label} className="text-center bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-                    <div className="text-3xl font-extrabold theme-gradient-text mb-1">{num}</div>
+                    <div className="text-3xl font-extrabold theme-text mb-1">{num}</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">{label}</div>
                   </div>
                 ))}
@@ -192,7 +192,7 @@ export default function AboutPage({ initialData }) {
                   className="reveal-scale text-center p-8 rounded-3xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group" 
                   style={{ transitionDelay: `${idx * 0.15}s` }}
                 >
-                  <div className="w-16 h-16 theme-gradient rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform shadow-lg shadow-blue-500/20">
+                  <div className="w-16 h-16 theme-bg rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform shadow-lg shadow-blue-500/20">
                     <PrincipleIcon className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{principle.title}</h3>
@@ -213,11 +213,11 @@ export default function AboutPage({ initialData }) {
           </div>
           
           <div className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 opacity-20" style={{ background: 'linear-gradient(to bottom, var(--theme-gradient-from), var(--theme-gradient-to))' }} />
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 opacity-20" style={{ background: 'var(--theme-primary)' }} />
             <div className="space-y-12">
               {companyMilestones.map((milestone, i) => (
                 <div key={milestone.year} className="reveal flex gap-8 items-start pl-4" style={{ transitionDelay: `${i * 0.1}s` }}>
-                  <div className="relative z-10 w-10 h-10 rounded-full theme-gradient flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg ring-4 ring-white dark:ring-gray-900">
+                  <div className="relative z-10 w-10 h-10 rounded-full theme-bg flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-lg ring-4 ring-white dark:ring-gray-900">
                     {i + 1}
                   </div>
                   <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm p-6 flex-1 hover:shadow-md transition-shadow">
@@ -253,7 +253,7 @@ export default function AboutPage({ initialData }) {
                   style={{ transitionDelay: `${idx * 0.12}s` }}
                 >
                   <CardContent className="pt-10 pb-8">
-                    <div className="w-16 h-16 rounded-full theme-gradient flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
+                    <div className="w-16 h-16 rounded-full theme-bg flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
                       <ValueIcon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-lg">{value.title}</h3>
@@ -283,7 +283,7 @@ export default function AboutPage({ initialData }) {
                       className="w-24 h-24 rounded-full mx-auto object-cover ring-4 ring-white dark:ring-gray-800 shadow-lg group-hover:ring-4 transition-all"
                       style={{ '--tw-ring-color': 'var(--theme-primary)' }}
                     />
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full theme-gradient flex items-center justify-center shadow-sm">
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full theme-bg flex items-center justify-center shadow-sm">
                       <CheckCircle2 className="h-3.5 w-3.5 text-white" />
                     </div>
                   </div>
@@ -296,7 +296,7 @@ export default function AboutPage({ initialData }) {
           </div>
         </div>
       </section>
-      <section className="py-24 theme-gradient">
+      <section className="py-24 theme-bg">
         <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center reveal">
           <h2 className="text-4xl font-bold text-white mb-5">Join the Mission</h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">

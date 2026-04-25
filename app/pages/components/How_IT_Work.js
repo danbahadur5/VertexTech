@@ -44,7 +44,7 @@ export default function  HowItWork(){
                   style={{ transitionDelay: `${idx * 0.12}s` }}
                 >
                 <div className="relative inline-flex mb-6">
-                  <div className="w-16 h-16 rounded-2xl theme-gradient flex items-center justify-center text-white font-extrabold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 rounded-2xl theme-bg flex items-center justify-center text-white font-extrabold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
                     {item.step}
                   </div>
                   <div

@@ -106,7 +106,7 @@ export default function Hero_Trusted_Count({ initialData }) {
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              className="h-1 w-20 theme-gradient mx-auto rounded-full origin-center"
+              className="h-1 w-20 theme-bg mx-auto rounded-full origin-center"
             />
           </div>
         ) : null}
@@ -126,12 +126,12 @@ export default function Hero_Trusted_Count({ initialData }) {
                   className="group relative p-5 md:p-6 rounded-2xl bg-white dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center min-h-[140px]"
                 >
                   {/* Card Glow Effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ backgroundColor: 'var(--theme-primary)', opacity: 0.05 }} />
                   
                   <div className="relative text-center w-full">
                     <div className="text-4xl md:text-5xl font-black mb-2 tracking-tighter text-gray-900 dark:text-white flex items-center justify-center">
                       <Counter value={parseFloat(s.num) || 0} />
-                      <span className="theme-gradient-text bg-clip-text text-transparent ml-1">
+                      <span className="theme-text ml-1">
                         {s.suffix}
                       </span>
                     </div>

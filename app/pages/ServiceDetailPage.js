@@ -103,7 +103,7 @@ export default function ServiceDetailPage({ initialData }) {
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">For small teams</p>
                       </div>
-                      <div className="border-2 border-theme-gradient rounded-lg p-4">
+                      <div className="border-2 theme-border rounded-lg p-4">
                         <Badge className="mb-2 dark:text-gray-500">Most Popular</Badge>
                         <div className="flex items-baseline justify-between mb-2">
                           <span className="font-semibold text-gray-900 dark:text-white">Professional</span>

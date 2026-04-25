@@ -98,7 +98,7 @@ export default function NotFoundPage() {
           </motion.div>
 
           <motion.div variants={itemVariants} className="relative mb-8">
-            <h1 className="text-[120px] sm:text-[180px] font-black leading-none tracking-tighter theme-gradient-text opacity-10 dark:opacity-20 absolute inset-0 flex items-center justify-center select-none pointer-events-none">
+            <h1 className="text-[120px] sm:text-[180px] font-black leading-none tracking-tighter theme-text opacity-10 dark:opacity-20 absolute inset-0 flex items-center justify-center select-none pointer-events-none">
               404
             </h1>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tight relative z-10">

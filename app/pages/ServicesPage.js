@@ -37,7 +37,7 @@ export default function ServicesPage({ initialData }) {
         <div className="blob blob-secondary w-72 h-72 bottom-[-80px] right-[-60px]" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <div className="animate-fade-in"><Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold">Security Solutions</Badge></div>
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100 dark:text-gray-300">Our Security <span className="theme-gradient-text">Platform</span></h1>
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-6 animate-fade-in-up delay-100 dark:text-gray-300">Our Security <span className="theme-text">Platform</span></h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">Comprehensive cybersecurity solutions to protect your endpoints, cloud infrastructure, identities, and data from advanced threats.</p>
         </div>
       </section>
@@ -53,7 +53,7 @@ export default function ServicesPage({ initialData }) {
               return (
                 <div key={svc.slug} className="reveal-scale bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-md p-7 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group" style={{ transitionDelay: `${idx * 0.1}s` }}>
                   <div className="flex items-start gap-4 mb-5">
-                    <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Icon className="h-6 w-6 text-white" /></div>
+                    <div className="w-12 h-12 rounded-xl theme-bg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Icon className="h-6 w-6 text-white" /></div>
                     <div><h3 className="font-bold text-gray-900 dark:text-gray-100 leading-tight">{svc.title}</h3><p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{svc.tagline || svc.description}</p></div>
                   </div>
                   {!!(svc.capabilities || []).length && (
@@ -112,7 +112,7 @@ export default function ServicesPage({ initialData }) {
           </div>
         </div>
       </section>
-      <section className="py-24 theme-gradient">
+      <section className="py-24 theme-bg">
         <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center reveal">
           <h2 className="text-4xl font-bold text-white mb-5">Secure Your Organization Today</h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">Let's discuss how our security platform can protect your entire digital infrastructure.</p>

@@ -88,7 +88,7 @@ export const LoadingScreen = () => {
                     x: "100%",
                     transition: { duration: 2.2, repeat: Infinity, ease: "linear" }
                   }}
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-600 to-transparent dark:via-blue-500 opacity-50"
+                  className="absolute inset-0 bg-blue-600 dark:bg-blue-500 opacity-50"
                 />
                 <motion.div
                   initial={{ width: "0%" }}

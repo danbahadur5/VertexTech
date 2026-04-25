@@ -40,7 +40,7 @@ export default function PricingPage({ initialData }) {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold">Transparent Pricing</Badge>
           <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
-            {heroTitle.split(' ').slice(0, -1).join(' ')} <span className="theme-gradient-text">{heroTitle.split(' ').slice(-1)}</span>
+            {heroTitle.split(' ').slice(0, -1).join(' ')} <span className="theme-text">{heroTitle.split(' ').slice(-1)}</span>
           </h1>
           <p className="text-xl text-gray-600  max-w-2xl mx-auto animate-fade-in-up delay-200">
             {heroSubtitle}
@@ -56,7 +56,7 @@ export default function PricingPage({ initialData }) {
                 <Card key={plan.id} className="reveal reveal-scale rounded-2xl border border-gray-200 dark:border-gray-800 p-2 hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-900" style={{ animationDelay: `${idx * 0.12}s` }}>
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl theme-bg flex items-center justify-center">
                         <Icon className="h-6 w-6 text-white" />
                       </div>
                       <div>
@@ -92,7 +92,7 @@ export default function PricingPage({ initialData }) {
           </div>
         </div>
       </section>
-      <section className="py-24 theme-gradient">
+      <section className="py-24 theme-bg">
         <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">Not Sure Which Plan?</h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">Talk to a security expert to pick the best fit.</p>

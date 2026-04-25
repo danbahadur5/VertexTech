@@ -225,7 +225,7 @@ export default function ClientProfilePage() {
                 <div className="relative group">
                   <Avatar className="w-40 h-40 border-4 border-white dark:border-gray-800 shadow-2xl transition-transform group-hover:scale-105 duration-300">
                     <AvatarImage src={formData.avatar} className="object-cover" />
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-5xl font-bold">
+                    <AvatarFallback className="bg-blue-600 text-white text-5xl font-bold">
                       {formData.name?.charAt(0) || <UserIcon />}
                     </AvatarFallback>
                   </Avatar>

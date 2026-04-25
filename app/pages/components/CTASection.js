@@ -3,7 +3,7 @@ import { ArrowRight} from "lucide-react";
 import Link from "next/link";
 export default function CTASection(){
     return(
-             <section className="py-24 theme-gradient">
+             <section className="py-24 theme-bg">
         <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
           <div className="reveal">
             <h2 className="text-4xl font-extrabold text-white mb-6">

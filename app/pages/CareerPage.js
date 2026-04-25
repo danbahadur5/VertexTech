@@ -57,13 +57,13 @@ export default function CareersPage() {
     <div className="min-h-screen bg-white dark:bg-gray-950 dark:text-gray-400">
       <PublicHeader />
 
-      <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <section className="py-24 theme-bg-light">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <Badge className="mb-4">Join Our Team</Badge>
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Join the{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="theme-text">
                 DarbarTech
               </span>{' '}
               Team

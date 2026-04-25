@@ -131,7 +131,7 @@ export default function FeaturedProject({ initialData }) {
                     </Badge>
                   )}
                 </div>
-                <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                <CardTitle className="text-lg group-hover:theme-text transition-colors">
                   {project.title}
                 </CardTitle>
                 <CardDescription className="text-sm line-clamp-2">

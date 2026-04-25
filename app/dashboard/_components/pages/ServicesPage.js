@@ -353,7 +353,7 @@ export default function ServicesPage() {
 
                     <div className="flex items-center gap-3">
 
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+                      <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm">
 
                         {(() => {
                           const Current = (iconOptions.find(o => o.value === form.icon)?.Icon) || Code;
@@ -510,7 +510,7 @@ export default function ServicesPage() {
                   <div className="space-y-2">
                     <Label>Icon</Label>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+                      <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm">
                         {(() => {
                           const Current = (iconOptions.find(o => o.value === form.icon)?.Icon) || Code;
                           return <Current className="w-5 h-5 text-white" />;

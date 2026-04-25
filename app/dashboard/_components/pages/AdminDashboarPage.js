@@ -207,7 +207,7 @@ export default function AdminDashboard() {
                     <Link key={action.name} href={action.href}>
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
-                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 dark:from-gray-800 dark:to-gray-700">
+                          <div className="bg-gray-50 dark:bg-gray-800 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <Icon className="h-6 w-6 text-blue-600" />
                           </div>
                           <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{action.name}</p>

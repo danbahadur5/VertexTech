@@ -10,7 +10,6 @@ export interface ThemeOption {
   primary: string;
   secondary: string;
   accent: string;
-  gradient: string;
   borderRadius: string;
   fontFamily: string;
 }
@@ -22,7 +21,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#2563eb', 
     secondary: '#7c3aed',
     accent: '#06b6d4',
-    gradient: 'linear-gradient(135deg,#2563eb,#7c3aed)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -32,7 +30,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#dc2626', 
     secondary: '#9f1239',
     accent: '#fbbf24',
-    gradient: 'linear-gradient(135deg,#dc2626,#9f1239)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -42,7 +39,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#16a34a', 
     secondary: '#065f46',
     accent: '#84cc16',
-    gradient: 'linear-gradient(135deg,#16a34a,#065f46)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -52,7 +48,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#0d9488', 
     secondary: '#0369a1',
     accent: '#2dd4bf',
-    gradient: 'linear-gradient(135deg,#0d9488,#0369a1)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -62,7 +57,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#ea580c', 
     secondary: '#b45309',
     accent: '#f97316',
-    gradient: 'linear-gradient(135deg,#ea580c,#b45309)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -72,7 +66,6 @@ export const THEME_OPTIONS: ThemeOption[] = [
     primary: '#7c3aed', 
     secondary: '#a21caf',
     accent: '#d946ef',
-    gradient: 'linear-gradient(135deg,#7c3aed,#a21caf)',
     borderRadius: '0.75rem',
     fontFamily: 'Inter'
   },
@@ -136,7 +129,6 @@ export function ColorThemeProvider({ children }: { children: React.ReactNode }) 
     root.style.setProperty('--theme-primary', theme.primary);
     root.style.setProperty('--theme-secondary', theme.secondary);
     root.style.setProperty('--theme-accent', theme.accent);
-    root.style.setProperty('--theme-gradient', theme.gradient);
     root.style.setProperty('--theme-radius', theme.borderRadius);
     root.style.setProperty('--font-primary', theme.fontFamily);
     

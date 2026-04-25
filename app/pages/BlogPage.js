@@ -42,7 +42,7 @@ export default function BlogPage({ initialData }) {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">Insights & Updates</Badge>
           <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
-            Security <span className="theme-gradient-text">Intelligence</span>
+            Security <span className="theme-text">Intelligence</span>
           </h1>
           <div className="mt-8 max-w-md mx-auto animate-fade-in delay-300">
             <div className="relative">

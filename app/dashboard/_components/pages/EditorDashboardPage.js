@@ -128,7 +128,7 @@ export default function EditorDashboardPage() {
                     <Link key={action.name} href={action.href} className="dark:text-gray-300">
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
-                          <div className="dark:bg-gradient-to-br from-blue-950 dark:bg-gray-900 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                          <div className="dark:bg-gray-800 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
                             <Icon className="h-6 w-6 text-blue-600 dark:text-gray-300" />
                           </div>
                           <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{action.name}</p>

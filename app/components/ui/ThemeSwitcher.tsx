@@ -51,7 +51,7 @@ export function ThemeSwitcher() {
                 >
                   <div
                     className="w-8 h-8 rounded-full shadow-md"
-                    style={{ background: opt.gradient }}
+                    style={{ background: opt.primary }}
                   />
                   <span className="text-[11px] text-gray-600 font-medium text-center leading-tight">
                     {opt.name}

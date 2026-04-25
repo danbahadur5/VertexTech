@@ -68,10 +68,10 @@ export default function LoginPage() {
       {/* Left Side: Branding & Info (Visible on Large Screens) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-gray-900 items-center justify-center p-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(37,99,235,0.15),transparent_70%)]" />
-          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,rgba(124,58,237,0.1),transparent_50%)]" />
+          <div className="absolute top-0 left-0 w-full h-full bg-theme-primary/10" />
+          <div className="absolute bottom-0 right-0 w-full h-full bg-theme-secondary/5" />
           {/* Decorative Grid */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(var(--theme-primary) 1px, transparent 1px), linear-gradient(90deg, var(--theme-primary) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         </div>
 
         <div className="relative z-10 max-w-lg text-white">
@@ -108,7 +108,7 @@ export default function LoginPage() {
       {/* Right Side: Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-gray-50/50 dark:bg-gray-950 relative">
         <div className="absolute inset-0 pointer-events-none lg:hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,rgba(37,99,235,0.05),transparent_50%)]" />
+          <div className="absolute top-0 left-0 w-full h-full bg-theme-primary/5" />
         </div>
 
         <motion.div 

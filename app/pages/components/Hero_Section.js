@@ -159,7 +159,7 @@ const ServiceRing = ({ items }) => {
               transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(var(--ring-radius)) rotate(-${angle}deg)`,
             }}
           >
-            <div className="theme-gradient text-white px-4 py-2 rounded-full shadow-md border border-gray-200 text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-transform duration-300 hover:scale-105">
+            <div className="theme-bg text-white px-4 py-2 rounded-full shadow-md border border-gray-200 text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-transform duration-300 hover:scale-105">
               <motion.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ 
@@ -251,8 +251,6 @@ export default function HeroSection({ initialData }) {
   const getImageSrc = (image) => {
     return typeof image === "string" ? image : image?.src || "";
   };
-  const gradFrom = (isDark ? data?.theme?.dark?.gradientFrom : data?.theme?.light?.gradientFrom) || "#2563eb";
-  const gradTo = (isDark ? data?.theme?.dark?.gradientTo : data?.theme?.light?.gradientTo) || "#7c3aed";
   const heroImg = cleanUrl(data?.heroImage) || HeroImage;
 
   return (
@@ -277,10 +275,7 @@ export default function HeroSection({ initialData }) {
 
                   <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold my-3 text-gray-900 dark:text-gray-100 leading-tight">
                     {(data?.titleLeading || "Powering Your") + " "}
-                    <span
-                      className="theme-gradient-text"
-                      style={{ backgroundImage: `linear-gradient(90deg, ${gradFrom}, ${gradTo})` }}
-                    >
+                    <span className="theme-text">
                       {data?.titleGradient || "Digital Transformation"}
                     </span>
                   </h1>
@@ -332,7 +327,7 @@ export default function HeroSection({ initialData }) {
                     {/* background circle */}
                     <div className="absolute inset-0 z-0">
                       <svg width="100%" height="100%" viewBox="0 0 315 315">
-                        <rect width="308" height="308" rx="154" fill="#F20000" />
+                        <rect width="308" height="308" rx="154" fill="var(--theme-primary)" />
                       </svg>
                     </div>
 

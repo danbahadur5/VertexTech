@@ -127,7 +127,7 @@ export default function CaseStudyDetailPage({ initialData }) {
                 </div>
               ))}
               {project.testimonial && (
-                <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 border-blue-200 dark:border-gray-700">
+                <Card className="theme-bg-light border-blue-200 dark:border-gray-700">
                   <CardContent className="pt-6">
                     <Quote className="h-8 w-8 text-blue-200 mb-4" />
                     <p className="text-lg text-gray-700 dark:text-gray-300 italic mb-6">"{project.testimonial.quote}"</p>
@@ -158,7 +158,7 @@ export default function CaseStudyDetailPage({ initialData }) {
                   <p className="text-gray-600 dark:text-gray-400">{project.completedAt ? new Date(project.completedAt).toLocaleDateString() : ''}</p>
                 </CardContent>
               </Card>
-              <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+              <Card className="theme-bg text-white">
                 <CardContent className="pt-6">
                   <h3 className="font-bold mb-4">Interested in Similar Work?</h3>
                   <Button variant="secondary" className="w-full" asChild><Link href="/contact">Start Your Project</Link></Button>

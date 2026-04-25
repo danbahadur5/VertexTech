@@ -63,7 +63,7 @@ export default function SecurityExportSection() {
             <div className="space-y-4">
               {rows.map(({ Icon, label, sub }, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg theme-gradient flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-lg theme-bg flex items-center justify-center shrink-0">
                     <Icon className="h-5 w-5 text-white" />
                   </div>
                   <div>

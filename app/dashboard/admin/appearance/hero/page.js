@@ -37,12 +37,6 @@ export default function Page() {
     titleGradient: '',
     subtitle: '',
     heroImage: '',
-    lightGradientFrom: '#2563eb',
-    lightGradientMiddle: '#4f46e5',
-    lightGradientTo: '#7c3aed',
-    darkGradientFrom: '#1d4ed8',
-    darkGradientMiddle: '#4338ca',
-    darkGradientTo: '#6d28d9',
     primaryCTALabel: '',
     primaryCTAHref: '',
     secondaryCTALabel: '',
@@ -95,12 +89,6 @@ export default function Page() {
       titleGradient: '',
       subtitle: '',
       heroImage: '',
-      lightGradientFrom: '#2563eb',
-      lightGradientMiddle: '#4f46e5',
-      lightGradientTo: '#7c3aed',
-      darkGradientFrom: '#1d4ed8',
-      darkGradientMiddle: '#4338ca',
-      darkGradientTo: '#6d28d9',
       primaryCTALabel: '',
       primaryCTAHref: '',
       secondaryCTALabel: '',
@@ -194,18 +182,6 @@ export default function Page() {
       const next = {
         id,
         ...form,
-        theme: {
-          light: { 
-            gradientFrom: form.lightGradientFrom, 
-            gradientMiddle: form.lightGradientMiddle,
-            gradientTo: form.lightGradientTo 
-          },
-          dark: { 
-            gradientFrom: form.darkGradientFrom, 
-            gradientMiddle: form.darkGradientMiddle,
-            gradientTo: form.darkGradientTo 
-          },
-        },
         primaryCTA: { label: form.primaryCTALabel, href: form.primaryCTAHref },
         secondaryCTA: { label: form.secondaryCTALabel, href: form.secondaryCTAHref },
         features: form.features.split(',').map((t) => ({ label: t.trim() })).filter((x) => x.label),
@@ -247,12 +223,6 @@ export default function Page() {
       titleGradient: g.titleGradient || '',
       subtitle: g.subtitle || '',
       heroImage: g.heroImage || '',
-      lightGradientFrom: g?.theme?.light?.gradientFrom || '#2563eb',
-      lightGradientMiddle: g?.theme?.light?.gradientMiddle || '#4f46e5',
-      lightGradientTo: g?.theme?.light?.gradientTo || '#7c3aed',
-      darkGradientFrom: g?.theme?.dark?.gradientFrom || '#1d4ed8',
-      darkGradientMiddle: g?.theme?.dark?.gradientMiddle || '#4338ca',
-      darkGradientTo: g?.theme?.dark?.gradientTo || '#6d28d9',
       primaryCTALabel: g?.primaryCTA?.label || '',
       primaryCTAHref: g?.primaryCTA?.href || '',
       secondaryCTALabel: g?.secondaryCTA?.label || '',
@@ -290,18 +260,6 @@ export default function Page() {
       const updated = {
         ...current,
         ...form,
-        theme: {
-          light: { 
-            gradientFrom: form.lightGradientFrom, 
-            gradientMiddle: form.lightGradientMiddle,
-            gradientTo: form.lightGradientTo 
-          },
-          dark: { 
-            gradientFrom: form.darkGradientFrom, 
-            gradientMiddle: form.darkGradientMiddle,
-            gradientTo: form.darkGradientTo 
-          },
-        },
         primaryCTA: { label: form.primaryCTALabel, href: form.primaryCTAHref },
         secondaryCTA: { label: form.secondaryCTALabel, href: form.secondaryCTAHref },
         features: form.features.split(',').map((t) => ({ label: t.trim() })).filter((x) => x.label),
@@ -466,33 +424,7 @@ export default function Page() {
                         </div>
 
                         <div className="space-y-4">
-                          <h3 className="font-semibold text-lg border-b pb-2">Theme & Style</h3>
-                          <div className="grid grid-cols-3 gap-4">
-                            <div className="space-y-2">
-                              <Label>Light From</Label>
-                              <Input type="color" value={form.lightGradientFrom} onChange={(e) => setForm({ ...form, lightGradientFrom: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Light Mid</Label>
-                              <Input type="color" value={form.lightGradientMiddle} onChange={(e) => setForm({ ...form, lightGradientMiddle: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Light To</Label>
-                              <Input type="color" value={form.lightGradientTo} onChange={(e) => setForm({ ...form, lightGradientTo: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Dark From</Label>
-                              <Input type="color" value={form.darkGradientFrom} onChange={(e) => setForm({ ...form, darkGradientFrom: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Dark Mid</Label>
-                              <Input type="color" value={form.darkGradientMiddle} onChange={(e) => setForm({ ...form, darkGradientMiddle: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Dark To</Label>
-                              <Input type="color" value={form.darkGradientTo} onChange={(e) => setForm({ ...form, darkGradientTo: e.target.value })} />
-                            </div>
-                          </div>
+                          <h3 className="font-semibold text-lg border-b pb-2">Animation & Style</h3>
                           <div className="space-y-2">
                             <Label>Heading Font</Label>
                             <select 
@@ -505,10 +437,6 @@ export default function Page() {
                               <option value="font-mono">Mono</option>
                             </select>
                           </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <h3 className="font-semibold text-lg border-b pb-2">Animation</h3>
                           <div className="space-y-2">
                             <Label>Effect Type</Label>
                             <select 
@@ -587,41 +515,6 @@ export default function Page() {
             </Dialog>
           </div>
         </div>
-
-        {/* Documentation Section */}
-        <Card className="bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-blue-600" />
-              Dynamic Gradient Guide
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-4 text-blue-800 dark:text-blue-200">
-            <p>
-              The Hero Section now supports an enterprise-grade 3-stop dynamic gradient system. 
-              This gradient affects the title text, the background of the left content area, and visual elements like the service ring.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <h4 className="font-bold">How to Modify:</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Click <strong>New Hero Group</strong> or <strong>Edit</strong> on an existing one.</li>
-                  <li>Scroll to the <strong>Theme & Style</strong> section.</li>
-                  <li>Use the <strong>From</strong>, <strong>Mid</strong>, and <strong>To</strong> color pickers for Light and Dark modes.</li>
-                  <li>Changes appear instantly in the <strong>Live Preview</strong> tab.</li>
-                </ul>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-bold">Best Practices:</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Use high-contrast colors for the <strong>From</strong> and <strong>To</strong> stops.</li>
-                  <li>Set the <strong>Mid</strong> stop to a color that bridges the two for a smooth transition.</li>
-                  <li>Ensure colors align with your brand guidelines for professional appearance.</li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* History Dialog */}
         <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
@@ -747,25 +640,7 @@ export default function Page() {
                       </div>
 
                       <div className="space-y-4">
-                        <h3 className="font-semibold text-lg border-b pb-2">Theme & Style</h3>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>Light From</Label>
-                            <Input type="color" value={form.lightGradientFrom} onChange={(e) => setForm({ ...form, lightGradientFrom: e.target.value })} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Light To</Label>
-                            <Input type="color" value={form.lightGradientTo} onChange={(e) => setForm({ ...form, lightGradientTo: e.target.value })} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Dark From</Label>
-                            <Input type="color" value={form.darkGradientFrom} onChange={(e) => setForm({ ...form, darkGradientFrom: e.target.value })} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Dark To</Label>
-                            <Input type="color" value={form.darkGradientTo} onChange={(e) => setForm({ ...form, darkGradientTo: e.target.value })} />
-                          </div>
-                        </div>
+                        <h3 className="font-semibold text-lg border-b pb-2">Animation & Style</h3>
                         <div className="space-y-2">
                           <Label>Heading Font</Label>
                           <select 
@@ -778,10 +653,6 @@ export default function Page() {
                             <option value="font-mono">Mono</option>
                           </select>
                         </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <h3 className="font-semibold text-lg border-b pb-2">Animation</h3>
                         <div className="space-y-2">
                           <Label>Effect Type</Label>
                           <select 

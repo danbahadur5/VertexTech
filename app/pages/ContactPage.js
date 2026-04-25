@@ -99,7 +99,7 @@ export default function ContactPage({ initialData }) {
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-5 theme-badge text-sm px-4 py-1 font-semibold animate-fade-in">{hero.badge}</Badge>
           <h1 className="text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-6 animate-fade-in-up delay-100">
-            {hero.titleLeading} <span className="theme-gradient-text">{hero.titleGradient}</span>
+            {hero.titleLeading} <span className="theme-text">{hero.titleGradient}</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
             {hero.subtitle}
@@ -114,7 +114,7 @@ export default function ContactPage({ initialData }) {
               <Card className="border border-gray-100 dark:border-gray-800 shadow-xl bg-white dark:bg-gray-900">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-xl theme-gradient flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl theme-bg flex items-center justify-center">
                       <MessageSquare className="h-5 w-5 text-white" />
                     </div>
                     <div>
@@ -182,7 +182,7 @@ export default function ContactPage({ initialData }) {
                   const Icon = info.icon;
                   return (
                     <div key={info.title} className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                      <div className="w-10 h-10 rounded-xl theme-gradient flex items-center justify-center mb-3">
+                      <div className="w-10 h-10 rounded-xl theme-bg flex items-center justify-center mb-3">
                         <Icon className="h-5 w-5 text-white" />
                       </div>
                       <p className="font-bold text-gray-900 dark:text-gray-100 text-sm mb-1">{info.title}</p>

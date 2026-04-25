@@ -67,7 +67,7 @@ export default function CaseStudyPage({ initialData }) {
             
             <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-gray-200 mb-6 tracking-tight leading-[1.1] animate-fade-in-up delay-100">
               Engineering Excellence, <br />
-              <span className="theme-gradient-text">Delivering Impact.</span>
+              <span className="theme-text">Delivering Impact.</span>
             </h1>
             
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium animate-fade-in-up delay-200">
@@ -101,7 +101,7 @@ export default function CaseStudyPage({ initialData }) {
                   {activeFilter === cat && (
                     <motion.div
                       layoutId="activeFilter"
-                      className="absolute inset-0 theme-gradient rounded-full"
+                      className="absolute inset-0 theme-bg rounded-full"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -153,7 +153,7 @@ export default function CaseStudyPage({ initialData }) {
                           className="object-cover transition-transform duration-1000 group-hover:scale-110" 
                         />
                         {/* Elegant Hover Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
                            <motion.div 
                              className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
                            >
@@ -205,9 +205,9 @@ export default function CaseStudyPage({ initialData }) {
                       
                       <CardFooter className="p-6 pt-0 mt-2">
                         <Link href={`/caseStudy/${project.slug}`} className="w-full">      
-                          <Button variant="ghost" className="w-full h-11 bg-gray-50 dark:bg-gray-800/50 hover:bg-blue-600 dark:hover:bg-blue-600 rounded-2xl flex justify-between items-center px-6 transition-all duration-500 group/btn border-0">
+                          <Button variant="ghost" className="w-full h-11 bg-gray-50 dark:bg-gray-800/50 hover:theme-bg rounded-2xl flex justify-between items-center px-6 transition-all duration-500 group/btn border-0">
                             <span className="text-[11px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 group-hover/btn:text-white transition-colors">Case Insight</span>
-                            <ArrowRight className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover/btn:text-white group-hover/btn:translate-x-1.5 transition-all" />
+                            <ArrowRight className="w-4 h-4 group-hover/btn:text-white group-hover/btn:translate-x-1.5 transition-all" />
                           </Button>
                         </Link>
                       </CardFooter>

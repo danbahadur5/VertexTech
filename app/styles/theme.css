@@ -44,7 +44,6 @@
   --theme-primary: #2563eb;
   --theme-secondary: #7c3aed;
   --theme-accent: #06b6d4;
-  --theme-gradient: linear-gradient(135deg,#2563eb,#7c3aed);
   --theme-radius: 0.75rem;
   --font-primary: 'Inter', sans-serif;
 }
@@ -166,8 +165,8 @@
   background-color: var(--theme-primary);
 }
 
-.theme-gradient {
-  background: var(--theme-gradient);
+.theme-text {
+  color: var(--theme-primary);
 }
 
 .theme-border {
@@ -175,7 +174,7 @@
 }
 
 .theme-btn {
-  background: var(--theme-gradient);
+  background: var(--theme-primary);
   color: white;
   border-radius: var(--theme-radius);
   transition: all 0.3s ease;

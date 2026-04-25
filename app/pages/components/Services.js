@@ -73,7 +73,7 @@ export default function Services({ initialData }) {
                 style={{ transitionDelay: `${idx * 0.12}s` }}
               >
                 <CardHeader>
-                  <div className="w-14 h-14 rounded-xl theme-gradient flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 rounded-xl theme-bg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="h-7 w-7 text-white" />
                   </div>
                   <CardTitle className="text-lg">{service.title}</CardTitle>

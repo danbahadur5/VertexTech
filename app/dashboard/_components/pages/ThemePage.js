@@ -94,7 +94,7 @@ export default function ThemePage() {
               >
                 <div 
                   className="w-full h-12 rounded-lg mb-3 shadow-inner" 
-                  style={{ background: option.gradient }}
+                  style={{ background: option.primary }}
                 />
                 <span className="text-sm font-bold block truncate">{option.name}</span>
                 {localTheme.id === option.id && (
@@ -168,19 +168,6 @@ export default function ThemePage() {
                   />
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <Label>Gradient Definition</Label>
-                <Input 
-                  value={localTheme.gradient || ''} 
-                  onChange={(e) => handleUpdate({ gradient: e.target.value })}
-                  placeholder="linear-gradient(...)"
-                />
-                <div 
-                  className="h-10 rounded-lg border dark:border-slate-800" 
-                  style={{ background: localTheme.gradient || 'transparent' }}
-                />
-              </div>
             </CardContent>
           </Card>
 
@@ -236,7 +223,7 @@ export default function ThemePage() {
                 <div 
                   className="px-6 py-2 shadow-lg text-white font-bold transition-all"
                   style={{ 
-                    background: localTheme.gradient, 
+                    background: localTheme.primary, 
                     borderRadius: localTheme.borderRadius,
                     fontFamily: localTheme.fontFamily
                   }}

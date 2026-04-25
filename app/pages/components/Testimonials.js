@@ -193,7 +193,7 @@ export default function Testimonials({ initialData }) {
               key={index}
               className={`h-2 transition-all duration-500 rounded-full ${
                 index === selectedIndex 
-                  ? "w-8 theme-gradient" 
+                  ? "w-8 theme-bg" 
                   : "w-2 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
               }`}
               onClick={() => scrollTo(index)}

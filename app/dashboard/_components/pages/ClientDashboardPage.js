@@ -98,7 +98,7 @@ export default function ClientDashboardPage() {
                   <Link href={q.href} key={q.name}>
                     <Card className="hover:border-blue-300 dark:bg-gray-950 hover:shadow-md transition-all cursor-pointer">
                       <CardContent className="pt-6 text-center dark:text-gray-300">
-                        <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900 dark:to-green-900 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <div className="bg-emerald-50 dark:bg-emerald-900/30 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">
                           <Icon className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                         </div>
                         <p className="text-sm font-medium text-gray-900 dark:text-gray-300">{q.name}</p>

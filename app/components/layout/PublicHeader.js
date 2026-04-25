@@ -558,7 +558,7 @@ export function PublicHeader() {
               ${isActive("/") ? "theme-text" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"}`}
           >
             <div
-              className={`p-2 rounded-full ${isActive("/") ? "theme-gradient" : "bg-gray-100 dark:bg-gray-800"}`}
+              className={`p-2 rounded-full ${isActive("/") ? "theme-bg" : "bg-gray-100 dark:bg-gray-800"}`}
             >
               <Home
                 className={`h-6 w-6 ${isActive("/") ? "text-white" : "text-gray-600 dark:text-gray-400"}`}

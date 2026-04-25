@@ -43,7 +43,7 @@ export default function Capabilities({ initialData }) {
               <Badge className="mb-4 theme-badge">{subtitle}</Badge>
               <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 {title.split(' ').slice(0, -2).join(' ')}{" "}
-                <span className="theme-gradient-text">{title.split(' ').slice(-2).join(' ')}</span>
+                <span className="theme-text">{title.split(' ').slice(-2).join(' ')}</span>
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 leading-relaxed">
                 {description}
@@ -68,7 +68,7 @@ export default function Capabilities({ initialData }) {
                           {cap.label}
                         </span>
                       </div>
-                      <span className="text-sm font-bold theme-gradient-text">
+                      <span className="text-sm font-bold theme-text">
                         {cap.value}%
                       </span>
                     </div>
@@ -92,7 +92,7 @@ export default function Capabilities({ initialData }) {
                   className="reveal-scale bg-white dark:bg-gray-950 rounded-2xl p-6 border cursor-pointer dark:border-gray-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                   style={{ transitionDelay: `${idx * 0.12}s` }}
                 >
-                  <div className="w-12 h-12 rounded-xl theme-gradient flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl theme-bg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="h-6 w-6 text-white" />
                   </div>
                   <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">{feat.title}</h4>

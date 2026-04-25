@@ -81,7 +81,7 @@ const TrustedBy = ({ initialData }) => {
       {/* Logo Marquee */}
       <div className="overflow-hidden w-full relative select-none">
         {/* Left Fade */}
-        <div className="absolute left-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-gradient-to-r from-white dark:from-gray-950 to-transparent" />
+        <div className="absolute left-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-white dark:bg-gray-950 opacity-50" />
 
         {/* Logos */}
         <div
@@ -117,7 +117,7 @@ const TrustedBy = ({ initialData }) => {
         </div>
 
         {/* Right Fade */}
-        <div className="absolute right-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-gradient-to-l from-white dark:from-gray-950 to-transparent" />
+        <div className="absolute right-0 top-0 h-full w-12 md:w-32 z-10 pointer-events-none bg-white dark:bg-gray-950 opacity-50" />
       </div>
     </section>
   );

@@ -216,7 +216,7 @@ export function DashboardLayout({ children }) {
   };
 
   const role = user?.role;
-  const activeBg = role === 'admin' ? 'from-orange-900 to-red-500' : role === 'editor' ? 'from-blue-600 to-purple-600' : 'from-emerald-600 to-green-500';
+  const activeBg = role === 'admin' ? 'bg-red-600' : role === 'editor' ? 'bg-blue-600' : 'bg-emerald-600';
   const sectionLabel = role === 'admin' ? 'Admin' : role === 'editor' ? 'Editor' : 'Client';
 
   if (isLoading) {
@@ -247,7 +247,7 @@ export function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
       <aside className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
-        <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
+        <div className={`flex grow flex-col gap-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 ${sidebarCollapsed ? 'px-3' : 'px-6'}`}>
           <div className={`flex h-16 shrink-0 items-center justify-between border-b sticky top-0 z-60 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 ${sidebarCollapsed ? '-mx-3 px-3' : '-mx-6 px-6'}`}>
             <Link href="/" className="flex items-center gap-2">
               {!sidebarCollapsed && mounted && (
@@ -314,7 +314,7 @@ export function DashboardLayout({ children }) {
                               <li key={child.name} className ="cursor-pointer">
                                 <Link
                                   href={child.href}
-                                  className={`flex items-center rounded-lg p-2 text-sm ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                                  className={`flex items-center rounded-lg p-2 text-sm ${active ? `${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                                   title={child.name}
                                 >
                                   <span className="truncate">{child.name}</span>
@@ -334,7 +334,7 @@ export function DashboardLayout({ children }) {
                       <Link
                         href={item.href}
                         title={item.name}
-                        className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                        className={`relative group flex items-center gap-x-3 rounded-xl p-2 text-sm font-semibold transition-colors ${active ? `${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                       >
                         {active && (
                           <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full bg-white/90" />
@@ -451,7 +451,7 @@ export function DashboardLayout({ children }) {
                                   <Link
                                     href={child.href}
                                     onClick={() => setSidebarOpen(false)}
-                                    className={`flex items-center rounded-md p-2 text-sm font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                                    className={`flex items-center rounded-md p-2 text-sm font-semibold ${active ? `${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                                   >
                                     {child.name}
                                   </Link>
@@ -470,7 +470,7 @@ export function DashboardLayout({ children }) {
                         <Link
                           href={item.href}
                           onClick={() => setSidebarOpen(false)}
-                          className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `bg-gradient-to-r ${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
+                          className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${active ? `${activeBg} text-white` : 'text-gray-700 dark:text-gray-300 hover:text-blue-600'}`}
                         >
                           <Icon className={`h-5 w-5 shrink-0 ${active ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600'}`} />
                           {item.name}
