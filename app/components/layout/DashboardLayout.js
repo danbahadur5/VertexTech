@@ -253,9 +253,9 @@ export function DashboardLayout({ children }) {
               {!sidebarCollapsed && mounted && (
                theme === "dark" ? 
                (
-                <Image src={logoLight} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                <Image src={logoLight} alt="DarbarTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                ) : (
-                <Image src={logoDark} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                <Image src={logoDark} alt="DarbarTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                )
               )}
             </Link>
@@ -406,9 +406,9 @@ export function DashboardLayout({ children }) {
                {mounted && (
                  theme === "dark" ? 
                  (
-                  <Image src={logoLight} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                  <Image src={logoLight} alt="DarbarTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                  ) : (
-                  <Image src={logoDark} alt="VertexTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
+                  <Image src={logoDark} alt="DarbarTech" className="h-10 w-auto object-contain" height={40} width={160} priority />
                  )
                )}
               </Link>

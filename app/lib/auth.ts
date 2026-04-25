@@ -6,7 +6,7 @@ import { sendMail } from "./email";
 
 const mongoUri = process.env.MONGODB_URI || "";
 const client = mongoUri ? new MongoClient(mongoUri) : (undefined as any);
-const db = client ? client.db(process.env.MONGODB_DB || "vertextech") : (undefined as any);
+const db = client ? client.db(process.env.MONGODB_DB || "darbartech") : (undefined as any);
 
 // We're using Better Auth here because it handles the heavy lifting of session management
 // while still giving us enough control to keep things personal. 
@@ -36,7 +36,7 @@ export const auth = betterAuth({
         <div style="font-family: 'Inter', sans-serif; padding: 40px; color: #1a1a1a; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 8px;">
           <h2 style="color: #2563eb; margin-bottom: 24px;">Need a new password?</h2>
           <p>Hi ${user.name || "there"},</p>
-          <p>We received a request to reset your password for your VertexTech account. No worries—it happens to the best of us!</p>
+          <p>We received a request to reset your password for your DarbarTech account. No worries—it happens to the best of us!</p>
           <div style="margin: 32px 0;">
             <a href="${url}" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Reset My Password</a>
           </div>
@@ -47,7 +47,7 @@ export const auth = betterAuth({
       `;
       await sendMail({ 
         to: user.email, 
-        subject: "Reset your VertexTech password", 
+        subject: "Reset your DarbarTech password", 
         html: resetEmailHtml 
       });
     },
@@ -70,13 +70,13 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, url }) => {
       const welcomeEmailHtml = `
         <div style="font-family: 'Inter', sans-serif; padding: 40px; color: #1a1a1a; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 8px;">
-          <h2 style="color: #2563eb; margin-bottom: 24px;">Welcome to VertexTech!</h2>
+          <h2 style="color: #2563eb; margin-bottom: 24px;">Welcome to DarbarTech!</h2>
           <p>Hi ${user.name || "there"},</p>
           <p>We're thrilled to have you join us. Before we get started, we just need to make sure this email address belongs to you.</p>
           <div style="margin: 32px 0;">
             <a href="${url}" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Confirm My Email</a>
           </div>
-          <p>Once you've confirmed, you'll have full access to everything VertexTech has to offer.</p>
+          <p>Once you've confirmed, you'll have full access to everything DarbarTech has to offer.</p>
           <p>See you on the inside!</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 32px 0;" />
           <p style="font-size: 12px; color: #999;">If you didn't sign up for an account, you can safely ignore this email.</p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { DashboardLayout } from '../../../components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
@@ -104,7 +104,7 @@ export default function EditorDashboardPage() {
                     <span className="text-sm text-gray-500 ml-2 dark:text-gray-400">from last month</span>
                   </div>
                   <Button variant="ghost" size="sm" className="mt-4 w-full" asChild>
-                    <Link to={stat.href}>
+                    <Link href={stat.href}>
                       View Details →
                     </Link> 
                   </Button>
@@ -125,7 +125,7 @@ export default function EditorDashboardPage() {
                 {quickActions.map((action) => {
                   const Icon = action.icon;
                   return (
-                    <Link key={action.name} to={action.href} className="dark:text-gray-300">
+                    <Link key={action.name} href={action.href} className="dark:text-gray-300">
                       <Card className="hover:border-blue-300 hover:shadow-md transition-all cursor-pointer">
                         <CardContent className="pt-6 text-center">
                           <div className="dark:bg-gradient-to-br from-blue-950 dark:bg-gray-900 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">

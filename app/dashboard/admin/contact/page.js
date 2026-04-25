@@ -21,8 +21,8 @@ export default function Page() {
   const [subtitle, setSubtitle] = useState('Ready to strengthen your security posture? Our team of cybersecurity experts is available 24/7 to assess your needs and recommend the right protection.');
 
   const [contact, setContact] = useState({
-    email: 'contact@vertextech.com',
-    emailLink: 'mailto:contact@vertextech.com',
+    email: 'contact@darbartech.com',
+    emailLink: 'mailto:contact@darbartech.com',
     phone: '+1 (555) 123-4567',
     phoneLink: 'tel:+15551234567',
     hqAddress: '123 Tech Street, San Francisco, CA 94105',

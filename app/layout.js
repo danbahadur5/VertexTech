@@ -110,14 +110,14 @@ export default async function RootLayout({ children }) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: d.siteName || 'VertexTech',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://vertextech.vercel.app',
-    logo: d.ogImage || 'https://vertextech.vercel.app/logo.png',
+    name: d.siteName || 'DarbarTech',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://darbartech.vercel.app',
+    logo: d.ogImage || 'https://darbartech.vercel.app/logo.png',
     description: d.metaDescription || "Next-generation digital defense and software development.",
     sameAs: [
-      'https://twitter.com/vertextech',
-      'https://linkedin.com/company/vertextech',
-      'https://github.com/vertextech'
+      'https://twitter.com/darbartech',
+      'https://linkedin.com/company/darbartech',
+      'https://github.com/darbartech'
     ],
     contactPoint: {
       '@type': 'ContactPoint',

@@ -46,7 +46,7 @@ export const LoadingScreen = () => {
             >
               <Image
                 src={theme === 'dark' ? logoLight : logoDark}
-                alt="VertexTech Logo"
+                alt="DarbarTech Logo"
                 fill
                 className="object-contain"
                 priority

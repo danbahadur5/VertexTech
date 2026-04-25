@@ -26,7 +26,7 @@ export function useABTest(experimentId: string): ExperimentVariant {
   useEffect(() => {
     // We wrap this in useEffect because localStorage isn't available during 
     // server-side rendering. Classic Next.js hurdle.
-    const storageKey = `vertex_experiment_${experimentId}`;
+    const storageKey = `darbar_experiment_${experimentId}`;
     const previousAssignment = localStorage.getItem(storageKey);
     
     // Check if we've already decided what to show this person.

@@ -15,7 +15,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [blurb, setBlurb] = useState('AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
-  const [contact, setContact] = useState({ email: 'contact@vertextech.com', phone: '+1 (555) 123-4567', address: '123 Tech Street, San Francisco, CA 94105' });
+  const [contact, setContact] = useState({ email: 'contact@darbartech.com', phone: '+1 (555) 123-4567', address: '123 Tech Street, San Francisco, CA 94105' });
   const [socials, setSocials] = useState({ facebook: '#', twitter: '#', linkedin: '#', instagram: '#' });
   const [columns, setColumns] = useState([
     { title: 'Solutions', links: [{ name: 'Endpoint Detection', href: '/services/endpoint-detection' }, { name: 'Cloud Security', href: '/services/cloud-security' }] },

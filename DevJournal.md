@@ -1,5 +1,5 @@
 # Development Journal: The Human Perspective
-**Project:** VertexTech Website Architecture Redesign
+**Project:** DarbarTech Website Architecture Redesign
 **Date:** April 25, 2026
 **Author:** Lead Engineer
 
@@ -64,7 +64,7 @@ I've just finished a deep dive into the `AboutPage` and `SignupPage`. These are 
 The old `AboutPage` was still referencing "DarbarTech" in some places and felt a bit too "grid-y". 
 - **Variable Names:** Changed things like `team` to `teamMembers` and `hero` to `heroContent`. It makes the state management much more readable.
 - **Visual Polish:** Added some `group-hover` effects on the team images and principles cards. It's those little interactive "nods" that show a developer actually spent time thinking about the user's cursor.
-- **Narrative:** I updated the default text to reflect our shift to the "Vertex" brand. It's not just a name change; it's a personality change.
+- **Narrative:** I updated the default text to reflect our shift to the "Darbar" brand. It's not just a name change; it's a personality change.
 
 ### The Signup Experience
 Registration is usually a friction point. I wanted to make it feel supportive.

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -25,7 +26,7 @@ export default function LoginPage() {
   const [emailError, setEmailError] = useState('');
   
   const { login, signInWithGoogle, signInWithGithub } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Simple email validation for real-time feedback
   const validateEmail = (email) => {
@@ -48,10 +49,10 @@ export default function LoginPage() {
     try {
       const userData = await login(userEmail, userPassword);
       toast.success(`Welcome back, ${userData.name || 'friend'}!`);
-      navigate(`/dashboard/${userData.role}`);
+      router.push(`/dashboard/${userData.role}`);
     } catch (err) {
       if (err.message?.includes('inactive')) {
-        toast.error('Your account is currently inactive. Drop a line to support@vertextech.com.');
+        toast.error('Your account is currently inactive. Drop a line to support@darbartech.com.');
       } else if (err.message?.includes('password')) {
         toast.error("That password doesn't seem right. Give it another shot?");
       } else {
@@ -118,10 +119,10 @@ export default function LoginPage() {
         >
           <div className="text-center lg:text-left mb-10">
             <h1 className="text-3xl font-black tracking-tight text-gray-900 dark:text-white mb-3">
-              Sign in to <span className="text-blue-600">Vertex</span>
+              Sign in to <span className="text-blue-600">Darbar</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 font-medium">
-              Enter your credentials to access your dashboard.
+              New to the platform? <Link href="/signup" className="text-blue-600 hover:text-blue-500 font-bold hover:underline underline-offset-4">Create an account</Link>
             </p>
           </div>
 
@@ -156,7 +157,7 @@ export default function LoginPage() {
                     <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-gray-400">
                       Password
                     </Label>
-                    <Link to="/forgot-password" size="sm" className="text-xs font-bold text-blue-600 hover:text-blue-500 transition-colors">
+                    <Link href="/forgot-password" size="sm" className="text-xs font-bold text-blue-600 hover:text-blue-500 transition-colors">
                       Forgot?
                     </Link>
                   </div>
@@ -247,7 +248,7 @@ export default function LoginPage() {
 
           <p className="mt-8 text-center text-sm text-gray-500 font-medium">
             Don't have an enterprise account?{' '}
-            <Link to="/register" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
+            <Link href="/register" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
               Request access
             </Link>
           </p>

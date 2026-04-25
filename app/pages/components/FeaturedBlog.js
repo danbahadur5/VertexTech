@@ -67,7 +67,7 @@ export default function FeaturedBlog({ initialData }) {
       <section className="py-24 bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
           <Badge className="mb-4 theme-badge">Insights</Badge>
-          <h2 className="text-3xl font-bold mb-4">The Vertex Journal</h2>
+          <h2 className="text-3xl font-bold mb-4">The Darbar Journal</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-8">We're currently writing some fresh perspectives. Stay tuned!</p>
           <Button variant="outline" className="theme-btn-outline" asChild>
             <Link href="/blog">Visit the Blog Archive</Link>
@@ -143,7 +143,7 @@ export default function FeaturedBlog({ initialData }) {
                     <div className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
                       <User className="h-3 w-3 text-blue-600" />
                     </div>
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">Vertex Editorial</span>
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">Darbar Editorial</span>
                   </div>
                   
                   <Link href={`/blog/${article.slug}`} className="text-blue-600 dark:text-blue-400 text-xs font-bold flex items-center group/link">

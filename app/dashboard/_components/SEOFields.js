@@ -55,7 +55,7 @@ export function SEOFields({ data, onChange }) {
               <Input
                 value={data?.canonicalUrl || ''}
                 onChange={(e) => onChange({ ...data, canonicalUrl: e.target.value })}
-                placeholder="https://vertextech.com/page"
+                placeholder="https://darbartech.com/page"
               />
             </div>
           </div>

@@ -16,7 +16,7 @@ export default function Page() {
   const [saving, setSaving] = useState(false);
   const [title, setTitle] = useState('Talk to a Security Expert');
   const [subtitle, setSubtitle] = useState('Ready to strengthen your security posture? Our team is available 24/7.');
-  const [contact, setContact] = useState({ address: '123 Tech Street, San Francisco, CA 94105', phone: '+1 (555) 123-4567', email: 'contact@vertextech.com' });
+  const [contact, setContact] = useState({ address: '123 Tech Street, San Francisco, CA 94105', phone: '+1 (555) 123-4567', email: 'contact@darbartech.com' });
   const [cta, setCta] = useState({ label: 'Get In Touch', href: '/contact' });
   const [hours, setHours] = useState([
     { day: 'Monday – Friday', hours: '7:00 AM – 6:00 PM PST' },

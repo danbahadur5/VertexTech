@@ -9,18 +9,12 @@ import logoLight from "./assets/light_logo.png";
 import { useTheme } from 'next-themes';
 
 export function PublicFooter({ initialData }) {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  
   const [blurb, setBlurb] = useState(initialData?.blurb || 'AI-powered cybersecurity platform protecting 10M+ endpoints worldwide. Your trusted partner for complete digital defense.');
   const [contact, setContact] = useState({ 
-    email: initialData?.contact?.email || 'contact@vertextech.com', 
-    phone: initialData?.contact?.phone || '+1 (555) 123-4567', 
-    address: initialData?.contact?.address || '123 Tech Street, San Francisco, CA 94105' 
+    email: initialData?.contact?.email || 'contact@darbartech.com', 
+    phone: initialData?.contact?.phone || '0077 1234456', 
+    address: initialData?.contact?.address || '123 Tech Street, Kathmandu, Nepal, CA 94105' 
   });
   const [columns, setColumns] = useState(initialData?.columns || [
     { title: 'Solutions', links: [{ name: 'Endpoint Detection', href: '/services/endpoint-detection' }, { name: 'Cloud Security', href: '/services/cloud-security' }, { name: 'Identity Protection', href: '/services/identity-protection' }, { name: 'Threat Intelligence', href: '/services/threat-intelligence' }] },
@@ -63,13 +57,10 @@ export function PublicFooter({ initialData }) {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2.5 mb-5">
-                {mounted && (
-                  theme === 'dark' ? (
-                    <Image src={logoLight} alt='VertexTech' className="h-10 w-auto object-contain" height={40} width={160} />
-                  ) : (
-                    <Image src={logoDark} alt='VertexTech' className="h-10 w-auto object-contain" height={40} width={160} />
-                  )
-                )}
+                
+                  
+                    <Image src={logoLight} alt='DarbarTech' className="h-10 w-auto object-contain" height={40} width={160} />
+              
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">{blurb}</p>
             <div className="space-y-3 mb-6">
@@ -108,7 +99,7 @@ export function PublicFooter({ initialData }) {
           ))}
         </div>
         <div className="mt-14 border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500">© {new Date().getFullYear()} VertexTech. All rights reserved.</p>
+          <p className="text-sm text-gray-500">© {new Date().getFullYear()} DarbarTech. All rights reserved.</p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-xs text-gray-500">All systems operational</span>

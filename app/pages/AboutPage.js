@@ -12,14 +12,7 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useScrollReveal } from '../lib/use-scroll-reveal';
 
 /**
- * AboutPage - The story behind VertexTech
- * 
- * I wanted this page to feel personal, not just a list of stats.
- * We're moving away from the "DarbarTech" legacy name and fully 
- * embracing the "Vertex" brand. 
- * 
- * The layout uses a mix of static defaults and dynamic data 
- * from our CMS/Settings API to keep it flexible but resilient.
+ * AboutPage - The story behind DarbarTech
  */
 export default function AboutPage({ initialData }) {
   useScrollReveal();
@@ -29,18 +22,18 @@ export default function AboutPage({ initialData }) {
   const [teamMembers, setTeamMembers] = useState(initialData?.team || []);
   
   const [heroContent, setHeroContent] = useState({
-    badge: initialData?.hero?.badge || 'About VertexTech',
+    badge: initialData?.hero?.badge || 'About DarbarTech',
     titleLeading: initialData?.hero?.titleLeading || 'Defending the',
     titleGradient: initialData?.hero?.titleGradient || 'Digital Frontier',
     // Subtitles should be more than just marketing fluff.
     // I've kept the defaults grounded in our actual history.
     historyBrief: initialData?.hero?.subtitle1 ||
-      "Founded by technology experts, VertexTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
+      "Founded by technology experts, DarbarTech builds the next generation of threat protection for modern enterprises. For over 15 years, we've helped organizations transform through innovative technology solutions.",
     missionStatement: initialData?.hero?.subtitle2 ||
       "Today, we're proud to have delivered over 500 successful projects, helping businesses across industries leverage cloud computing, cybersecurity, custom software, and data analytics to achieve their goals.",
     heroImage: initialData?.hero?.heroImage ||
       'https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
-    performanceStats: Array.isArray(initialData?.hero?.stats) && initialData.hero.stats.length ? initialData.hero.stats : [
+    performanceStats: (initialData?.hero?.stats && Array.isArray(initialData.hero.stats) && initialData.hero.stats.length) ? initialData.hero.stats : [
       { num: '500+', label: 'Projects Completed' },
       { num: '300+', label: 'Happy Clients' },
       { num: '50+', label: 'Team Members' },
@@ -263,8 +256,8 @@ export default function AboutPage({ initialData }) {
                     <div className="w-16 h-16 rounded-full theme-gradient flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
                       <ValueIcon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-lg">{v.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{v.description}</p>
+                    <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2 text-lg">{value.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -280,7 +273,7 @@ export default function AboutPage({ initialData }) {
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The talented people behind DarbarTech's success.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, idx) => (
+            {teamMembers.map((member, idx) => (
               <Card key={member.name} className="reveal text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900" style={{ transitionDelay: `${idx * 0.12}s` }}>
                 <CardContent className="pt-8 pb-6">
                   <div className="relative inline-block mb-5">

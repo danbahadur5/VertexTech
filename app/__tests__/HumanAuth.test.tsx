@@ -1,12 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import SignupPage from '../pages/SignupPage';
-import { BrowserRouter } from 'react-router';
 import { useAuth } from '../lib/auth-context';
 import { toast } from 'sonner';
 
 // Mocking the dependencies to isolate the component logic.
-// This is a common practice, but I've kept the mocks simple and readable.
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
 vi.mock('../lib/auth-context', () => ({
   useAuth: vi.fn(),
 }));
@@ -17,11 +20,6 @@ vi.mock('sonner', () => ({
     success: vi.fn(),
   },
 }));
-
-// A helper to wrap our component in the necessary providers.
-const renderWithRouter = (ui: React.ReactElement) => {
-  return render(ui, { wrapper: BrowserRouter });
-};
 
 describe('SignupPage - Human Perspective Tests', () => {
   const mockRegister = vi.fn();
@@ -36,7 +34,7 @@ describe('SignupPage - Human Perspective Tests', () => {
   });
 
   it('shows encouraging feedback for password strength', async () => {
-    renderWithRouter(<SignupPage />);
+    render(<SignupPage />);
     
     const passwordInput = screen.getByLabelText(/Password/i);
     
@@ -50,7 +48,7 @@ describe('SignupPage - Human Perspective Tests', () => {
   });
 
   it('prevents submission with mismatched passwords and shows a human-centric error', async () => {
-    renderWithRouter(<SignupPage />);
+    render(<SignupPage />);
     
     const passwordInput = screen.getByLabelText('Password');
     const confirmInput = screen.getByLabelText('Confirm');
@@ -66,7 +64,7 @@ describe('SignupPage - Human Perspective Tests', () => {
   });
 
   it('suggests making the password stronger if it is too weak', async () => {
-    renderWithRouter(<SignupPage />);
+    render(<SignupPage />);
     
     const passwordInput = screen.getByLabelText('Password');
     const confirmInput = screen.getByLabelText('Confirm');

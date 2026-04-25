@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import { DashboardLayout } from '../../../components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
@@ -77,7 +77,7 @@ export default function ClientDashboardPage() {
                     {loading ? <Skeleton className="h-4 w-20" /> : `${s.change} from last period`}
                   </div>
                   <Button variant="ghost" size="sm" className="mt-4 w-full" asChild>
-                    <Link to={s.href}>View Details →</Link>
+                    <Link href={s.href}>View Details →</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -95,7 +95,7 @@ export default function ClientDashboardPage() {
               {quickLinks.map((q) => {
                 const Icon = q.icon;
                 return (
-                  <Link to={q.href} key={q.name}>
+                  <Link href={q.href} key={q.name}>
                     <Card className="hover:border-blue-300 dark:bg-gray-950 hover:shadow-md transition-all cursor-pointer">
                       <CardContent className="pt-6 text-center dark:text-gray-300">
                         <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900 dark:to-green-900 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3">

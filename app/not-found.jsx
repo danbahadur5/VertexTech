@@ -144,7 +144,7 @@ export default function NotFoundPage() {
             className="mt-24 pt-12 border-t border-gray-100 dark:border-gray-900 flex flex-col items-center"
           >
             <p className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-4 uppercase tracking-[0.2em]">
-              Vertex Technology
+              Darbar Technology
             </p>
             <div className="flex gap-8 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
               <div className="h-6 w-px bg-gray-300 dark:bg-gray-700 hidden sm:block" />

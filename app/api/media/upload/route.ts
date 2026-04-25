@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   const upload = await new Promise<{ public_id: string; secure_url: string; resource_type: string }>((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream({ folder: "vertextech" }, (err, result) => {
+    const stream = cloudinary.uploader.upload_stream({ folder: "darbartech" }, (err, result) => {
       if (err || !result) return reject(err);
       resolve({ public_id: result.public_id, secure_url: result.secure_url, resource_type: result.resource_type });
     });

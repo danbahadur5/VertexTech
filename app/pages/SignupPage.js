@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -17,7 +18,7 @@ import { User, Mail, Lock, Github, ShieldCheck, ShieldAlert } from 'lucide-react
  * than to tell (via toast messages). 
  * 
  * The background elements are mirrored from the login page for consistency,
- * keeping that 'Vertex' brand feel alive.
+ * keeping that 'Darbar' brand feel alive.
  */
 
 export default function SignupPage() {
@@ -30,7 +31,7 @@ export default function SignupPage() {
   const [passwordError, setPasswordError] = useState('');
   
   const { register, signInWithGoogle, signInWithGithub } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Email validation logic
   const validateEmail = (email) => {
@@ -80,9 +81,9 @@ export default function SignupPage() {
     setIsCreatingAccount(true);
 
     try {
-      await register(fullName, userEmail, userPassword);
-      toast.success("Enterprise account created successfully!");
-      navigate('/login');
+      const userData = await register(fullName, userEmail, userPassword);
+      toast.success(`Welcome aboard, ${fullName}! Let's build something great.`);
+      router.push(`/dashboard/${userData.role}`);
     } catch (err) {
       toast.error("Registration failed. Please check your details and try again.");
     } finally {
@@ -148,7 +149,7 @@ export default function SignupPage() {
               Create your <span className="text-blue-600">account</span>
             </h1>
             <p className="text-gray-500 dark:text-gray-400 font-medium">
-              Join 50,000+ developers building on Vertex.
+              Join 50,000+ developers building on Darbar.
             </p>
           </div>
 
@@ -248,7 +249,7 @@ export default function SignupPage() {
                 <div className="flex items-start gap-3 px-1 pt-2">
                   <input type="checkbox" id="terms" className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer" required />
                   <label htmlFor="terms" className="text-xs font-medium text-gray-500 dark:text-gray-400 leading-tight">
-                    I agree to the <Link to="/terms" className="text-blue-600 font-bold hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-blue-600 font-bold hover:underline">Privacy Policy</Link>.
+                    I agree to the <Link href="/terms" className="text-blue-600 font-bold hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-blue-600 font-bold hover:underline">Privacy Policy</Link>.
                   </label>
                 </div>
 
@@ -296,9 +297,9 @@ export default function SignupPage() {
           </Card>
 
           <p className="mt-8 text-center text-sm text-gray-500 font-medium">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
-              Sign In
+            Already a member?{' '}
+            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
+              Sign in to your account
             </Link>
           </p>
         </motion.div>

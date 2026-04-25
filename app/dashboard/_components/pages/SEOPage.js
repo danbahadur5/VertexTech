@@ -19,14 +19,14 @@ export default function SEOPage() {
   const [posts, setPosts] = useState([]);
   const [caseStudies, setCaseStudies] = useState([]);
   const [globalSEO, setGlobalSEO] = useState({
-    metaTitle: 'VertexTech | AI-Powered Cybersecurity & Solutions',
+    metaTitle: 'DarbarTech | AI-Powered Cybersecurity & Solutions',
     metaDescription: 'Next-generation digital defense and software development.',
     keywords: 'cybersecurity, ai, software development',
     ogImage: '',
     canonicalUrl: ''
   });
   const [initial, setInitial] = useState({
-    metaTitle: 'VertexTech | AI-Powered Cybersecurity & Solutions',
+    metaTitle: 'DarbarTech | AI-Powered Cybersecurity & Solutions',
     metaDescription: 'Next-generation digital defense and software development.',
     keywords: 'cybersecurity, ai, software development',
     ogImage: '',

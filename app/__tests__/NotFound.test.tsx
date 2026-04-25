@@ -67,6 +67,6 @@ describe('NotFoundPage', () => {
 
   it('contains branded elements', () => {
     render(<NotFoundPage />);
-    expect(screen.getAllByText(/Vertex Technology/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Darbar Technology/i).length).toBeGreaterThan(0);
   });
 });
